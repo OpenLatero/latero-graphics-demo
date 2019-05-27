@@ -21,6 +21,6 @@
 //#endif
 
 // location of images files and other resources
-const std::string media_dir = "/Users/tactilelabs/Documents/OpenLatero/latero-graphics-demo/media";
+const std::string media_dir = "/Users/vlevesque/Documents/Git/OpenLatero/latero-graphics-demo/media";
 
 #endif

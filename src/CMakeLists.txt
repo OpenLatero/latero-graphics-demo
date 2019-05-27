@@ -3,6 +3,9 @@ include(FindPkgConfig)
 # add /usr/loca/lib/pkgconfig (necessary on macOS)
 set( ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:/usr/local/lib/pkgconfig" )
 
+set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_FLAGS "--std=gnu++11 -fpermissive ${CMAKE_CXX_FLAGS}")
+
 pkg_check_modules (LATERO_GRAPHICS latero-graphics)
 link_directories(${LATERO_GRAPHICS_LIBRARY_DIRS})
 include_directories(${LATERO_GRAPHICS_INCLUDE_DIRS})

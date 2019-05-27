@@ -58,8 +58,8 @@ bool CardSet::Load(std::string file, const latero::Tactograph *dev, uint scale)
 				if (nodeElement)
 					name_ = nodeElement->get_attribute("name")->get_value();
 
-				xmlpp::Node::NodeList list = pNode->get_children();
-				for(xmlpp::Node::NodeList::iterator iter = list.begin(); iter != list.end(); ++iter)
+				xmlpp::Node::const_NodeList list = pNode->get_children();
+				for(xmlpp::Node::const_NodeList::iterator iter = list.begin(); iter != list.end(); ++iter)
 				{
 					const xmlpp::Node* n = *iter;
 					if (n->get_name() == "card")
