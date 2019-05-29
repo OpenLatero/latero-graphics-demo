@@ -65,9 +65,9 @@ set(demo_SRCS
 	${demo_ICON_SRCS}
 	${demo_BRAILLE_SRCS})
 
-add_executable(latero-demo ${demo_SRCS})
-target_link_libraries(latero-demo ${LATERO_GRAPHICS_LIBRARIES} boost_program_options-mt)
-install_programs(/bin latero-demo)
+add_executable(latero-graphics-demo ${demo_SRCS})
+target_link_libraries(latero-graphics-demo ${LATERO_GRAPHICS_LIBRARIES} boost_program_options-mt)
+install_programs(/bin latero-graphics-demo)
 
 # generate config.h
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
