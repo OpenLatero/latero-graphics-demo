@@ -1,13 +1,8 @@
-find_package(laterographics)
+find_package(laterographics REQUIRED)
+find_package(Boost REQUIRED COMPONENTS program_options)
 
 set (CMAKE_CXX_STANDARD 11)
 set (CMAKE_CXX_FLAGS "--std=gnu++11 -fpermissive ${CMAKE_CXX_FLAGS}")
-
-include(FindPkgConfig)
-pkg_check_modules(DEPS REQUIRED gtkmm-2.4)
-link_directories(${DEPS_LIBRARY_DIRS})
-include_directories(${DEPS_INCLUDE_DIRS})
-
 
 set(demo_SHARED_SRCS
 	generatorhandle.h generatorhandle.cpp
@@ -65,7 +60,7 @@ set(demo_SRCS
 	${demo_BRAILLE_SRCS})
 
 add_executable(latero-graphics-demo ${demo_SRCS})
-target_link_libraries(latero-graphics-demo ${LATERO_GRAPHICS_LIBRARIES} laterographics::laterographics boost_program_options-mt)
+target_link_libraries(latero-graphics-demo laterographics::laterographics Boost::program_options)
 install_programs(/bin latero-graphics-demo)
 
 # generate config.h
