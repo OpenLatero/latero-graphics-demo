@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 	
 	latero::Tactograph dev;
 
-	boost::posix_time::time_duration UpdatePeriod = boost::posix_time::microseconds(1E6/UpdateRateHz);
+	boost::posix_time::time_duration UpdatePeriod = boost::posix_time::microseconds((long)(1E6/UpdateRateHz));
 	latero::graphics::TactileEngine tEngine(&dev,UpdatePeriod);
 	latero::graphics::AudioEngine aEngine(&dev, boost::posix_time::milliseconds(30));
 	MainWindow wnd(&tEngine, &aEngine, disableAudio);

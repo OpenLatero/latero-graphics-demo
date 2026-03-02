@@ -266,7 +266,7 @@ void BrailleGen::SetVibFreq(float hz)
 {
 	LATERO_GRAPHICS_GUARD
 	SetLastModified_();
-	vibPeriod_ = boost::posix_time::microseconds(1E6/hz);
+	vibPeriod_ = boost::posix_time::microseconds((long)(1E6/hz));
 }
 
 float BrailleGen::GetVibFreq() const
