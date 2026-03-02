@@ -5,6 +5,7 @@ set( ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:/usr/local/lib/pkgconfig" )
 
 # todo: added manually - should it be necessary or already set up by latero-graphics?
 find_package(Boost CONFIG COMPONENTS system thread filesystem REQUIRED)
+find_package(latero)
 
 set (CMAKE_CXX_STANDARD 11)
 set (CMAKE_CXX_FLAGS "--std=gnu++11 -fpermissive ${CMAKE_CXX_FLAGS}")
@@ -69,7 +70,7 @@ set(demo_SRCS
 	${demo_BRAILLE_SRCS})
 
 add_executable(latero-graphics-demo ${demo_SRCS})
-target_link_libraries(latero-graphics-demo ${LATERO_GRAPHICS_LIBRARIES} boost_program_options-mt)
+target_link_libraries(latero-graphics-demo ${LATERO_GRAPHICS_LIBRARIES} latero::latero boost_program_options-mt)
 install_programs(/bin latero-graphics-demo)
 
 # generate config.h
