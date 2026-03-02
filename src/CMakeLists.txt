@@ -1,18 +1,13 @@
-include(FindPkgConfig)
-
-# add /usr/loca/lib/pkgconfig (necessary on macOS)
-set( ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:/usr/local/lib/pkgconfig" )
-
-# todo: added manually - should it be necessary or already set up by latero-graphics?
-find_package(Boost CONFIG COMPONENTS system thread filesystem REQUIRED)
-find_package(latero)
+find_package(laterographics)
 
 set (CMAKE_CXX_STANDARD 11)
 set (CMAKE_CXX_FLAGS "--std=gnu++11 -fpermissive ${CMAKE_CXX_FLAGS}")
 
-pkg_check_modules (LATERO_GRAPHICS latero-graphics)
-link_directories(${LATERO_GRAPHICS_LIBRARY_DIRS})
-include_directories(${LATERO_GRAPHICS_INCLUDE_DIRS})
+include(FindPkgConfig)
+pkg_check_modules(DEPS REQUIRED gtkmm-2.4)
+link_directories(${DEPS_LIBRARY_DIRS})
+include_directories(${DEPS_INCLUDE_DIRS})
+
 
 set(demo_SHARED_SRCS
 	generatorhandle.h generatorhandle.cpp
@@ -70,7 +65,7 @@ set(demo_SRCS
 	${demo_BRAILLE_SRCS})
 
 add_executable(latero-graphics-demo ${demo_SRCS})
-target_link_libraries(latero-graphics-demo ${LATERO_GRAPHICS_LIBRARIES} latero::latero boost_program_options-mt)
+target_link_libraries(latero-graphics-demo ${LATERO_GRAPHICS_LIBRARIES} laterographics::laterographics boost_program_options-mt)
 install_programs(/bin latero-graphics-demo)
 
 # generate config.h
