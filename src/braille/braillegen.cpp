@@ -148,10 +148,12 @@ float BrailleGen::GetVibration_(float ratio, unsigned int row, BrailleCell *cell
 
 	int r = row/2;
 	if (narrow_)
-		if (row > 2)
-			return -1.0*inv;
-		else
-			r = row;
+    {
+        if (row > 2)
+            return -1.0*inv;
+        else
+            r = row;
+    }
 
 	float rv = (invert_?1.0:-1.0);;
 	if (cell)
@@ -211,11 +213,13 @@ float BrailleGen::GetDeflection_(unsigned int row, BrailleCell *cell, float d0, 
 
 	int r = row/2;
 	if (narrow_)
-		if (row > 2)
-			return -1.0*inv;
-		else
-			r = row;
-
+    {
+        if (row > 2)
+            return -1.0*inv;
+        else
+            r = row;
+    }
+    
 	float rv = -1.0;
 	if (cell)
 	{
