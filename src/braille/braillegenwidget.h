@@ -56,11 +56,11 @@ protected:
 	BrailleStringWidget strWidget_;
 	DotWidget dot_;
 	DotWidget vibDot_;
-	Gtk::Adjustment dotWidthAdj_;
-	Gtk::Adjustment intraDotDistAdj_;
-	Gtk::Adjustment interDotDistAdj_;
-	Gtk::Adjustment offsetAdj_;
-	Gtk::Adjustment vibFreqAdj_;
+    Glib::RefPtr<Gtk::Adjustment> dotWidthAdj_;
+    Glib::RefPtr<Gtk::Adjustment> intraDotDistAdj_;
+    Glib::RefPtr<Gtk::Adjustment> interDotDistAdj_;
+    Glib::RefPtr<Gtk::Adjustment> offsetAdj_;
+    Glib::RefPtr<Gtk::Adjustment> vibFreqAdj_;
 	ModulatorWidget vibModWidget_;
 
 	Gtk::RadioButton mode_[BRAILLE_MODE_SIZE];

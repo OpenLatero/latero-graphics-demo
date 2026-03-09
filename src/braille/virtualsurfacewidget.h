@@ -34,6 +34,7 @@
 #include <latero/tactograph.h>
 #include <laterographics/point.h>
 #include "braillegen.h"
+#include <glibmm/main.h>
 
 class VirtualSurfaceArea : public Gtk::DrawingArea
 {

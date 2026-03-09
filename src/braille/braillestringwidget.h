@@ -28,6 +28,7 @@
 
 #include <gtkmm/frame.h>
 #include <gtkmm/entry.h>
+#include <gtkmm/radiobutton.h>
 #include "braillestring.h"
 #include "braillecellwidget.h"
 

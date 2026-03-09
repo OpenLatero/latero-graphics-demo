@@ -22,13 +22,13 @@
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
 
-
 #include "braillestringwidget.h"
 #include <math.h>
 #include <sstream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <gtkmm/radiobutton.h>
 
 BrailleStringWidget::BrailleStringWidget(BrailleString *peer):
 	Frame("Braille String"),
@@ -36,7 +36,7 @@ BrailleStringWidget::BrailleStringWidget(BrailleString *peer):
 	wordButton_("word"),
 	peer_(peer)
 {
-	srand(time(NULL));
+    srand(static_cast<unsigned int>(time(NULL)));
 
 	Gtk::RadioButton::Group group = cellMode_.get_group();
 	textMode_.set_group(group);
@@ -77,14 +77,19 @@ BrailleStringWidget::BrailleStringWidget(BrailleString *peer):
 		sigc::mem_fun(*this, &BrailleStringWidget::OnTextChange));
 
 
-	entry_.set_max_length(cell_.size());
-	entry_.set_width_chars(cell_.size());
+	entry_.set_max_length((int)cell_.size());
+	entry_.set_width_chars((int)cell_.size());
 	entry_.set_text(peer_->Get());
-	Glib::RefPtr<Gtk::RcStyle> style = entry_.get_modifier_style();
-	Pango::FontDescription font;
-	font.set_size(40000);
-	style->set_font(font);
-	entry_.modify_style(style);
+	
+    // TODO_GTKMM3 Make sure this works...
+    Pango::FontDescription font;
+    font.set_size(40000);
+    entry_.override_font(font);
+    //Glib::RefPtr<Gtk::RcStyle> style = entry_.get_modifier_style();
+	//Pango::FontDescription font;
+	//font.set_size(40000);
+	//style->set_font(font);
+	//entry_.modify_style(style);
 
 	CreateWords();
 	

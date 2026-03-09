@@ -117,10 +117,11 @@ void Card::SetBlind(bool v)
 	UpdateImg();
 }
 
-void Card::ModifyBackground(const Gdk::Color &bg)
-{
-	modify_bg(Gtk::STATE_NORMAL, bg);
-}
+// TODO_GTKMM3 Never called?
+//void Card::ModifyBackground(const Gdk::Color &bg)
+//{
+//	modify_bg(Gtk::STATE_NORMAL, bg);
+//}
 
 void Card::SetDisplayState(const latero::graphics::Point &center, double angle, const latero::BiasedImg &frame)
 {

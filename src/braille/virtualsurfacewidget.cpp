@@ -41,7 +41,7 @@ bool VirtualSurfaceArea::on_expose_event(GdkEventExpose* event)
 {
 	if (!bg_)
 	{
-		get_window()->clear();
+		//get_window()->clear(); // TODO_GTKMM3 Find correct fix
 		return true;
 	}
 
@@ -56,8 +56,11 @@ bool VirtualSurfaceArea::on_expose_event(GdkEventExpose* event)
 	if (buf)
 	{
 		buf = buf->scale_simple(GetWidth(),GetHeight(),Gdk::INTERP_NEAREST);
-		buf->render_to_drawable(get_window(), get_style()->get_black_gc(),
-   			0, 0, 0, 0, GetWidth(), GetHeight(), Gdk::RGB_DITHER_NONE, 0, 0);
+        // TODO_GTKMM3: Is this working???
+		//buf->render_to_drawable(get_window(), get_style()->get_black_gc(),
+   		//	0, 0, 0, 0, GetWidth(), GetHeight(), Gdk::RGB_DITHER_NONE, 0, 0);
+        Gdk::Cairo::set_source_pixbuf(cr, buf, 0, 0);
+        cr->paint();
 	}
 
 	// draw cursor

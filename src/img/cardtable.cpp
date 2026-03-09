@@ -39,6 +39,7 @@ CardTable::~CardTable()
 void CardTable::SetCards(std::vector<Card*> &cards)
 {
 	RemoveCards();
+    cards_ = cards;
 	for (uint x=0; x<GetNbCols(); ++x)
 		for (uint y=0; y<GetNbRows(); ++y)
 			SetCard(x, y, cards[y*GetNbCols()+x]);
@@ -48,11 +49,23 @@ void CardTable::SetCard(uint x, uint y, Card* card)
 {
 	/** @todo: doesn't work if a card is already at that location */
 	table_.attach(*card, x, x+1, y, y+1);
+    cards_[y*GetNbCols()+x] = card;
 	card->UpdateImg();
 }
 
 void CardTable::RemoveCards()
 {
+    // TODO_GTKMM3 Is this working?
+    auto children = table_.get_children();
+    for (auto child : children)
+    {
+        Card *card = (Card*)child;
+        card->ClearImg();
+        table_.remove(*child);
+    }
+    cards_.clear();
+
+    /*
 	Gtk::Table::TableList list= table_.children();
 	for(Gtk::Table::TableList::iterator iter = list.begin(); iter != list.end(); ++iter)
 	{
@@ -61,6 +74,7 @@ void CardTable::RemoveCards()
 	}
 
 	table_.children().clear();
+    */
 }
 
 void CardTable::GetLocation(Card* card, int &x, int &y)
@@ -74,6 +88,13 @@ void CardTable::GetLocation(Card* card, int &x, int &y)
 
 Card* CardTable::GetCard(uint x, uint y)
 {
+    // TODO_GTKMM3 Is this working?
+    if (x<GetNbRows() && y<GetNbCols())
+        return cards_[y*GetNbCols()+x];
+    else
+        return NULL;
+    
+    /*
 	Gtk::Table::TableList list= table_.children();
 	for(Gtk::Table::TableList::iterator iter = list.begin(); iter != list.end(); ++iter)
 	{
@@ -81,5 +102,6 @@ Card* CardTable::GetCard(uint x, uint y)
 			return (Card*)(*iter).get_widget();
 	}
 	return NULL;
+    */
 }
 #endif

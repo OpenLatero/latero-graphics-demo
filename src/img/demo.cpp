@@ -216,20 +216,20 @@ bool Demo::OnKeyPress(GdkEventKey* event)
 	GetCard(keyLocation_.x, keyLocation_.y)->ShowCursor(false);
 
 	// select
-	if (event->keyval == GDK_KP_5)
+	if (event->keyval == GDK_KEY_KP_5) // TODO_GTKMM3 Check that this is working.
 		OnDemoClick(GetCard(keyLocation_.x, keyLocation_.y));
 
 	// move up
-	if ((event->keyval == GDK_KP_7) || (event->keyval == GDK_KP_8) || (event->keyval == GDK_KP_9))
+	if ((event->keyval == GDK_KEY_KP_7) || (event->keyval == GDK_KEY_KP_8) || (event->keyval == GDK_KEY_KP_9))
 		keyLocation_.y--;
 
-	if ((event->keyval == GDK_KP_1) || (event->keyval == GDK_KP_2) || (event->keyval == GDK_KP_3))
+	if ((event->keyval == GDK_KEY_KP_1) || (event->keyval == GDK_KEY_KP_2) || (event->keyval == GDK_KEY_KP_3))
 		keyLocation_.y++;
 	
-	if ((event->keyval == GDK_KP_7) || (event->keyval == GDK_KP_4) || (event->keyval == GDK_KP_1))
+	if ((event->keyval == GDK_KEY_KP_7) || (event->keyval == GDK_KEY_KP_4) || (event->keyval == GDK_KEY_KP_1))
 		keyLocation_.x--;
 
-	if ((event->keyval == GDK_KP_9) || (event->keyval == GDK_KP_6) || (event->keyval == GDK_KP_3))
+	if ((event->keyval == GDK_KEY_KP_9) || (event->keyval == GDK_KEY_KP_6) || (event->keyval == GDK_KEY_KP_3))
 		keyLocation_.x++;
 
 	if (keyLocation_.x > 5)
@@ -242,7 +242,7 @@ bool Demo::OnKeyPress(GdkEventKey* event)
 	else if (keyLocation_.x < 0)
 	{
 		currentSetIdx_--;
-		if (currentSetIdx_<0) currentSetIdx_  = setActions_.size()-1;
+		if (currentSetIdx_<0) currentSetIdx_  = (int)setActions_.size()-1; // TODO_GTKMM3
 		setActions_[currentSetIdx_]->set_active();
 		keyLocation_.x = 5;
 		OnDemoClick(GetCard(keyLocation_.x, keyLocation_.y));

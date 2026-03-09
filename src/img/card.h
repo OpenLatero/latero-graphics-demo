@@ -52,7 +52,7 @@ public:
 	sigc::signal<void,Card*> signal_clicked1;
 	sigc::signal<void,Card*> signal_clicked3;
 
-	void ModifyBackground(const Gdk::Color &bg);
+	//void ModifyBackground(const Gdk::Color &bg);
 
 	latero::graphics::gtk::Animation GetLargeFaceUpAnim();
 
