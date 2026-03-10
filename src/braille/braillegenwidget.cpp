@@ -63,7 +63,7 @@ BrailleGenWidget::BrailleGenWidget(BrailleGenPtr peer) :
 	Gtk::Notebook *notebook = manage(new Gtk::Notebook);
 	Gtk::Alignment *align = manage(new Gtk::Alignment(Gtk::ALIGN_CENTER,Gtk::ALIGN_CENTER,0,0));
 
-	pack_start(*CreateVizWidget());
+	pack_start(*CreateVizWidget(), true, true);
 	pack_start(*align, Gtk::PACK_SHRINK);
 		align->add(strWidget_);
 	pack_start(*notebook, Gtk::PACK_SHRINK);
@@ -244,8 +244,8 @@ Gtk::Widget *BrailleGenWidget::CreateVizWidget()
 	surf->set_size_request(1000,1.2*1000*peer_->Dev()->GetHeight()/peer_->Dev()->GetSurfaceWidth());
 
 	PositionGraph *graph = manage(new PositionGraph(peer_));
-	box->pack_start(*graph);
-	box->pack_start(*surf, Gtk::PACK_SHRINK);
+	box->pack_start(*graph, true, true);
+	box->pack_start(*surf, false, false);
 
 	return align;
 }

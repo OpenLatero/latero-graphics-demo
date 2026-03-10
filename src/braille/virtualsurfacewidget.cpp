@@ -33,10 +33,65 @@ VirtualSurfaceArea::VirtualSurfaceArea(const latero::Tactograph *dev) :
 	dev_(dev),
 	tdState_(dev->GetFrameSizeX(), dev->GetFrameSizeY())
 {
+	// TODO_GTKMM3
+    signal_draw().connect(sigc::mem_fun(*this, &VirtualSurfaceArea::OnDraw));
 }
 
 
+bool VirtualSurfaceArea::OnDraw(const Cairo::RefPtr<Cairo::Context>& cr)
+{
+	if (!bg_)
+	{
+		//get_window()->clear(); // TODO_GTKMM3 Find correct fix
+		return true;
+	}
 
+	// TODO_GTKMM3
+	//Cairo::RefPtr<Cairo::Context> cr = get_window()->create_cairo_context();
+	//if (event)
+	//{
+	//	cr->rectangle(event->area.x, event->area.y, event->area.width, event->area.height);
+    //		cr->clip();
+	//}
+
+	Glib::RefPtr<Gdk::Pixbuf> buf = bg_;
+	if (buf)
+	{
+		buf = buf->scale_simple(GetWidth(),GetHeight(),Gdk::INTERP_NEAREST);
+        // TODO_GTKMM3: Is this working???
+		//buf->render_to_drawable(get_window(), get_style()->get_black_gc(),
+   		//	0, 0, 0, 0, GetWidth(), GetHeight(), Gdk::RGB_DITHER_NONE, 0, 0);
+        Gdk::Cairo::set_source_pixbuf(cr, buf, 0, 0);
+		//cr->set_source_rgb(1.0, 0.0, 0.0);
+        cr->paint();
+	}
+
+	// draw cursor
+	double dpmm_x = GetWidth() / dev_->GetSurfaceWidth();
+	double dpmm_y = GetHeight() / dev_->GetHeight();
+	cr->scale(dpmm_x, dpmm_y); // scale to mm
+	cr->translate(pos_, dev_->GetHeight()/2);	// shift origin to center of TD
+
+	float motionRange = 0.6 * dev_->GetPitchX();
+	int hPiezo = dev_->GetContactorSizeY();
+
+	cr->set_line_width(0.5);
+	cr->set_source_rgb(1.0, 0.0, 0.0);
+	for (uint j=0; j< dev_->GetFrameSizeY(); ++j)
+	{
+		for (uint i=0; i< dev_->GetFrameSizeX(); ++i)
+		{
+			latero::graphics::Point p = dev_->GetActuatorOffset(i,j);
+			float x = p.x + motionRange*(0.5-tdState_.Get(i,j));
+			cr->move_to(x, p.y - 0.5*hPiezo);
+	        	cr->line_to(x, p.y + 0.5*hPiezo);
+			cr->stroke();
+		}
+	}
+	return true;	
+}
+
+/*
 bool VirtualSurfaceArea::on_expose_event(GdkEventExpose* event)
 {
 	if (!bg_)
@@ -60,6 +115,7 @@ bool VirtualSurfaceArea::on_expose_event(GdkEventExpose* event)
 		//buf->render_to_drawable(get_window(), get_style()->get_black_gc(),
    		//	0, 0, 0, 0, GetWidth(), GetHeight(), Gdk::RGB_DITHER_NONE, 0, 0);
         Gdk::Cairo::set_source_pixbuf(cr, buf, 0, 0);
+		cr->set_source_rgb(1.0, 0.0, 0.0);
         cr->paint();
 	}
 
@@ -87,6 +143,7 @@ bool VirtualSurfaceArea::on_expose_event(GdkEventExpose* event)
 	}
 	return true;
 }
+*/
 
 
 void VirtualSurfaceArea::SetDisplayState(double pos, const latero::BiasedImg &f)

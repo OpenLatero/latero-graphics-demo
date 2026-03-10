@@ -51,7 +51,8 @@ public:
 
 protected:
 	void Invalidate();
-	virtual bool on_expose_event(GdkEventExpose* event);
+	//virtual bool on_expose_event(GdkEventExpose* event);
+	bool OnDraw(const Cairo::RefPtr<Cairo::Context>& cr);
 
 	Glib::RefPtr<Gdk::Pixbuf> bg_;
 
