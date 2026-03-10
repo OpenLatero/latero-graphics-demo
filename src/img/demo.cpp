@@ -41,7 +41,7 @@ Demo::Demo(const latero::Tactograph *dev) :
 { 
 	gen_ = GeneratorHandlePtr(new GeneratorHandle(dev));
 
-	//zoomImg_.SetRounded(); // seems to cause problems with xeno 2.4.2
+	zoomImg_.SetRounded();
 	cardSets_.Load(media_dir+"/img/main.col", dev, SCALE_UP_FACTOR);
 
 	Gtk::RadioAction::Group setGroup;
