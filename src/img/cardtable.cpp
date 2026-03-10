@@ -88,20 +88,7 @@ void CardTable::GetLocation(Card* card, int &x, int &y)
 
 Card* CardTable::GetCard(uint x, uint y)
 {
-    // TODO_GTKMM3 Is this working?
-    if (x<GetNbRows() && y<GetNbCols())
-        return cards_[y*GetNbCols()+x];
-    else
-        return NULL;
-    
-    /*
-	Gtk::Table::TableList list= table_.children();
-	for(Gtk::Table::TableList::iterator iter = list.begin(); iter != list.end(); ++iter)
-	{
-		if (((*iter).get_left_attach() == x) && ((*iter).get_top_attach() == y))
-			return (Card*)(*iter).get_widget();
-	}
-	return NULL;
-    */
+	assert(x<GetNbCols() && y<GetNbRows());
+	return cards_[y*GetNbCols()+x];
 }
 #endif

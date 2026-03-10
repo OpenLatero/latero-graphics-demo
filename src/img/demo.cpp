@@ -214,22 +214,23 @@ void Demo::OnShowCursor()
 bool Demo::OnKeyPress(GdkEventKey* event)
 {
 	GetCard(keyLocation_.x, keyLocation_.y)->ShowCursor(false);
+	const auto key = event->keyval;
 
 	// select
-	if (event->keyval == GDK_KEY_KP_5) // TODO_GTKMM3 Check that this is working.
+	if ((key == GDK_KEY_KP_5) || (key == GDK_KEY_space))
 		OnDemoClick(GetCard(keyLocation_.x, keyLocation_.y));
 
 	// move up
-	if ((event->keyval == GDK_KEY_KP_7) || (event->keyval == GDK_KEY_KP_8) || (event->keyval == GDK_KEY_KP_9))
+	if ((key == GDK_KEY_KP_7) || (key == GDK_KEY_KP_8) || (key == GDK_KEY_KP_9) || (key == GDK_KEY_Up))
 		keyLocation_.y--;
 
-	if ((event->keyval == GDK_KEY_KP_1) || (event->keyval == GDK_KEY_KP_2) || (event->keyval == GDK_KEY_KP_3))
+	if ((key == GDK_KEY_KP_1) || (key == GDK_KEY_KP_2) || (key == GDK_KEY_KP_3) || (key == GDK_KEY_Down))
 		keyLocation_.y++;
 	
-	if ((event->keyval == GDK_KEY_KP_7) || (event->keyval == GDK_KEY_KP_4) || (event->keyval == GDK_KEY_KP_1))
+	if ((key == GDK_KEY_KP_7) || (key == GDK_KEY_KP_4) || (key == GDK_KEY_KP_1) || (key == GDK_KEY_Left))
 		keyLocation_.x--;
 
-	if ((event->keyval == GDK_KEY_KP_9) || (event->keyval == GDK_KEY_KP_6) || (event->keyval == GDK_KEY_KP_3))
+	if ((key == GDK_KEY_KP_9) || (key == GDK_KEY_KP_6) || (key == GDK_KEY_KP_3) || (key == GDK_KEY_Right))
 		keyLocation_.x++;
 
 	if (keyLocation_.x > 5)
@@ -251,7 +252,11 @@ bool Demo::OnKeyPress(GdkEventKey* event)
 	keyLocation_.y = keyLocation_.y%2;
 	if (keyLocation_.y<0) keyLocation_.y = 1;
 
-	GetCard(keyLocation_.x, keyLocation_.y)->ShowCursor(true);
+	auto card = GetCard(keyLocation_.x, keyLocation_.y);
+	if (card)
+		card->ShowCursor(true);
+	else
+		printf("No card at location %d,%d\n", keyLocation_.x, keyLocation_.y);
 
 	return true;
 }
