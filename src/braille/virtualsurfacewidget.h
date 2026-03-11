@@ -42,7 +42,7 @@ public:
 	VirtualSurfaceArea(const latero::Tactograph *dev);
 	virtual ~VirtualSurfaceArea() {};
 	
-	void Set(Glib::RefPtr<Gdk::Pixbuf> buf);
+	void SetBackground(Glib::RefPtr<Gdk::Pixbuf> buf);
 
 	void SetDisplayState(double pos, const latero::BiasedImg &frame);
 
@@ -51,7 +51,6 @@ public:
 
 protected:
 	void Invalidate();
-	//virtual bool on_expose_event(GdkEventExpose* event);
 	bool OnDraw(const Cairo::RefPtr<Cairo::Context>& cr);
 
 	Glib::RefPtr<Gdk::Pixbuf> bg_;

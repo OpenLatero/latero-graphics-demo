@@ -243,7 +243,7 @@ bool Demo::OnKeyPress(GdkEventKey* event)
 	else if (keyLocation_.x < 0)
 	{
 		currentSetIdx_--;
-		if (currentSetIdx_<0) currentSetIdx_  = (int)setActions_.size()-1; // TODO_GTKMM3
+		if (currentSetIdx_<0) currentSetIdx_  = (int)setActions_.size()-1;
 		setActions_[currentSetIdx_]->set_active();
 		keyLocation_.x = 5;
 		OnDemoClick(GetCard(keyLocation_.x, keyLocation_.y));

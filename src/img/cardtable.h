@@ -45,7 +45,7 @@ protected:
 	uint GetNbCols() { return table_.property_n_columns();	}
 
 	Gtk::Table table_;
-    std::vector<Card*> cards_; // TODO_GTKMM3
+    std::vector<Card*> cards_;
 };
 
 #endif
