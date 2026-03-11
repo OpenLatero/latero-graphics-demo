@@ -29,37 +29,37 @@
 ModulatorWidget::ModulatorWidget(Modulator *peer) :
 	Gtk::Table(2,2),
 	peer_(peer),
-	ampAdj_(0,0,1,0.1,0.1),
-	rampMinAdj_(0,0,500),
-	rampMaxAdj_(0,0,500),
-	rampMinAmpAdj_(0,0,1),
-	rampMaxAmpAdj_(0,0,1),
-	maxRiseRateAdj_(0,0.0,1.0),
-	maxFallRateAdj_(0,0.0,1.0),
+	ampAdj_(Gtk::Adjustment::create(0,0,1,0.1,0.1)),
+	rampMinAdj_(Gtk::Adjustment::create(0,0,500)),
+	rampMaxAdj_(Gtk::Adjustment::create(0,0,500)),
+	rampMinAmpAdj_(Gtk::Adjustment::create(0,0,1)),
+	rampMaxAmpAdj_(Gtk::Adjustment::create(0,0,1)),
+	maxRiseRateAdj_(Gtk::Adjustment::create(0,0.0,1.0)),
+	maxFallRateAdj_(Gtk::Adjustment::create(0,0.0,1.0)),
 	fixedMode_("fixed"),
 	velMode_("vel")
 {
-	ampAdj_.set_value(1);
-	rampMinAdj_.set_value(50);
-	rampMaxAdj_.set_value(100);
-	rampMinAmpAdj_.set_value(0);
-	rampMaxAmpAdj_.set_value(1);
-	maxRiseRateAdj_.set_value(0.5);
-	maxFallRateAdj_.set_value(0.5);
+	ampAdj_->set_value(1);
+	rampMinAdj_->set_value(50);
+	rampMaxAdj_->set_value(100);
+	rampMinAmpAdj_->set_value(0);
+	rampMaxAmpAdj_->set_value(1);
+	maxRiseRateAdj_->set_value(0.5);
+	maxFallRateAdj_->set_value(0.5);
 
 	Gtk::RadioButton::Group group = fixedMode_.get_group();
 	velMode_.set_group(group);
 	fixedMode_.set_active(true);
-	ampAdj_.set_value(peer_->GetFixedAmp());
+	ampAdj_->set_value(peer_->GetFixedAmp());
 	double min,max;
 	peer_->GetRampRange(min,max);
-	rampMinAdj_.set_value(min);
-	rampMaxAdj_.set_value(max);
+	rampMinAdj_->set_value(min);
+	rampMaxAdj_->set_value(max);
 	peer_->GetRampAmpRange(min,max);
-	rampMinAmpAdj_.set_value(min);
-	rampMaxAmpAdj_.set_value(max);
-	maxRiseRateAdj_.set_value(peer_->GetMaxRiseRate());
-	maxFallRateAdj_.set_value(peer_->GetMaxFallRate());
+	rampMinAmpAdj_->set_value(min);
+	rampMaxAmpAdj_->set_value(max);
+	maxRiseRateAdj_->set_value(peer_->GetMaxRiseRate());
+	maxFallRateAdj_->set_value(peer_->GetMaxFallRate());
 
 	Gtk::Frame *fixedFrame = manage(new Gtk::Frame);
 	Gtk::Frame *velFrame = manage(new Gtk::Frame);
@@ -92,23 +92,23 @@ ModulatorWidget::ModulatorWidget(Modulator *peer) :
 			velRateBox->pack_start(*manage(new Gtk::Label("  fall ")), Gtk::PACK_SHRINK);
 			velRateBox->pack_start(*manage(new Gtk::SpinButton(maxFallRateAdj_,0, 2)), Gtk::PACK_SHRINK);
 
-	ampAdj_.signal_value_changed().connect(
+	ampAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &ModulatorWidget::OnChange));
-	maxRiseRateAdj_.signal_value_changed().connect(
+	maxRiseRateAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &ModulatorWidget::OnChange));
-	maxFallRateAdj_.signal_value_changed().connect(
+	maxFallRateAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &ModulatorWidget::OnChange));
   	fixedMode_.signal_clicked().connect(
 		sigc::mem_fun(*this, &ModulatorWidget::OnChange));
   	velMode_.signal_clicked().connect(
 		sigc::mem_fun(*this, &ModulatorWidget::OnChange));
-	rampMinAdj_.signal_value_changed().connect(
+	rampMinAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &ModulatorWidget::OnChange));
-	rampMaxAdj_.signal_value_changed().connect(
+	rampMaxAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &ModulatorWidget::OnChange));
-	rampMinAmpAdj_.signal_value_changed().connect(
+	rampMinAmpAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &ModulatorWidget::OnChange));
-	rampMaxAmpAdj_.signal_value_changed().connect(
+	rampMaxAmpAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &ModulatorWidget::OnChange));
 
 
@@ -121,31 +121,31 @@ ModulatorWidget::~ModulatorWidget()
 
 void ModulatorWidget::OnChange()
 {
-	if (rampMaxAdj_.get_value() <= rampMinAdj_.get_value())
+	if (rampMaxAdj_->get_value() <= rampMinAdj_->get_value())
 	{
 		double min,max;
 		peer_->GetRampRange(min,max);
-		rampMinAdj_.set_value(min);
-		rampMaxAdj_.set_value(max);
+		rampMinAdj_->set_value(min);
+		rampMaxAdj_->set_value(max);
 	}
 	else
 	{
-		peer_->SetRampRange(rampMinAdj_.get_value(),rampMaxAdj_.get_value());
+		peer_->SetRampRange(rampMinAdj_->get_value(),rampMaxAdj_->get_value());
 	}
-	if (rampMaxAmpAdj_.get_value() <= rampMinAmpAdj_.get_value())
+	if (rampMaxAmpAdj_->get_value() <= rampMinAmpAdj_->get_value())
 	{
 		double min,max;
 		peer_->GetRampAmpRange(min,max);
-		rampMinAmpAdj_.set_value(min);
-		rampMaxAmpAdj_.set_value(max);
+		rampMinAmpAdj_->set_value(min);
+		rampMaxAmpAdj_->set_value(max);
 	}
 	else
 	{
-		peer_->SetRampAmpRange(rampMinAmpAdj_.get_value(),rampMaxAmpAdj_.get_value());
+		peer_->SetRampAmpRange(rampMinAmpAdj_->get_value(),rampMaxAmpAdj_->get_value());
 	}
-	peer_->SetMaxRiseRate(maxRiseRateAdj_.get_value());
-	peer_->SetMaxFallRate(maxFallRateAdj_.get_value());
-	peer_->SetFixedAmp(ampAdj_.get_value());
+	peer_->SetMaxRiseRate(maxRiseRateAdj_->get_value());
+	peer_->SetMaxFallRate(maxFallRateAdj_->get_value());
+	peer_->SetFixedAmp(ampAdj_->get_value());
 	if (fixedMode_.get_active()) peer_->SetModeFixed();
 	if (velMode_.get_active()) peer_->SetModeVel();
 	OnModeChange();

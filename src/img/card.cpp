@@ -117,11 +117,6 @@ void Card::SetBlind(bool v)
 	UpdateImg();
 }
 
-void Card::ModifyBackground(const Gdk::Color &bg)
-{
-	modify_bg(Gtk::STATE_NORMAL, bg);
-}
-
 void Card::SetDisplayState(const latero::graphics::Point &center, double angle, const latero::BiasedImg &frame)
 {
 	img_.SetDisplayState(center, angle, frame);

@@ -33,31 +33,25 @@ VirtualSurfaceArea::VirtualSurfaceArea(const latero::Tactograph *dev) :
 	dev_(dev),
 	tdState_(dev->GetFrameSizeX(), dev->GetFrameSizeY())
 {
+    signal_draw().connect(sigc::mem_fun(*this, &VirtualSurfaceArea::OnDraw));
 }
 
 
-
-bool VirtualSurfaceArea::on_expose_event(GdkEventExpose* event)
+bool VirtualSurfaceArea::OnDraw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
 	if (!bg_)
 	{
-		get_window()->clear();
+		cr->set_source_rgb(1.0, 1.0, 1.0);
+		cr->paint();
 		return true;
-	}
-
-	Cairo::RefPtr<Cairo::Context> cr = get_window()->create_cairo_context();
-	if (event)
-	{
-		cr->rectangle(event->area.x, event->area.y, event->area.width, event->area.height);
-    		cr->clip();
 	}
 
 	Glib::RefPtr<Gdk::Pixbuf> buf = bg_;
 	if (buf)
 	{
 		buf = buf->scale_simple(GetWidth(),GetHeight(),Gdk::INTERP_NEAREST);
-		buf->render_to_drawable(get_window(), get_style()->get_black_gc(),
-   			0, 0, 0, 0, GetWidth(), GetHeight(), Gdk::RGB_DITHER_NONE, 0, 0);
+        Gdk::Cairo::set_source_pixbuf(cr, buf, 0, 0);
+        cr->paint();
 	}
 
 	// draw cursor
@@ -82,7 +76,7 @@ bool VirtualSurfaceArea::on_expose_event(GdkEventExpose* event)
 			cr->stroke();
 		}
 	}
-	return true;
+	return true;	
 }
 
 
@@ -93,7 +87,6 @@ void VirtualSurfaceArea::SetDisplayState(double pos, const latero::BiasedImg &f)
 	tdState_ = f;
 	Invalidate();
 }
-
 
 
 void VirtualSurfaceArea::Invalidate()
@@ -107,18 +100,11 @@ void VirtualSurfaceArea::Invalidate()
 }
 
 
-void VirtualSurfaceArea::Set(Glib::RefPtr<Gdk::Pixbuf> bg)
+void VirtualSurfaceArea::SetBackground(Glib::RefPtr<Gdk::Pixbuf> bg)
 {
 	bg_ = bg;
 	Invalidate();
 }
-
-
-
-
-
-
-
 
 
 bool VirtualSurfaceWidget::RefreshCursor()
@@ -140,7 +126,7 @@ void VirtualSurfaceWidget::RefreshBackground()
 {
 	bgUpdateTime_ = boost::posix_time::microsec_clock::universal_time();
 	latero::graphics::gtk::Animation anim = peer_->GetIllustration(surface_.GetWidth(),surface_.GetHeight());
-	surface_.Set(anim);
+	surface_.SetBackground(anim);
 }
 
 

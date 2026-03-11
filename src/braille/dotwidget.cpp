@@ -27,15 +27,15 @@
 #include <laterographics/gtk/numwidget.h>
 
 DotSideWidget::DotSideWidget() :
-	radiusAdj_(0,0.0,1.0),
-	plateauAdj_(0,0.0,1.0),
-	txAmpAdj_(0,0.0,0.5),
-	txNbCyclesAdj_(0,1.0,20.0)
+	radiusAdj_(Gtk::Adjustment::create(0,0.0,1.0)),
+	plateauAdj_(Gtk::Adjustment::create(0,0.0,1.0)),
+	txAmpAdj_(Gtk::Adjustment::create(0,0.0,0.5)),
+	txNbCyclesAdj_(Gtk::Adjustment::create(0,1.0,20.0))
 {
-	radiusAdj_.set_value(1.0);
-	plateauAdj_.set_value(1.0);
-	txAmpAdj_.set_value(0.0);
-	txNbCyclesAdj_.set_value(0.0);
+	radiusAdj_->set_value(1.0);
+	plateauAdj_->set_value(1.0);
+	txAmpAdj_->set_value(0.0);
+	txNbCyclesAdj_->set_value(0.0);
 
 	pack_start(shapeCombo_);
 	pack_start(*manage(new latero::graphics::gtk::HNumWidget("radius", radiusAdj_, 2)));
@@ -45,40 +45,40 @@ DotSideWidget::DotSideWidget() :
 
 	shapeCombo_.signal_changed().connect(
 		sigc::mem_fun(*this, &DotSideWidget::OnChange));
-	radiusAdj_.signal_value_changed().connect(
+	radiusAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &DotSideWidget::OnChange));
-	plateauAdj_.signal_value_changed().connect(
+	plateauAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &DotSideWidget::OnChange));
-	txAmpAdj_.signal_value_changed().connect(
+	txAmpAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &DotSideWidget::OnChange));
-	txNbCyclesAdj_.signal_value_changed().connect(
+	txNbCyclesAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &DotSideWidget::OnChange));
 }
 
 Dot::SideParams DotSideWidget::Get()
 {
 	Dot::SideParams p;
-	p.radius = radiusAdj_.get_value();
-	p.plateau = plateauAdj_.get_value();
+	p.radius = radiusAdj_->get_value();
+	p.plateau = plateauAdj_->get_value();
 	p.shape = shapeCombo_.get_active_text();
-	p.txAmp = txAmpAdj_.get_value();
-	p.txNbCycles = (uint)txNbCyclesAdj_.get_value();
+	p.txAmp = txAmpAdj_->get_value();
+	p.txNbCycles = (uint)txNbCyclesAdj_->get_value();
 	return p;
 }
 
 void DotSideWidget::Set(const Dot::SideParams &p)
 {
-	radiusAdj_.set_value(p.radius);
-	plateauAdj_.set_value(p.plateau);
+	radiusAdj_->set_value(p.radius);
+	plateauAdj_->set_value(p.plateau);
 	shapeCombo_.set_active_text(p.shape);
-	txAmpAdj_.set_value(p.txAmp);
-	txNbCyclesAdj_.set_value(p.txNbCycles);
+	txAmpAdj_->set_value(p.txAmp);
+	txNbCyclesAdj_->set_value(p.txNbCycles);
 }
 
 void DotSideWidget::AddShapes(const std::vector<std::string> &shapes)
 {
 	for (uint i=0; i<shapes.size(); ++i)
-		shapeCombo_.append_text(shapes[i]);
+		shapeCombo_.append(shapes[i]);
 }
 
 void DotSideWidget::Disable(bool v)

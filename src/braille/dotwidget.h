@@ -43,10 +43,10 @@ public:
 	sigc::signal<void> signal_value_changed;
 
 protected:
-	Gtk::Adjustment radiusAdj_;
-	Gtk::Adjustment plateauAdj_;
-	Gtk::Adjustment txAmpAdj_;
-	Gtk::Adjustment txNbCyclesAdj_;
+    Glib::RefPtr<Gtk::Adjustment> radiusAdj_;
+    Glib::RefPtr<Gtk::Adjustment> plateauAdj_;
+    Glib::RefPtr<Gtk::Adjustment> txAmpAdj_;
+    Glib::RefPtr<Gtk::Adjustment> txNbCyclesAdj_;
 	Gtk::ComboBoxText shapeCombo_;
 };
 

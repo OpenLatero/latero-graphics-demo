@@ -43,10 +43,10 @@ protected:
 
 	Modulator *peer_;
 
-	Gtk::Adjustment ampAdj_;
-	Gtk::Adjustment rampMinAdj_, rampMaxAdj_;
-	Gtk::Adjustment rampMinAmpAdj_, rampMaxAmpAdj_;
-	Gtk::Adjustment maxRiseRateAdj_, maxFallRateAdj_;
+    Glib::RefPtr<Gtk::Adjustment> ampAdj_;
+    Glib::RefPtr<Gtk::Adjustment> rampMinAdj_, rampMaxAdj_;
+    Glib::RefPtr<Gtk::Adjustment> rampMinAmpAdj_, rampMaxAmpAdj_;
+    Glib::RefPtr<Gtk::Adjustment> maxRiseRateAdj_, maxFallRateAdj_;
   	Gtk::RadioButton fixedMode_, velMode_;
 
 	Gtk::HBox fixedBox_;

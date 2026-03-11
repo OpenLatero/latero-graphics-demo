@@ -39,11 +39,11 @@ BrailleGenWidget::BrailleGenWidget(BrailleGenPtr peer) :
 	strWidget_(&peer->str_),
 	dot_(&peer->dot_),
 	vibDot_(&peer->vibDot_),
-	dotWidthAdj_(0,0.1,1),
-	intraDotDistAdj_(0,0.1,3),
-	interDotDistAdj_(0,0.1,4),
-	offsetAdj_(1,0.0001,50),
-	vibFreqAdj_(0,1,25),
+	dotWidthAdj_(Gtk::Adjustment::create(0,0.1,1)),
+	intraDotDistAdj_(Gtk::Adjustment::create(0,0.1,3)),
+	interDotDistAdj_(Gtk::Adjustment::create(0,0.1,4)),
+	offsetAdj_(Gtk::Adjustment::create(1,0.0001,50)),
+	vibFreqAdj_(Gtk::Adjustment::create(0,1,25)),
 	vibModWidget_(&peer->vibMod_),
 	invertCheck_("invert")
 {
@@ -54,16 +54,16 @@ BrailleGenWidget::BrailleGenWidget(BrailleGenPtr peer) :
 	mode_[BRAILLE_MODE_DOUBLE_DOT_SHEAR].set_label("double (dot shear)"),
 	mode_[BRAILLE_MODE_DOUBLE_ROW_SHEAR].set_label("double (row shear)"),
 
-	dotWidthAdj_.set_value(peer_->GetDotWidthRel());
-	intraDotDistAdj_.set_value(peer_->GetIntraDotDistRel());
-	interDotDistAdj_.set_value(peer_->GetInterDotDistRel());
-	offsetAdj_.set_value(peer_->GetOffset());
-	vibFreqAdj_.set_value(peer_->GetVibFreq());
+	dotWidthAdj_->set_value(peer_->GetDotWidthRel());
+	intraDotDistAdj_->set_value(peer_->GetIntraDotDistRel());
+	interDotDistAdj_->set_value(peer_->GetInterDotDistRel());
+	offsetAdj_->set_value(peer_->GetOffset());
+	vibFreqAdj_->set_value(peer_->GetVibFreq());
 
 	Gtk::Notebook *notebook = manage(new Gtk::Notebook);
 	Gtk::Alignment *align = manage(new Gtk::Alignment(Gtk::ALIGN_CENTER,Gtk::ALIGN_CENTER,0,0));
 
-	pack_start(*CreateVizWidget());
+	pack_start(*CreateVizWidget(), true, true);
 	pack_start(*align, Gtk::PACK_SHRINK);
 		align->add(strWidget_);
 	pack_start(*notebook, Gtk::PACK_SHRINK);
@@ -88,7 +88,7 @@ Gtk::Widget *BrailleGenWidget::CreateVibWidget()
 	frame->add(*box);
 	box->pack_start(*manage(new latero::graphics::gtk::HNumWidget("frequency", vibFreqAdj_,0)), Gtk::PACK_SHRINK);
 	box->pack_start(vibModWidget_);
-	vibFreqAdj_.signal_value_changed().connect(
+	vibFreqAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &BrailleGenWidget::OnChange));
 	return frame;
 }
@@ -125,13 +125,13 @@ Gtk::Widget *BrailleGenWidget::CreateParamsWidget()
 		presetBox->pack_start(*halfScaledButton, Gtk::PACK_SHRINK);
 		presetBox->pack_start(*vbdButton, Gtk::PACK_SHRINK);
 
-	dotWidthAdj_.signal_value_changed().connect(
+	dotWidthAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &BrailleGenWidget::OnChange));
-	intraDotDistAdj_.signal_value_changed().connect(
+	intraDotDistAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &BrailleGenWidget::OnChange));
-	interDotDistAdj_.signal_value_changed().connect(
+	interDotDistAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &BrailleGenWidget::OnChange));
-	offsetAdj_.signal_value_changed().connect(
+	offsetAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &BrailleGenWidget::OnChange));
 
 	stdButton->signal_clicked().connect(
@@ -188,18 +188,18 @@ void BrailleGenWidget::OnChange()
 	for (int i=0; i<BRAILLE_MODE_SIZE; ++i)
 		if (mode_[i].get_active()) peer_->SetMode((braille_mode_t)i);
 	peer_->SetInvert(invertCheck_.get_active());
-	peer_->SetIntraDotDistRel(intraDotDistAdj_.get_value());
-	peer_->SetInterDotDistRel(interDotDistAdj_.get_value());
-	peer_->SetDotWidthRel(dotWidthAdj_.get_value());
-	peer_->SetOffset(offsetAdj_.get_value());
-	peer_->SetVibFreq(vibFreqAdj_.get_value());
+	peer_->SetIntraDotDistRel(intraDotDistAdj_->get_value());
+	peer_->SetInterDotDistRel(interDotDistAdj_->get_value());
+	peer_->SetDotWidthRel(dotWidthAdj_->get_value());
+	peer_->SetOffset(offsetAdj_->get_value());
+	peer_->SetVibFreq(vibFreqAdj_->get_value());
 }
 
 void BrailleGenWidget::OnStandardButton()
 {
-	intraDotDistAdj_.set_value(1.0);
-	interDotDistAdj_.set_value(1.0);
-	dotWidthAdj_.set_value(0.655);
+	intraDotDistAdj_->set_value(1.0);
+	interDotDistAdj_->set_value(1.0);
+	dotWidthAdj_->set_value(0.655);
 }
 
 void BrailleGenWidget::OnScaledButton()
@@ -209,9 +209,9 @@ void BrailleGenWidget::OnScaledButton()
 	// => 10.8 * 2/3 = 7.2 mm => ratio is 1.42
 	// height of display is 10.8 mm
 
-	intraDotDistAdj_.set_value(1.42);
-	interDotDistAdj_.set_value(1.42);
-	dotWidthAdj_.set_value(0.655);
+	intraDotDistAdj_->set_value(1.42);
+	interDotDistAdj_->set_value(1.42);
+	dotWidthAdj_->set_value(0.655);
 }
 
 void BrailleGenWidget::OnHalfScaledButton()
@@ -221,16 +221,16 @@ void BrailleGenWidget::OnHalfScaledButton()
 	// => 5.4 * 2/3 = 3.6 mm => ratio is 0.71
 	// height of display is 10.8 mm
 
-	intraDotDistAdj_.set_value(0.71);
-	interDotDistAdj_.set_value(0.71);
-	dotWidthAdj_.set_value(0.655);
+	intraDotDistAdj_->set_value(0.71);
+	interDotDistAdj_->set_value(0.71);
+	dotWidthAdj_->set_value(0.655);
 }
 
 void BrailleGenWidget::OnVBDButton()
 {
-	intraDotDistAdj_.set_value(1.75);
-	interDotDistAdj_.set_value(1.75);
-	dotWidthAdj_.set_value(0.5);
+	intraDotDistAdj_->set_value(1.75);
+	interDotDistAdj_->set_value(1.75);
+	dotWidthAdj_->set_value(0.5);
 }
 
 Gtk::Widget *BrailleGenWidget::CreateVizWidget()
@@ -244,8 +244,8 @@ Gtk::Widget *BrailleGenWidget::CreateVizWidget()
 	surf->set_size_request(1000,1.2*1000*peer_->Dev()->GetHeight()/peer_->Dev()->GetSurfaceWidth());
 
 	PositionGraph *graph = manage(new PositionGraph(peer_));
-	box->pack_start(*graph);
-	box->pack_start(*surf, Gtk::PACK_SHRINK);
+	box->pack_start(*graph, true, true);
+	box->pack_start(*surf, false, false);
 
 	return align;
 }

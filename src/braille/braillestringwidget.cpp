@@ -22,13 +22,13 @@
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
 
-
 #include "braillestringwidget.h"
 #include <math.h>
 #include <sstream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <gtkmm/radiobutton.h>
 
 BrailleStringWidget::BrailleStringWidget(BrailleString *peer):
 	Frame("Braille String"),
@@ -36,7 +36,7 @@ BrailleStringWidget::BrailleStringWidget(BrailleString *peer):
 	wordButton_("word"),
 	peer_(peer)
 {
-	srand(time(NULL));
+    srand(static_cast<unsigned int>(time(NULL)));
 
 	Gtk::RadioButton::Group group = cellMode_.get_group();
 	textMode_.set_group(group);
@@ -77,14 +77,13 @@ BrailleStringWidget::BrailleStringWidget(BrailleString *peer):
 		sigc::mem_fun(*this, &BrailleStringWidget::OnTextChange));
 
 
-	entry_.set_max_length(cell_.size());
-	entry_.set_width_chars(cell_.size());
+	entry_.set_max_length((int)cell_.size());
+	entry_.set_width_chars((int)cell_.size());
 	entry_.set_text(peer_->Get());
-	Glib::RefPtr<Gtk::RcStyle> style = entry_.get_modifier_style();
-	Pango::FontDescription font;
-	font.set_size(40000);
-	style->set_font(font);
-	entry_.modify_style(style);
+	
+    Pango::FontDescription font;
+    font.set_size(40000);
+    entry_.override_font(font);
 
 	CreateWords();
 	
@@ -173,54 +172,54 @@ void BrailleStringWidget::CreateWords()
 	words.push_back("lapin");
 	words.push_back("ours");
    	words.push_back("abeille");
-    	words.push_back("agneau");
-    	words.push_back("anaconda");
-    	words.push_back("antilope");
-    	words.push_back("biche");
-    	words.push_back("bison");
-    	words.push_back("blaireau");
-    	words.push_back("boeuf");
-    	words.push_back("bouc");
-    	words.push_back("brebis");
-    	words.push_back("canari");
-    	words.push_back("carcajou");
-    	words.push_back("caribou");
-    	words.push_back("castor");
-    	words.push_back("cerf");
-    	words.push_back("chacal");
-    	words.push_back("chouette");
-    	words.push_back("cigogne");
-    	words.push_back("cochon");
-    	words.push_back("corbeau");
-    	words.push_back("crabe");
-    	words.push_back("crapaud");
-    	words.push_back("crevette");
-    	words.push_back("dauphin");
-    	words.push_back("faisan");
-    	words.push_back("fourmi");
-    	words.push_back("hibou");
-    	words.push_back("koala");
-    	words.push_back("loutre");
-    	words.push_back("louve");
-    	words.push_back("lynx");
-    	words.push_back("manchot");
-    	words.push_back("mouche");
-    	words.push_back("oie");
-    	words.push_back("phoque");
-    	words.push_back("pieuvre");
-    	words.push_back("pingouin");
-    	words.push_back("poisson");
-    	words.push_back("poule");
-    	words.push_back("puce");
-    	words.push_back("python");
-    	words.push_back("requin");
-    	words.push_back("sanglier");
-    	words.push_back("scorpion");
-    	words.push_back("serpent");
-    	words.push_back("taupe");
-    	words.push_back("taureau");
-    	words.push_back("tortue");
-    	words.push_back("vache");
+    words.push_back("agneau");
+    words.push_back("anaconda");
+    words.push_back("antilope");
+    words.push_back("biche");
+    words.push_back("bison");
+    words.push_back("blaireau");
+    words.push_back("boeuf");
+    words.push_back("bouc");
+    words.push_back("brebis");
+    words.push_back("canari");
+    words.push_back("carcajou");
+    words.push_back("caribou");
+    words.push_back("castor");
+    words.push_back("cerf");
+    words.push_back("chacal");
+    words.push_back("chouette");
+    words.push_back("cigogne");
+    words.push_back("cochon");
+    words.push_back("corbeau");
+    words.push_back("crabe");
+    words.push_back("crapaud");
+    words.push_back("crevette");
+    words.push_back("dauphin");
+    words.push_back("faisan");
+    words.push_back("fourmi");
+    words.push_back("hibou");
+    words.push_back("koala");
+    words.push_back("loutre");
+    words.push_back("louve");
+    words.push_back("lynx");
+    words.push_back("manchot");
+    words.push_back("mouche");
+    words.push_back("oie");
+    words.push_back("phoque");
+    words.push_back("pieuvre");
+    words.push_back("pingouin");
+    words.push_back("poisson");
+    words.push_back("poule");
+    words.push_back("puce");
+    words.push_back("python");
+    words.push_back("requin");
+    words.push_back("sanglier");
+    words.push_back("scorpion");
+    words.push_back("serpent");
+    words.push_back("taupe");
+    words.push_back("taureau");
+    words.push_back("tortue");
+    words.push_back("vache");
 
 	// limit of 5 letters...
 	for (uint i=0; i<words.size(); i++)

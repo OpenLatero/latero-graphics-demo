@@ -42,7 +42,7 @@ public:
 	std::string Get();
 	std::string GetPattern();
 	
-	unsigned int GetSize() const { return cells_.size(); }
+	unsigned int GetSize() const { return (unsigned int)cells_.size(); }
 	BrailleCell* GetCell(unsigned int i);
 	std::string GetDesc(std::string prefix);
 

@@ -39,6 +39,7 @@ CardTable::~CardTable()
 void CardTable::SetCards(std::vector<Card*> &cards)
 {
 	RemoveCards();
+    cards_ = cards;
 	for (uint x=0; x<GetNbCols(); ++x)
 		for (uint y=0; y<GetNbRows(); ++y)
 			SetCard(x, y, cards[y*GetNbCols()+x]);
@@ -48,19 +49,20 @@ void CardTable::SetCard(uint x, uint y, Card* card)
 {
 	/** @todo: doesn't work if a card is already at that location */
 	table_.attach(*card, x, x+1, y, y+1);
+    cards_[y*GetNbCols()+x] = card;
 	card->UpdateImg();
 }
 
 void CardTable::RemoveCards()
 {
-	Gtk::Table::TableList list= table_.children();
-	for(Gtk::Table::TableList::iterator iter = list.begin(); iter != list.end(); ++iter)
-	{
-		Card *card = (Card*)(*iter).get_widget();
-		card->ClearImg();
-	}
-
-	table_.children().clear();
+    auto children = table_.get_children();
+    for (auto child : children)
+    {
+        Card *card = (Card*)child;
+        card->ClearImg();
+        table_.remove(*child);
+    }
+    cards_.clear();
 }
 
 void CardTable::GetLocation(Card* card, int &x, int &y)
@@ -74,12 +76,7 @@ void CardTable::GetLocation(Card* card, int &x, int &y)
 
 Card* CardTable::GetCard(uint x, uint y)
 {
-	Gtk::Table::TableList list= table_.children();
-	for(Gtk::Table::TableList::iterator iter = list.begin(); iter != list.end(); ++iter)
-	{
-		if (((*iter).get_left_attach() == x) && ((*iter).get_top_attach() == y))
-			return (Card*)(*iter).get_widget();
-	}
-	return NULL;
+	assert(x<GetNbCols() && y<GetNbRows());
+	return cards_[y*GetNbCols()+x];
 }
 #endif
