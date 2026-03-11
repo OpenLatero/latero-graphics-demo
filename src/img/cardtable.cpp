@@ -55,7 +55,6 @@ void CardTable::SetCard(uint x, uint y, Card* card)
 
 void CardTable::RemoveCards()
 {
-    // TODO_GTKMM3 Is this working?
     auto children = table_.get_children();
     for (auto child : children)
     {
@@ -64,17 +63,6 @@ void CardTable::RemoveCards()
         table_.remove(*child);
     }
     cards_.clear();
-
-    /*
-	Gtk::Table::TableList list= table_.children();
-	for(Gtk::Table::TableList::iterator iter = list.begin(); iter != list.end(); ++iter)
-	{
-		Card *card = (Card*)(*iter).get_widget();
-		card->ClearImg();
-	}
-
-	table_.children().clear();
-    */
 }
 
 void CardTable::GetLocation(Card* card, int &x, int &y)
