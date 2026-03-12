@@ -20,7 +20,7 @@
 // -----------------------------------------------------------
 
 #include <iostream>
-#include <gtkmm/main.h>
+#include <gtkmm/application.h>
 #include "mainwindow.h"
 #include <laterographics/tactileengine.h>
 #include <laterographics/audioengine.h>
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 	if (vm.count("disable-audio")) disableAudio = true;
 
 
-	Gtk::Main kit(argc, argv);
+	auto app = Gtk::Application::create(argc, argv, "org.openlatero.latero-graphics-demo");
 	
 	latero::Tactograph dev;
 
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 	MainWindow wnd(&tEngine, &aEngine, disableAudio);
 
 	std::cout << "Starting graphical user interface...\n";
-	Gtk::Main::run(wnd);
+	app->run(wnd);
 
 	std::cout << "Exiting...\n";
 	return 0;
