@@ -24,6 +24,7 @@
 
 #include "braillecellwidget.h"
 #include <gtkmm/table.h>
+#include <gtkmm.h>
 
 BrailleCellWidget::BrailleCellWidget(BrailleCell *peer):
 	peer_(peer),
@@ -31,14 +32,14 @@ BrailleCellWidget::BrailleCellWidget(BrailleCell *peer):
 {
 	Refresh();
 
-	Gtk::Table *table = new Gtk::Table(2,3);
-	add(*manage(table));
+	Gtk::Grid *grid = new Gtk::Grid();
+	add(*manage(grid));
 
 	for (uint x=0; x<2; ++x)
 	{
 		for (uint y=0; y<3; ++y)
 		{
-			table->attach(dots_[x][y], x, x+1, y, y+1, Gtk::SHRINK, Gtk::SHRINK);
+			grid->attach(dots_[x][y], x, y, 1,1);
 			dots_[x][y].signal_toggled().connect(
 				sigc::mem_fun(*this, &BrailleCellWidget::OnChange));
 			dots_[x][y].set_active(peer->Get(x,y));
