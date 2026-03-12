@@ -48,6 +48,7 @@ Demo::Demo(const latero::Tactograph *dev) :
 	add(*vbox);
 	vbox->pack_start(preview_);
 	vbox->pack_start(*waveWidget_, Gtk::PACK_SHRINK);
+	waveWidget_->set_vexpand(false);
 
 	show_all_children();
 };

@@ -61,11 +61,11 @@ Demo::Demo(const latero::Tactograph *dev) :
 	Gtk::Button *nextButton = manage(new Gtk::Button(">"));
 
 	add(*box);
-	box->pack_start(zoomImg_);
+	box->pack_start(zoomImg_, true, true);
 	box->pack_start(*hbox);
-		hbox->pack_start(*prevButton, Gtk::PACK_SHRINK);
-		hbox->pack_start(demoTable_);
-		hbox->pack_start(*nextButton, Gtk::PACK_SHRINK);
+		hbox->pack_start(*prevButton, false, false);
+		hbox->pack_start(demoTable_, true, true);
+		hbox->pack_start(*nextButton, false, false);
 
 	set_events(Gdk::BUTTON_PRESS_MASK);
 	signal_button_press_event().connect(sigc::mem_fun(*this, &Demo::OnBoardClick));

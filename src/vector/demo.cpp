@@ -78,8 +78,9 @@ Demo::Demo(const latero::Tactograph *dev) :
 	vectorWidget_ = (CanvasWidget*)manage(peer_->CreateWidget(peer_));
 
 	add(*vbox);
-	vbox->pack_start(preview_);
-	vbox->pack_start(*vectorWidget_, Gtk::PACK_SHRINK);
+	vbox->pack_start(preview_, true, true);
+	vbox->pack_start(*vectorWidget_, false, false);;
+	vectorWidget_->set_vexpand(false);
 
 	show_all_children();
 };
