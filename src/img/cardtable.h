@@ -41,11 +41,9 @@ public:
 
 protected:
 	
-	uint GetNbRows() { return table_.property_n_rows();	}
-	uint GetNbCols() { return table_.property_n_columns();	}
-
-	Gtk::Table table_;
+	Gtk::Grid grid_;
     std::vector<Card*> cards_;
+	uint sx_, sy_;
 };
 
 #endif
