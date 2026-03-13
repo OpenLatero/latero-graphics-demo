@@ -66,11 +66,12 @@ BrailleGenWidget::BrailleGenWidget(BrailleGenPtr peer) :
 	pack_start(*CreateVizWidget(), true, true);
 	pack_start(*align, Gtk::PACK_SHRINK);
 		align->add(strWidget_);
-	pack_start(*notebook, Gtk::PACK_SHRINK);
+	pack_start(*notebook, false, false);
 		notebook->append_page(*CreateParamsWidget(), "General Settings");
 		notebook->append_page(dot_, "Deflection Profile");
 		notebook->append_page(*CreateVibWidget(), "Vibration Settings");
 		notebook->append_page(vibDot_, "Vibration Profile");
+	notebook->set_vexpand(false);
 
 	dot_.signal_value_changed.connect(
 		sigc::mem_fun(*this, &BrailleGenWidget::OnChange));
@@ -86,8 +87,11 @@ Gtk::Widget *BrailleGenWidget::CreateVibWidget()
 	Gtk::VBox *box = manage(new Gtk::VBox);
 
 	frame->add(*box);
+	frame->set_vexpand(false);
+	box->set_vexpand(false);
 	box->pack_start(*manage(new latero::graphics::gtk::HNumWidget("frequency", vibFreqAdj_,0)), Gtk::PACK_SHRINK);
-	box->pack_start(vibModWidget_);
+	box->pack_start(vibModWidget_, false, false);
+	vibModWidget_.set_vexpand(false);
 	vibFreqAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &BrailleGenWidget::OnChange));
 	return frame;

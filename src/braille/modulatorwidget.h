@@ -25,13 +25,13 @@
 #ifndef MODULATOR_WIDGET_H
 #define MODULATOR_WIDGET_H
 
-#include <gtkmm/table.h>
+#include <gtkmm/grid.h>
 #include <gtkmm/box.h>
 #include <gtkmm/adjustment.h>
 #include <gtkmm/radiobutton.h>
 #include "modulator.h"
 
-class ModulatorWidget : public Gtk::Table
+class ModulatorWidget : public Gtk::Grid
 {
 public:
 	ModulatorWidget(Modulator *peer);

@@ -27,7 +27,6 @@
 #include <gtkmm.h>
 
 ModulatorWidget::ModulatorWidget(Modulator *peer) :
-	Gtk::Table(2,2),
 	peer_(peer),
 	ampAdj_(Gtk::Adjustment::create(0,0,1,0.1,0.1)),
 	rampMinAdj_(Gtk::Adjustment::create(0,0,500)),
@@ -67,13 +66,19 @@ ModulatorWidget::ModulatorWidget(Modulator *peer) :
 	Gtk::HBox *velRangeBox = manage(new Gtk::HBox);
 	Gtk::HBox *velRateBox = manage(new Gtk::HBox);
 
-	attach(fixedMode_, 0, 1, 0, 1, Gtk::SHRINK);
-	attach(*fixedFrame, 1, 2, 0, 1);
+	set_vexpand(false);
+
+	//attach(fixedMode_, 0, 1, 0, 1, Gtk::SHRINK);
+	attach(fixedMode_, 0, 0, 1, 1);
+	//attach(*fixedFrame, 1, 2, 0, 1);
+	attach(*fixedFrame, 1, 0, 1, 1);
 		fixedFrame->add(fixedBox_);
 		fixedBox_.pack_start(*manage(new Gtk::Label(" Amplitude (0-1) ")), Gtk::PACK_SHRINK);
 		fixedBox_.pack_start(*manage(new Gtk::SpinButton(ampAdj_,0, 3)), Gtk::PACK_SHRINK);
-	attach(velMode_, 0, 1, 1, 2, Gtk::SHRINK);
-	attach(*velFrame, 1, 2, 1, 2);
+	//attach(velMode_, 0, 1, 1, 2, Gtk::SHRINK);
+	attach(velMode_, 0, 1, 1, 1);
+	//attach(*velFrame, 1, 2, 1, 2);
+	attach(*velFrame, 1, 1, 1, 1);
 		velFrame->add(velBox_);
 		velBox_.pack_start(*velAmpBox);
 			velAmpBox->pack_start(*manage(new Gtk::Label("Amplitude range (0-1): ")), Gtk::PACK_SHRINK);
