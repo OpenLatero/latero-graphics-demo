@@ -27,10 +27,9 @@
 #define NB_POINTS 1000
 
 PositionGraph::PositionGraph(BrailleGenPtr peer) :
-	Gtk::Table(1,peer->Dev()->GetFrameSizeY()),
 	peer_(peer), y_(0)
 {
-	set_row_spacings(5);
+	set_row_spacing(5);
 	set_size_request(-1, 100);
 
 	for (uint i=0; i<peer->Dev()->GetFrameSizeY(); ++i)
@@ -39,7 +38,9 @@ PositionGraph::PositionGraph(BrailleGenPtr peer) :
 		plots_.push_back(plot);
 		plot->SetRangeX(0, peer_->Dev()->GetSurfaceWidth());
 		plot->SetRangeY(-1.0, 1.0);
-		attach(*plot,0,1,i,i+1);
+		attach(*plot,0,i,1,1);
+		plot->set_hexpand(true);
+		plot->set_vexpand(true);
 	}
 
 	Glib::signal_timeout().connect(

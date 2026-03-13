@@ -27,10 +27,10 @@
 
 #include "braillegen.h"
 #include <laterographics/gtk/plot.h>
-#include <gtkmm/table.h>
+#include <gtkmm/grid.h>
 #include <vector>
 
-class PositionGraph : public Gtk::Table
+class PositionGraph : public Gtk::Grid
 {
 public:
 	PositionGraph(BrailleGenPtr peer);
