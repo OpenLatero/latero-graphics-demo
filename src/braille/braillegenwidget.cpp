@@ -25,7 +25,6 @@
 #include "braillegenwidget.h"
 #include "braillegen.h"
 #include "braillecellwidget.h"
-#include <gtkmm/alignment.h>
 #include <gtkmm/notebook.h>
 #include "dot.h"
 #include <laterographics/gtk/numwidget.h>
@@ -61,11 +60,11 @@ BrailleGenWidget::BrailleGenWidget(BrailleGenPtr peer) :
 	vibFreqAdj_->set_value(peer_->GetVibFreq());
 
 	Gtk::Notebook *notebook = manage(new Gtk::Notebook);
-	Gtk::Alignment *align = manage(new Gtk::Alignment(Gtk::ALIGN_CENTER,Gtk::ALIGN_CENTER,0,0));
+	strWidget_.set_halign(Gtk::ALIGN_CENTER);
+	strWidget_.set_valign(Gtk::ALIGN_CENTER);
 
 	pack_start(*CreateVizWidget(), true, true);
-	pack_start(*align, Gtk::PACK_SHRINK);
-		align->add(strWidget_);
+	pack_start(strWidget_, Gtk::PACK_SHRINK);
 	pack_start(*notebook, false, false);
 		notebook->append_page(*CreateParamsWidget(), "General Settings");
 		notebook->append_page(dot_, "Deflection Profile");
