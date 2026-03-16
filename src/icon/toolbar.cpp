@@ -174,7 +174,7 @@ void Toolbar::Rebuild()
 void Toolbar::OnAdvanced()
 {
 	Gtk::Dialog genWidget("Icon Properties", *window_, true);
-	genWidget.get_vbox()->add(*manage(peer_->CreateWidget(peer_)));
+	genWidget.get_content_area()->add(*manage(peer_->CreateWidget(peer_)));
 	genWidget.show_all_children();
 	genWidget.run();
 	Rebuild(); // reconstruct with new settings

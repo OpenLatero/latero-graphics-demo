@@ -59,11 +59,13 @@ BrailleGenWidget::BrailleGenWidget(BrailleGenPtr peer) :
 	offsetAdj_->set_value(peer_->GetOffset());
 	vibFreqAdj_->set_value(peer_->GetVibFreq());
 
-	Gtk::Notebook *notebook = manage(new Gtk::Notebook);
+	auto notebook = manage(new Gtk::Notebook);
 	strWidget_.set_halign(Gtk::ALIGN_CENTER);
 	strWidget_.set_valign(Gtk::ALIGN_CENTER);
 
-	pack_start(*CreateVizWidget(), true, true);
+	auto vizWidget = CreateVizWidget();
+	pack_start(*vizWidget, true, true);
+
 	pack_start(strWidget_, Gtk::PACK_SHRINK);
 	pack_start(*notebook, false, false);
 		notebook->append_page(*CreateParamsWidget(), "General Settings");
@@ -239,18 +241,18 @@ void BrailleGenWidget::OnVBDButton()
 Gtk::Widget *BrailleGenWidget::CreateVizWidget()
 {
 	Gtk::VBox *box = manage(new Gtk::VBox);
+	box->set_halign(Gtk::ALIGN_FILL);
+	box->set_valign(Gtk::ALIGN_FILL);
 
-	Gtk::Alignment *align = manage(new Gtk::Alignment(Gtk::ALIGN_CENTER,Gtk::ALIGN_CENTER,0,1));
-	align->add(*box);
 	VirtualSurfaceWidget *surf = manage(new VirtualSurfaceWidget(peer_));
-
 	surf->set_size_request(1000,1.2*1000*peer_->Dev()->GetHeight()/peer_->Dev()->GetSurfaceWidth());
+	surf->set_margin_top(10);
 
-	PositionGraph *graph = manage(new PositionGraph(peer_));
+	PositionGraph *graph = manage(new PositionGraph(peer_));;
 	box->pack_start(*graph, true, true);
 	box->pack_start(*surf, false, false);
 
-	return align;
+	return box;
 }
 
 #endif
