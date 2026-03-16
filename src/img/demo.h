@@ -1,3 +1,4 @@
+
 // -----------------------------------------------------------
 //
 // Copyright (c) 2015 by Vincent Levesque. All Rights Reserved.
@@ -75,7 +76,9 @@ private:
 	Card* curCard_; // currently activated card	
 	GeneratorHandlePtr gen_;
 
-	std::vector<Glib::RefPtr<Gtk::RadioAction> > setActions_;
+	// OLD (deprecated):
+	// std::vector<Glib::RefPtr<Gtk::RadioAction> > setActions_;
+	std::vector<Gtk::RadioButton*> setActions_;
 
 	latero::graphics::INTPoint keyLocation_;
 	int currentSetIdx_;

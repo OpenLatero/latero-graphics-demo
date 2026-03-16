@@ -44,14 +44,24 @@ Demo::Demo(const latero::Tactograph *dev) :
 	zoomImg_.SetRounded();
 	cardSets_.Load(media_dir+"/img/main.col", dev, SCALE_UP_FACTOR);
 
-	Gtk::RadioAction::Group setGroup;
+	// OLD (deprecated Gtk::RadioAction::Group):
+	// Gtk::RadioAction::Group setGroup;
+	// for (uint i=0; i<cardSets_.size(); ++i)
+	// {
+	// 	std::stringstream id;
+	// 	id << "Set" << i;
+	// 	std::string name = cardSets_[i]->GetName();
+	// 	Glib::RefPtr<Gtk::RadioAction> action = Gtk::RadioAction::create(setGroup, id.str(), name);
+	// 	setActions_.push_back(action);
+	// }
+
+	// NEW (GTKMM3 using Gtk::RadioButton):
+	Gtk::RadioButton::Group setGroup;
 	for (uint i=0; i<cardSets_.size(); ++i)
 	{
-		std::stringstream id;
-		id << "Set" << i;
 		std::string name = cardSets_[i]->GetName();
-		Glib::RefPtr<Gtk::RadioAction> action = Gtk::RadioAction::create(setGroup, id.str(), name);
-		setActions_.push_back(action);
+		Gtk::RadioButton *button = manage(new Gtk::RadioButton(setGroup, name));
+		setActions_.push_back(button);
 	}
 
 
@@ -103,7 +113,9 @@ void Demo::UpdateSet()
 			currentSetIdx_ = i;
 			std::stringstream id;
 			id << "Set" << i;
-			CardSet *set = cardSets_.GetSet(setActions_[i]->property_label().get_value());
+			// OLD: CardSet *set = cardSets_.GetSet(setActions_[i]->property_label().get_value());
+			// NEW: Use get_label() method instead
+			CardSet *set = cardSets_.GetSet(setActions_[i]->get_label());
 			LoadSet(*set);
 		}
 	}

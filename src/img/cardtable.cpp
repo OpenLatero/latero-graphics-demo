@@ -80,6 +80,6 @@ void CardTable::GetLocation(Card* card, int &x, int &y)
 Card* CardTable::GetCard(uint x, uint y)
 {
 	assert(x<sx_ && y<sy_);
-	return cards_[y*sy_+x];
+	return cards_[y*sx_+x];
 }
 #endif
