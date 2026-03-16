@@ -33,6 +33,8 @@
 
 BrailleStringWidget::BrailleStringWidget(BrailleString *peer):
 	Frame("Braille String"),
+	cellBox_(Gtk::ORIENTATION_HORIZONTAL),
+	textBox_(Gtk::ORIENTATION_HORIZONTAL),
 	randomButton_("random"),
 	wordButton_("word"),
 	peer_(peer)
@@ -43,7 +45,7 @@ BrailleStringWidget::BrailleStringWidget(BrailleString *peer):
 	textMode_.set_group(group);
 	cellMode_.set_active(true);
 
-	Gtk::HBox *box = manage(new Gtk::HBox);
+	auto box = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
 
 	add(*box);
 	box->pack_start(cellMode_, Gtk::PACK_SHRINK);

@@ -101,7 +101,7 @@ Gtk::Widget *BrailleGenWidget::CreateVibWidget()
 
 Gtk::Widget *BrailleGenWidget::CreateParamsWidget()
 {
-	Gtk::HBox *box = manage(new Gtk::HBox);
+	auto box = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
 	Gtk::VBox *paramBox = manage(new Gtk::VBox);
 	Gtk::VBox *presetBox = manage(new Gtk::VBox);
 	Gtk::Frame *presetFrame = manage(new Gtk::Frame("presets"));

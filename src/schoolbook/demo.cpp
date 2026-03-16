@@ -55,7 +55,7 @@ Demo::Demo(const latero::Tactograph *dev) :
 		selButton_[i].set_group(g);
 
 	Gtk::VBox *box = manage(new Gtk::VBox);
-	Gtk::HBox *buttonBox = manage(new Gtk::HBox);
+	auto buttonBox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
 
 	add(*box);
 	box->pack_start(preview_);

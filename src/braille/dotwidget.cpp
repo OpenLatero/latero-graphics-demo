@@ -94,6 +94,7 @@ void DotSideWidget::OnChange()
 
 
 DotWidget::DotWidget(Dot *peer) :
+	Gtk::Box(Gtk::ORIENTATION_HORIZONTAL),
 	peer_(peer)
 {
 	graph_ = manage(new DotGraph(peer));

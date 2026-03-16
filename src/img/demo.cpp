@@ -66,7 +66,7 @@ Demo::Demo(const latero::Tactograph *dev) :
 
 
 	Gtk::VBox *box = manage(new Gtk::VBox);
-	Gtk::HBox *hbox = manage(new Gtk::HBox);
+	auto hbox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
 	Gtk::Button *prevButton = manage(new Gtk::Button("<"));
 	Gtk::Button *nextButton = manage(new Gtk::Button(">"));
 

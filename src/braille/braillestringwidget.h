@@ -50,8 +50,8 @@ protected:
 
 	Gtk::RadioButton cellMode_;
 	Gtk::RadioButton textMode_;
-	Gtk::HBox cellBox_;
-	Gtk::HBox textBox_;
+	Gtk::Box cellBox_;
+	Gtk::Box textBox_;
 
 
 	Gtk::Button randomButton_;

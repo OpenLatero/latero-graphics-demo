@@ -51,7 +51,7 @@ protected:
 };
 
 
-class DotWidget : public Gtk::HBox
+class DotWidget : public Gtk::Box
 {
 public:
 	DotWidget(Dot *peer);

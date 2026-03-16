@@ -49,7 +49,7 @@ protected:
     Glib::RefPtr<Gtk::Adjustment> maxRiseRateAdj_, maxFallRateAdj_;
   	Gtk::RadioButton fixedMode_, velMode_;
 
-	Gtk::HBox fixedBox_;
+	Gtk::Box fixedBox_;
 	Gtk::VBox velBox_;
 };
 
