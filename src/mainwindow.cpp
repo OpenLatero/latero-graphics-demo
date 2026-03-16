@@ -183,7 +183,7 @@ Gtk::Widget *MainWindow::CreateMenu()
 
 void MainWindow::OnQuit()
 {
-	Gtk::Main::quit();
+	close();
 }
 
 void MainWindow::OnFullscreen()
