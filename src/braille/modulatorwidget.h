@@ -50,7 +50,7 @@ protected:
   	Gtk::RadioButton fixedMode_, velMode_;
 
 	Gtk::Box fixedBox_;
-	Gtk::VBox velBox_;
+	Gtk::Box velBox_;
 };
 
 #endif

@@ -24,6 +24,8 @@
 #include <iostream>
 
 MainWindow::MainWindow(latero::graphics::TactileEngine *tEngine, latero::graphics::AudioEngine *aEngine, bool disableAudio) :
+	mainbox_(Gtk::ORIENTATION_VERTICAL),
+	demobox_(Gtk::ORIENTATION_VERTICAL),
 #ifndef DISABLE_TEXTURE_DEMO
 	textureDemo_(tEngine->Dev()),
 #endif

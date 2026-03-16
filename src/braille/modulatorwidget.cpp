@@ -29,6 +29,7 @@
 ModulatorWidget::ModulatorWidget(Modulator *peer) :
 	peer_(peer),
 	fixedBox_(Gtk::ORIENTATION_HORIZONTAL),
+	velBox_(Gtk::ORIENTATION_VERTICAL),
 	ampAdj_(Gtk::Adjustment::create(0,0,1,0.1,0.1)),
 	rampMinAdj_(Gtk::Adjustment::create(0,0,500)),
 	rampMaxAdj_(Gtk::Adjustment::create(0,0,500)),

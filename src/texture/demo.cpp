@@ -40,8 +40,9 @@ Demo::Demo(const latero::Tactograph *dev) :
 	preview_.ShowCursor();
 	preview_.AnimateCursor(true);
 	preview_.SetGenerator(gen_);
+	preview_.set_vexpand(true);
 
-	Gtk::VBox *vbox = manage(new Gtk::VBox);
+	auto vbox = manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
 
 	waveWidget_ = manage(peer_->CreateWidget(peer_));
 

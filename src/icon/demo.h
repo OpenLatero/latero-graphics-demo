@@ -44,7 +44,7 @@ protected:
 	latero::graphics::VirtualSurfaceWidget preview_;
 	Toolbar genToolbar_;
 
-	Gtk::VBox mainBox_;
+	Gtk::Box mainBox_;
 };
 
 }; // namespace

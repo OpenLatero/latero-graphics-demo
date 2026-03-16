@@ -34,6 +34,7 @@
 
 BrailleGenWidget::BrailleGenWidget(BrailleGenPtr peer) :
 	//latero::graphics::GeneratorWidget(peer),
+	Gtk::Box(Gtk::ORIENTATION_VERTICAL),
 	peer_(peer),
 	strWidget_(&peer->str_),
 	dot_(&peer->dot_),
@@ -84,8 +85,8 @@ BrailleGenWidget::BrailleGenWidget(BrailleGenPtr peer) :
 
 Gtk::Widget *BrailleGenWidget::CreateVibWidget()
 {
-	Gtk::Frame *frame = manage(new Gtk::Frame("Vibration Parameters"));
-	Gtk::VBox *box = manage(new Gtk::VBox);
+	auto frame = manage(new Gtk::Frame("Vibration Parameters"));
+	auto box = manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
 
 	frame->add(*box);
 	frame->set_vexpand(false);
@@ -102,14 +103,14 @@ Gtk::Widget *BrailleGenWidget::CreateVibWidget()
 Gtk::Widget *BrailleGenWidget::CreateParamsWidget()
 {
 	auto box = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
-	Gtk::VBox *paramBox = manage(new Gtk::VBox);
-	Gtk::VBox *presetBox = manage(new Gtk::VBox);
-	Gtk::Frame *presetFrame = manage(new Gtk::Frame("presets"));
+	auto paramBox = manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
+	auto presetBox = manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
+	auto presetFrame = manage(new Gtk::Frame("presets"));
 
-	Gtk::Button *stdButton = manage(new Gtk::Button("standard braille"));
-	Gtk::Button *scaledButton = manage(new Gtk::Button("scaled braille (full height)"));
-	Gtk::Button *halfScaledButton = manage(new Gtk::Button("scaled braille (half height)"));
-	Gtk::Button *vbdButton = manage(new Gtk::Button("vbd braille"));
+	auto stdButton = manage(new Gtk::Button("standard braille"));
+	auto scaledButton = manage(new Gtk::Button("scaled braille (full height)"));
+	auto halfScaledButton = manage(new Gtk::Button("scaled braille (half height)"));
+	auto vbdButton = manage(new Gtk::Button("vbd braille"));
 
 	box->pack_start(*CreateModeWidget(), Gtk::PACK_SHRINK);
 	box->pack_start(*paramBox);
@@ -160,8 +161,8 @@ Gtk::Widget *BrailleGenWidget::CreateModeWidget()
 	mode_[(int)peer_->GetMode()].set_active(true);
 	invertCheck_.set_active(peer_->GetInvert());
 
-	Gtk::Frame *modeFrame = manage(new Gtk::Frame("mode"));
-	Gtk::VBox *modeBox = manage(new Gtk::VBox);
+	auto modeFrame = manage(new Gtk::Frame("mode"));
+	auto modeBox = manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
 
 	modeFrame->add(*modeBox);
 	//modeBox->pack_start(*manage(new Gtk::Label("single")));
@@ -240,7 +241,7 @@ void BrailleGenWidget::OnVBDButton()
 
 Gtk::Widget *BrailleGenWidget::CreateVizWidget()
 {
-	Gtk::VBox *box = manage(new Gtk::VBox);
+	auto box = manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
 	box->set_halign(Gtk::ALIGN_FILL);
 	box->set_valign(Gtk::ALIGN_FILL);
 

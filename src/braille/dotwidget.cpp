@@ -27,6 +27,7 @@
 #include <laterographics/gtk/numwidget.h>
 
 DotSideWidget::DotSideWidget() :
+	Gtk::Box(Gtk::ORIENTATION_VERTICAL),
 	radiusAdj_(Gtk::Adjustment::create(0,0.0,1.0)),
 	plateauAdj_(Gtk::Adjustment::create(0,0.0,1.0)),
 	txAmpAdj_(Gtk::Adjustment::create(0,0.0,0.5)),

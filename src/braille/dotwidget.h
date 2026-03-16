@@ -31,7 +31,7 @@
 #include "dot.h"
 #include "dotgraph.h"
 
-class DotSideWidget : public Gtk::VBox
+class DotSideWidget : public Gtk::Box
 {
 public:
 	DotSideWidget();

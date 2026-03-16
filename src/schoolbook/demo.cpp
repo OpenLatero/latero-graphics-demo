@@ -54,12 +54,13 @@ Demo::Demo(const latero::Tactograph *dev) :
 	for (int i=1; i<NB_BUTTONS; ++i)
 		selButton_[i].set_group(g);
 
-	Gtk::VBox *box = manage(new Gtk::VBox);
+	auto box = manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
 	auto buttonBox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
 
 	add(*box);
-	box->pack_start(preview_);
-	box->pack_start(*buttonBox, Gtk::PACK_SHRINK);
+	box->pack_start(preview_, true, true);
+	preview_.set_vexpand(true);
+	box->pack_start(*buttonBox, false, false);
 	for (int i=0; i<NB_BUTTONS; ++i)
 	{
 		buttonBox->pack_start(selButton_[i]);

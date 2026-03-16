@@ -44,18 +44,6 @@ Demo::Demo(const latero::Tactograph *dev) :
 	zoomImg_.SetRounded();
 	cardSets_.Load(media_dir+"/img/main.col", dev, SCALE_UP_FACTOR);
 
-	// OLD (deprecated Gtk::RadioAction::Group):
-	// Gtk::RadioAction::Group setGroup;
-	// for (uint i=0; i<cardSets_.size(); ++i)
-	// {
-	// 	std::stringstream id;
-	// 	id << "Set" << i;
-	// 	std::string name = cardSets_[i]->GetName();
-	// 	Glib::RefPtr<Gtk::RadioAction> action = Gtk::RadioAction::create(setGroup, id.str(), name);
-	// 	setActions_.push_back(action);
-	// }
-
-	// NEW (GTKMM3 using Gtk::RadioButton):
 	Gtk::RadioButton::Group setGroup;
 	for (uint i=0; i<cardSets_.size(); ++i)
 	{
@@ -64,11 +52,10 @@ Demo::Demo(const latero::Tactograph *dev) :
 		setActions_.push_back(button);
 	}
 
-
-	Gtk::VBox *box = manage(new Gtk::VBox);
+	auto box = manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
 	auto hbox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
-	Gtk::Button *prevButton = manage(new Gtk::Button("<"));
-	Gtk::Button *nextButton = manage(new Gtk::Button(">"));
+	auto prevButton = manage(new Gtk::Button("<"));
+	auto nextButton = manage(new Gtk::Button(">"));
 
 	add(*box);
 	box->pack_start(zoomImg_, true, true);

@@ -29,7 +29,7 @@
 #include <laterographics/gtk/plot.h>
 #include <gtkmm/box.h>
 
-class DotGraph : public Gtk::VBox
+class DotGraph : public Gtk::Box
 {
 public:
 	DotGraph(Dot *dot);

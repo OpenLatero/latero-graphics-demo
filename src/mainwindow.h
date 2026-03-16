@@ -85,8 +85,8 @@ protected:
 
 	Gtk::CheckMenuItem* actionFullscreen_;
 
-	Gtk::VBox mainbox_;
-	Gtk::VBox demobox_;
+	Gtk::Box mainbox_;
+	Gtk::Box demobox_;
 	latero::graphics::TactileEngine *tEngine_;
 	latero::graphics::AudioEngine *aEngine_;
 	Demo *demo_;

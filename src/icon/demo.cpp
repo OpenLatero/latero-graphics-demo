@@ -29,11 +29,13 @@ namespace IconDemo {
 
 Demo::Demo(const latero::Tactograph *dev, Gtk::Window *window) :
 	peer_(GeneratorPtr(new Generator(dev))),
+	mainBox_(Gtk::ORIENTATION_VERTICAL),
 	preview_(dev, peer_, true),
 	genToolbar_(peer_,window)
 {
 	preview_.ShowCursor();
 	preview_.AnimateCursor(true);
+	preview_.set_vexpand(true);
 
 	// prepare main view...
 	mainBox_.pack_start(genToolbar_, Gtk::PACK_SHRINK);

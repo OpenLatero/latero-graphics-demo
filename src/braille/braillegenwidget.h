@@ -32,7 +32,7 @@
 #include "modulatorwidget.h"
 //#include <laterographics/generatorwidget.h>
 
-class BrailleGenWidget : public Gtk::VBox
+class BrailleGenWidget : public Gtk::Box
 {
 public:
 	BrailleGenWidget(BrailleGenPtr peer);
