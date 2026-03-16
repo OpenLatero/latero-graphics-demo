@@ -95,118 +95,90 @@ MainWindow::~MainWindow()
 }
 
 
+
 Gtk::Widget *MainWindow::CreateMenu()
 {
-	Glib::RefPtr<Gtk::ActionGroup> group = Gtk::ActionGroup::create();
+	auto menubar = Gtk::manage(new Gtk::MenuBar());
 
-	//
-	// FILE
-	//
+	// File menu
+	auto fileMenu = Gtk::manage(new Gtk::Menu());
+	auto fileMenuItem = Gtk::manage(new Gtk::MenuItem("File"));
+	fileMenuItem->set_submenu(*fileMenu);
 
-	group->add(Gtk::Action::create("FileMenu", "File"));
-	group->add(Gtk::Action::create("FileQuit", Gtk::Stock::QUIT), 
-		sigc::mem_fun(*this, &MainWindow::OnQuit));
+	auto quitItem = Gtk::manage(new Gtk::MenuItem("Quit"));
+	quitItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnQuit));
+	fileMenu->append(*quitItem);
+	fileMenu->show_all();
 
-	std::stringstream fileMenuUI;
-	fileMenuUI << "<menu action='FileMenu'>";
-	fileMenuUI << 	"<menuitem action='FileQuit'/>";
-	fileMenuUI << "</menu>";
+	// View menu
+	auto viewMenu = Gtk::manage(new Gtk::Menu());
+	auto viewMenuItem = Gtk::manage(new Gtk::MenuItem("View"));
+	viewMenuItem->set_submenu(*viewMenu);
 
-	//
-	// VIEW
-	//
+	auto fullscreenItem = Gtk::manage(new Gtk::CheckMenuItem("Fullscreen"));
+	actionFullscreen_ = fullscreenItem;
+	fullscreenItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnFullscreen));
+	viewMenu->append(*fullscreenItem);
+	viewMenu->show_all();
 
-	group->add(Gtk::Action::create("ViewMenu", "View"));
-	actionSetFullscreen_ = Gtk::ToggleAction::create("Fullscreen", "fullscreen");
-	group->add(actionSetFullscreen_, Gtk::AccelKey("F4"), sigc::mem_fun(*this, &MainWindow::OnFullscreen));
-	//actionSetFullscreen_->set_active();
+	// Demo menu
+	auto demoMenu = Gtk::manage(new Gtk::Menu());
+	auto demoMenuItem = Gtk::manage(new Gtk::MenuItem("Demo"));
+	demoMenuItem->set_submenu(*demoMenu);
 
-	std::stringstream viewMenuUI;
-	viewMenuUI << "<menu action='ViewMenu'>";
-	viewMenuUI << 	"<menuitem action='Fullscreen'/>";
-	viewMenuUI << "</menu>";
+	Gtk::RadioMenuItem::Group demoGroup;
 
-	//
-	// DEMO
-	//
-
-	group->add(Gtk::Action::create("DemoMenu", "Demo"));
-	Gtk::RadioAction::Group demoGroup;
 #ifndef DISABLE_VECTOR_DEMO
-	actionDemoVector_ = Gtk::RadioAction::create(demoGroup, "DemoVector", "Vector");
-	group->add(actionDemoVector_,sigc::mem_fun(*this, &MainWindow::OnDemoVector));
+	auto vectorItem = Gtk::manage(new Gtk::RadioMenuItem(demoGroup, "Vector"));
+	actionDemoVector_ = vectorItem;
+	vectorItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnDemoVector));
+	demoMenu->append(*vectorItem);
 #endif
+
 #ifndef DISABLE_ICON_DEMO
-	actionDemoIcon_ = Gtk::RadioAction::create(demoGroup, "DemoIcon", "Icon");
-	group->add(actionDemoIcon_,sigc::mem_fun(*this, &MainWindow::OnDemoIcon));
+	auto iconItem = Gtk::manage(new Gtk::RadioMenuItem(demoGroup, "Icon"));
+	actionDemoIcon_ = iconItem;
+	iconItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnDemoIcon));
+	demoMenu->append(*iconItem);
 #endif
+
 #ifndef DISABLE_TEXTURE_DEMO
-	actionDemoTexture_ = Gtk::RadioAction::create(demoGroup, "DemoTexture", "Texture");
-	group->add(actionDemoTexture_ ,sigc::mem_fun(*this, &MainWindow::OnDemoTexture));
+	auto textureItem = Gtk::manage(new Gtk::RadioMenuItem(demoGroup, "Texture"));
+	actionDemoTexture_ = textureItem;
+	textureItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnDemoTexture));
+	demoMenu->append(*textureItem);
 #endif
+
 #ifndef DISABLE_GRAPHICS_DEMO
-	actionDemoGraphics_ = Gtk::RadioAction::create(demoGroup, "DemoGraphics", "Graphics");
-	group->add(actionDemoGraphics_ ,sigc::mem_fun(*this, &MainWindow::OnDemoGraphics));
+	auto graphicsItem = Gtk::manage(new Gtk::RadioMenuItem(demoGroup, "Graphics"));
+	actionDemoGraphics_ = graphicsItem;
+	graphicsItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnDemoGraphics));
+	demoMenu->append(*graphicsItem);
 #endif
+
 #ifndef DISABLE_SCHOOLBOOK_DEMO
-	actionDemoSchoolbook_ = Gtk::RadioAction::create(demoGroup, "DemoSchoolbook", "Schoolbook");
-	group->add(actionDemoSchoolbook_ ,sigc::mem_fun(*this, &MainWindow::OnDemoSchoolbook));
+	auto schoolbookItem = Gtk::manage(new Gtk::RadioMenuItem(demoGroup, "Schoolbook"));
+	actionDemoSchoolbook_ = schoolbookItem;
+	schoolbookItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnDemoSchoolbook));
+	demoMenu->append(*schoolbookItem);
 #endif
+
 #ifndef DISABLE_BRAILLE_DEMO
-	actionDemoBraille_ = Gtk::RadioAction::create(demoGroup, "DemoBraille", "Braille");
-	group->add(actionDemoBraille_ ,sigc::mem_fun(*this, &MainWindow::OnDemoBraille));
+	auto brailleItem = Gtk::manage(new Gtk::RadioMenuItem(demoGroup, "Braille"));
+	actionDemoBraille_ = brailleItem;
+	brailleItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnDemoBraille));
+	demoMenu->append(*brailleItem);
 #endif
 
-	std::stringstream demoMenuUI;
-	demoMenuUI << "<menu action='DemoMenu'>";
-#ifndef DISABLE_VECTOR_DEMO
-	demoMenuUI << 	"<menuitem action='DemoVector'/>";
-#endif
-#ifndef DISABLE_ICON_DEMO
-	demoMenuUI << 	"<menuitem action='DemoIcon'/>";
-#endif
-#ifndef DISABLE_TEXTURE_DEMO
-	demoMenuUI << 	"<menuitem action='DemoTexture'/>";
-#endif
-#ifndef DISABLE_GRAPHICS_DEMO
-	demoMenuUI << 	"<menuitem action='DemoGraphics'/>";
-#endif
-#ifndef DISABLE_SCHOOLBOOK_DEMO
-	demoMenuUI << 	"<menuitem action='DemoSchoolbook'/>";
-#endif
-#ifndef DISABLE_BRAILLE_DEMO
-	demoMenuUI << 	"<menuitem action='DemoBraille'/>";
-#endif
-	demoMenuUI << "</menu>";
+	demoMenu->show_all();
 
-	//
-	// MENU
-	//
+	// Assemble menubar
+	menubar->append(*fileMenuItem);
+	menubar->append(*viewMenuItem);
+	menubar->append(*demoMenuItem);
+	menubar->show_all();
 
-	uiManager_ = Gtk::UIManager::create();
-	uiManager_->insert_action_group(group);
- 	add_accel_group(uiManager_->get_accel_group());
-
-	std::stringstream buf;
-	buf << "<ui>";
-	buf << "<menubar name='MenuBar'>";
-	buf << fileMenuUI.str();
-	buf << viewMenuUI.str();
-	buf << demoMenuUI.str();
-	buf << "</menubar>";
-	buf << "</ui>";
-
-	try
-	{	
-		uiManager_->add_ui_from_string(buf.str());
-	}
-	catch(const Glib::Error& ex)
-	{
-		std::cerr << "building menus failed: " <<  ex.what();
-		Gtk::Main::quit();
-	}
-
-	return uiManager_->get_widget("/MenuBar");
+	return menubar;
 }
 
 void MainWindow::OnQuit()
@@ -216,7 +188,7 @@ void MainWindow::OnQuit()
 
 void MainWindow::OnFullscreen()
 {
-	if (actionSetFullscreen_->get_active())
+	if (actionFullscreen_ && actionFullscreen_->get_active())
 		fullscreen();
 	else
 		unfullscreen();

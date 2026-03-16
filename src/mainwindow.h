@@ -46,45 +46,44 @@ protected:
 #ifndef DISABLE_TEXTURE_DEMO
 	TextureDemo::Demo textureDemo_;
 	void OnDemoTexture();
-	Glib::RefPtr<Gtk::RadioAction> actionDemoTexture_;
+	Gtk::RadioMenuItem* actionDemoTexture_;
 #endif
 
 #ifndef DISABLE_ICON_DEMO
 	IconDemo::Demo iconDemo_;
 	void OnDemoIcon();
-	Glib::RefPtr<Gtk::RadioAction> actionDemoIcon_;
+	Gtk::RadioMenuItem* actionDemoIcon_;
 #endif
 
 #ifndef DISABLE_VECTOR_DEMO
 	VectorDemo::Demo vectorDemo_;
 	void OnDemoVector();
-	Glib::RefPtr<Gtk::RadioAction> actionDemoVector_;
+	Gtk::RadioMenuItem* actionDemoVector_;
 #endif
-    
+
 #ifndef DISABLE_SCHOOLBOOK_DEMO
 	SchoolbookDemo::Demo schoolbookDemo_;
 	void OnDemoSchoolbook();
-	Glib::RefPtr<Gtk::RadioAction> actionDemoSchoolbook_;
+	Gtk::RadioMenuItem* actionDemoSchoolbook_;
 #endif
-    
+
 #ifndef DISABLE_GRAPHICS_DEMO
 	ImgDemo::Demo graphicsDemo_;
 	void OnDemoGraphics();
-	Glib::RefPtr<Gtk::RadioAction> actionDemoGraphics_;
+	Gtk::RadioMenuItem* actionDemoGraphics_;
 #endif
 
 #ifndef DISABLE_BRAILLE_DEMO
 	BrailleDemo::Demo brailleDemo_;
 	void OnDemoBraille();
-	Glib::RefPtr<Gtk::RadioAction> actionDemoBraille_;
+	Gtk::RadioMenuItem* actionDemoBraille_;
 #endif
 
 	void ReplaceDemo(Demo *demo);
 
 	Gtk::Widget *CreateMenu();
 
-	Glib::RefPtr<Gtk::UIManager> uiManager_;
-	Glib::RefPtr<Gtk::ToggleAction> actionSetFullscreen_;
+	Gtk::CheckMenuItem* actionFullscreen_;
 
 	Gtk::VBox mainbox_;
 	Gtk::VBox demobox_;
