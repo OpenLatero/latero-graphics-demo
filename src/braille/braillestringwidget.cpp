@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <gtkmm/radiobutton.h>
+#include <gtkmm/cssprovider.h>
 
 BrailleStringWidget::BrailleStringWidget(BrailleString *peer):
 	Frame("Braille String"),
@@ -81,9 +82,9 @@ BrailleStringWidget::BrailleStringWidget(BrailleString *peer):
 	entry_.set_width_chars((int)cell_.size());
 	entry_.set_text(peer_->Get());
 	
-    Pango::FontDescription font;
-    font.set_size(40000);
-    entry_.override_font(font);
+    auto css = Gtk::CssProvider::create();
+    css->load_from_data("entry { font-size: 40pt; }");
+    entry_.get_style_context()->add_provider(css, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
 	CreateWords();
 	
