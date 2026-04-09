@@ -81,8 +81,10 @@ Demo::Demo(const latero::Tactograph *dev) :
 
 	zoomImg_.ShowCursor();
 
-	signal_key_press_event().connect(
-		sigc::mem_fun(*this, &Demo::OnKeyPress));
+	auto keyController = Gtk::EventControllerKey::create();
+	keyController->signal_key_pressed().connect(
+		sigc::mem_fun(*this, &Demo::OnKeyPress), false);
+	add_controller(keyController);
 }
 
 Demo::~Demo()
@@ -210,10 +212,10 @@ void Demo::OnShowCursor()
 {
 }
 
-bool Demo::OnKeyPress(GdkEventKey* event)
+bool Demo::OnKeyPress(guint keyval, guint keycode, Gdk::ModifierType state)
 {
 	GetCard(keyLocation_.x, keyLocation_.y)->ShowCursor(false);
-	const auto key = event->keyval;
+	const auto key = keyval;
 
 	// select
 	if ((key == GDK_KEY_KP_5) || (key == GDK_KEY_space))

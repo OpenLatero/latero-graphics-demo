@@ -1,8 +1,9 @@
 find_package(laterographics REQUIRED)
 find_package(Boost REQUIRED COMPONENTS program_options)
 
-set (CMAKE_CXX_STANDARD 11)
-set (CMAKE_CXX_FLAGS "--std=gnu++11 -fpermissive ${CMAKE_CXX_FLAGS}")
+set (CMAKE_CXX_STANDARD 17)
+set (CMAKE_CXX_STANDARD_REQUIRED ON)
+set (CMAKE_CXX_FLAGS "-fpermissive ${CMAKE_CXX_FLAGS}")
 
 set(demo_SHARED_SRCS
 	generatorhandle.h generatorhandle.cpp

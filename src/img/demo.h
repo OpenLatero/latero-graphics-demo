@@ -57,7 +57,7 @@ protected:
 	void OnSetChanged();
 	bool OnIdle();
 	void OnShowCursor();
-	bool OnKeyPress(GdkEventKey* event);
+	bool OnKeyPress(guint keyval, guint keycode, Gdk::ModifierType state);
 	void UpdateZoom(Card* card);
 
 

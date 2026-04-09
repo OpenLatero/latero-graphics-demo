@@ -44,7 +44,7 @@ public:
 
 private:
 	void OnSelChange();
-	bool OnKeyPress(GdkEventKey* event);
+	bool OnKeyPress(guint keyval, guint keycode, Gdk::ModifierType state);
 	void Select(int i);
 	void CreateGenerators();
 

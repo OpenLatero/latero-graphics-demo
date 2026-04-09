@@ -75,8 +75,10 @@ Demo::Demo(const latero::Tactograph *dev) :
 
 	show_all_children();
 
-	signal_key_press_event().connect(
-		sigc::mem_fun(*this, &Demo::OnKeyPress));
+	auto keyController = Gtk::EventControllerKey::create();
+	keyController->signal_key_pressed().connect(
+		sigc::mem_fun(*this, &Demo::OnKeyPress), false);
+	add_controller(keyController);
 }
 
 Demo::~Demo() 
@@ -110,9 +112,9 @@ void Demo::OnSelChange()
 }
 
 
-bool Demo::OnKeyPress(GdkEventKey* event)
+bool Demo::OnKeyPress(guint keyval, guint keycode, Gdk::ModifierType state)
 {
-	list_[sel_]->OnKeyPress(event);
+	list_[sel_]->OnKeyPress(keyval, keycode, state);
 	Select(sel_); // TODO: this is wasteful (only necessary if there's a toggle
 	return true;
 }

@@ -37,7 +37,7 @@ public:
 	virtual void PlayAudio(latero::graphics::AudioDevicePtr dev);
 	void SetGenerator(latero::graphics::GeneratorPtr gen);
 	latero::graphics::GeneratorPtr GetGenerator();
-	virtual bool OnKeyPress(GdkEventKey* event);
+	virtual bool OnKeyPress(guint keyval, guint keycode, Gdk::ModifierType state);
 
 protected:
 	virtual void DoRender_(const latero::graphics::State *state, latero::BiasedImg &frame);
