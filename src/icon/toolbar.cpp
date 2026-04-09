@@ -152,8 +152,8 @@ void Toolbar::Rebuild()
 {
 	remove();
 	
-	auto box = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
-	auto vbox = manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
+	auto box = manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL));
+	auto vbox = manage(new Gtk::Box(Gtk::Orientation::VERTICAL));
 	latero::graphics::TextureCombo* txCombo = manage(new latero::graphics::TextureCombo(peer_->GetAreaTexture()));
 
 	add(*box);

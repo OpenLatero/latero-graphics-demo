@@ -27,7 +27,7 @@
 #include <laterographics/gtk/numwidget.h>
 
 DotSideWidget::DotSideWidget() :
-	Gtk::Box(Gtk::ORIENTATION_VERTICAL),
+	Gtk::Box(Gtk::Orientation::VERTICAL),
 	radiusAdj_(Gtk::Adjustment::create(0,0.0,1.0)),
 	plateauAdj_(Gtk::Adjustment::create(0,0.0,1.0)),
 	txAmpAdj_(Gtk::Adjustment::create(0,0.0,0.5)),
@@ -95,7 +95,7 @@ void DotSideWidget::OnChange()
 
 
 DotWidget::DotWidget(Dot *peer) :
-	Gtk::Box(Gtk::ORIENTATION_HORIZONTAL),
+	Gtk::Box(Gtk::Orientation::HORIZONTAL),
 	peer_(peer)
 {
 	graph_ = manage(new DotGraph(peer));

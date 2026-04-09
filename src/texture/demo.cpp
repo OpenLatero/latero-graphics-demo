@@ -42,16 +42,14 @@ Demo::Demo(const latero::Tactograph *dev) :
 	preview_.SetGenerator(gen_);
 	preview_.set_vexpand(true);
 
-	auto vbox = manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
+	auto vbox = manage(new Gtk::Box(Gtk::Orientation::VERTICAL));
 
 	waveWidget_ = manage(peer_->CreateWidget(peer_));
 
-	add(*vbox);
-	vbox->pack_start(preview_);
-	vbox->pack_start(*waveWidget_, Gtk::PACK_SHRINK);
+	set_child(*vbox);
+	vbox->append(preview_);
+	vbox->append(*waveWidget_);
 	waveWidget_->set_vexpand(false);
-
-	show_all_children();
 };
 
 Glib::RefPtr<Gdk::Pixbuf> Demo::GetMask(const latero::Tactograph *dev)

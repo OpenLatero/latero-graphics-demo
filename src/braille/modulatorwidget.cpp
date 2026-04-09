@@ -28,8 +28,8 @@
 
 ModulatorWidget::ModulatorWidget(Modulator *peer) :
 	peer_(peer),
-	fixedBox_(Gtk::ORIENTATION_HORIZONTAL),
-	velBox_(Gtk::ORIENTATION_VERTICAL),
+	fixedBox_(Gtk::Orientation::HORIZONTAL),
+	velBox_(Gtk::Orientation::VERTICAL),
 	ampAdj_(Gtk::Adjustment::create(0,0,1,0.1,0.1)),
 	rampMinAdj_(Gtk::Adjustment::create(0,0,500)),
 	rampMaxAdj_(Gtk::Adjustment::create(0,0,500)),
@@ -64,9 +64,9 @@ ModulatorWidget::ModulatorWidget(Modulator *peer) :
 
 	auto fixedFrame = manage(new Gtk::Frame);
 	auto velFrame = manage(new Gtk::Frame);
-	auto velAmpBox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
-	auto velRangeBox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
-	auto velRateBox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+	auto velAmpBox = manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL));
+	auto velRangeBox = manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL));
+	auto velRateBox = manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL));
 
 	set_vexpand(false);
 

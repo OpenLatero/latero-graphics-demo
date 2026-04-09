@@ -44,33 +44,36 @@ Demo::Demo(const latero::Tactograph *dev) :
 	zoomImg_.SetRounded();
 	cardSets_.Load(media_dir+"/img/main.col", dev, SCALE_UP_FACTOR);
 
-	Gtk::RadioButton::Group setGroup;
 	for (uint i=0; i<cardSets_.size(); ++i)
 	{
 		std::string name = cardSets_[i]->GetName();
-		Gtk::RadioButton *button = manage(new Gtk::RadioButton(setGroup, name));
+		auto *button = Gtk::make_managed<Gtk::CheckButton>(name);
+		if (i > 0) button->set_group(*setActions_[0]);
 		setActions_.push_back(button);
 	}
 
-	auto box = manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
-	auto hbox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
-	auto prevButton = manage(new Gtk::Button("<"));
-	auto nextButton = manage(new Gtk::Button(">"));
+	auto box = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL);
+	auto hbox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
+	auto prevButton = Gtk::make_managed<Gtk::Button>("<");
+	auto nextButton = Gtk::make_managed<Gtk::Button>(">");
 
-	add(*box);
-	box->pack_start(zoomImg_, true, true);
-	box->pack_start(*hbox);
-		hbox->pack_start(*prevButton, false, false);
-		hbox->pack_start(demoTable_, true, true);
-		hbox->pack_start(*nextButton, false, false);
+	set_child(*box);
+	zoomImg_.set_vexpand(true);
+	box->append(zoomImg_);
+	box->append(*hbox);
+		hbox->append(*prevButton);
+		demoTable_.set_hexpand(true);
+		hbox->append(demoTable_);
+		hbox->append(*nextButton);
 
-	set_events(Gdk::BUTTON_PRESS_MASK);
-	signal_button_press_event().connect(sigc::mem_fun(*this, &Demo::OnBoardClick));
+	auto clickGesture = Gtk::GestureClick::create();
+	clickGesture->set_button(3);
+	clickGesture->signal_pressed().connect(
+		sigc::mem_fun(*this, &Demo::OnBoardClick));
+	add_controller(clickGesture);
 
 	prevButton->signal_clicked().connect(sigc::mem_fun(*this, &Demo::OnPrevSet));
 	nextButton->signal_clicked().connect(sigc::mem_fun(*this, &Demo::OnNextSet));
-
-	show_all_children();
 
 	UpdateSet();
 
@@ -148,7 +151,6 @@ void Demo::LoadSet(const CardSet &set)
 	}
 
 	demoTable_.SetCards(demoCards_);
-	show_all_children();
 }
 
 void Demo::Reset()
@@ -167,7 +169,6 @@ void Demo::UpdateZoom(Card* card)
 {
 	latero::graphics::gtk::Animation  anim = card->GetLargeFaceUpAnim();
 	zoomImg_.Set(anim);
-	show_all_children();
 }
 
 void Demo::OnDemoClick(Card* card)
@@ -180,11 +181,9 @@ void Demo::OnDemoClick(Card* card)
 }
 
 
-bool Demo::OnBoardClick(GdkEventButton* b)
+void Demo::OnBoardClick(int n_press, double x, double y)
 {
-	if (b->button == 3)
-		Reset();
-	return true;
+	Reset();
 }
 
 

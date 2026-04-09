@@ -114,62 +114,67 @@ Gtk::Widget *MainWindow::CreateMenu()
 	// Demo menu
 	auto demoMenu = Gio::Menu::create();
 #ifndef DISABLE_VECTOR_DEMO
-	demoMenu->append("Vector", "win.demo::vector");
+	demoMenu->append("Vector", "win.demo-vector");
 #endif
 #ifndef DISABLE_ICON_DEMO
-	demoMenu->append("Icon", "win.demo::icon");
+	demoMenu->append("Icon", "win.demo-icon");
 #endif
 #ifndef DISABLE_TEXTURE_DEMO
-	demoMenu->append("Texture", "win.demo::texture");
+	demoMenu->append("Texture", "win.demo-texture");
 #endif
 #ifndef DISABLE_GRAPHICS_DEMO
-	demoMenu->append("Graphics", "win.demo::graphics");
+	demoMenu->append("Graphics", "win.demo-graphics");
 #endif
 #ifndef DISABLE_SCHOOLBOOK_DEMO
-	demoMenu->append("Schoolbook", "win.demo::schoolbook");
+	demoMenu->append("Schoolbook", "win.demo-schoolbook");
 #endif
 #ifndef DISABLE_BRAILLE_DEMO
-	demoMenu->append("Braille", "win.demo::braille");
+	demoMenu->append("Braille", "win.demo-braille");
 #endif
 	menuModel->append_submenu("Demo", demoMenu);
 
-	// Quit action
+	auto actionGroup = Gio::SimpleActionGroup::create();
+
 	auto quitAction = Gio::SimpleAction::create("quit");
 	quitAction->signal_activate().connect([this](const Glib::VariantBase&) { OnQuit(); });
-	add_action(quitAction);
+	actionGroup->add_action(quitAction);
 
-	// Fullscreen toggle action
-	fullscreenAction_ = Gio::SimpleAction::create_stateful(
-		"fullscreen", Glib::Variant<bool>::create(false));
-	fullscreenAction_->signal_activate().connect(
-		[this](const Glib::VariantBase&) { OnFullscreen(); });
-	add_action(fullscreenAction_);
+	auto fullscreenAction = Gio::SimpleAction::create("fullscreen");
+	fullscreenAction->signal_activate().connect([this](const Glib::VariantBase&) { OnFullscreen(); });
+	actionGroup->add_action(fullscreenAction);
 
-	// Demo radio action
-	demoAction_ = Gio::SimpleAction::create_radio_string("demo", "none");
-	demoAction_->signal_activate().connect([this](const Glib::VariantBase& v) {
-		demoAction_->set_state(v);
-		auto target = Glib::VariantBase::cast_dynamic<Glib::Variant<Glib::ustring>>(v).get();
 #ifndef DISABLE_VECTOR_DEMO
-		if (target == "vector") ReplaceDemo(&vectorDemo_);
+	auto vectorAction = Gio::SimpleAction::create("demo-vector");
+	vectorAction->signal_activate().connect([this](const Glib::VariantBase&) { ReplaceDemo(&vectorDemo_); });
+	actionGroup->add_action(vectorAction);
 #endif
 #ifndef DISABLE_ICON_DEMO
-		else if (target == "icon") ReplaceDemo(&iconDemo_);
+	auto iconAction = Gio::SimpleAction::create("demo-icon");
+	iconAction->signal_activate().connect([this](const Glib::VariantBase&) { ReplaceDemo(&iconDemo_); });
+	actionGroup->add_action(iconAction);
 #endif
 #ifndef DISABLE_TEXTURE_DEMO
-		else if (target == "texture") ReplaceDemo(&textureDemo_);
+	auto textureAction = Gio::SimpleAction::create("demo-texture");
+	textureAction->signal_activate().connect([this](const Glib::VariantBase&) { ReplaceDemo(&textureDemo_); });
+	actionGroup->add_action(textureAction);
 #endif
 #ifndef DISABLE_GRAPHICS_DEMO
-		else if (target == "graphics") ReplaceDemo(&graphicsDemo_);
+	auto graphicsAction = Gio::SimpleAction::create("demo-graphics");
+	graphicsAction->signal_activate().connect([this](const Glib::VariantBase&) { ReplaceDemo(&graphicsDemo_); });
+	actionGroup->add_action(graphicsAction);
 #endif
 #ifndef DISABLE_SCHOOLBOOK_DEMO
-		else if (target == "schoolbook") ReplaceDemo(&schoolbookDemo_);
+	auto schoolbookAction = Gio::SimpleAction::create("demo-schoolbook");
+	schoolbookAction->signal_activate().connect([this](const Glib::VariantBase&) { ReplaceDemo(&schoolbookDemo_); });
+	actionGroup->add_action(schoolbookAction);
 #endif
 #ifndef DISABLE_BRAILLE_DEMO
-		else if (target == "braille") ReplaceDemo(&brailleDemo_);
+	auto brailleAction = Gio::SimpleAction::create("demo-braille");
+	brailleAction->signal_activate().connect([this](const Glib::VariantBase&) { ReplaceDemo(&brailleDemo_); });
+	actionGroup->add_action(brailleAction);
 #endif
-	});
-	add_action(demoAction_);
+
+	insert_action_group("win", actionGroup);
 
 	return Gtk::make_managed<Gtk::PopoverMenuBar>(menuModel);
 }
@@ -181,53 +186,27 @@ void MainWindow::OnQuit()
 
 void MainWindow::OnFullscreen()
 {
-	Glib::Variant<bool> state;
-	fullscreenAction_->get_state(state);
-	bool active = !state.get();
-	fullscreenAction_->set_state(Glib::Variant<bool>::create(active));
-	if (active) fullscreen(); else unfullscreen();
+	isFullscreen_ = !isFullscreen_;
+	if (isFullscreen_) fullscreen(); else unfullscreen();
 }
 
 #ifndef DISABLE_VECTOR_DEMO
-void MainWindow::OnDemoVector()
-{
-	demoAction_->activate(Glib::Variant<Glib::ustring>::create("vector"));
-}
+void MainWindow::OnDemoVector()   { ReplaceDemo(&vectorDemo_); }
 #endif
-
 #ifndef DISABLE_ICON_DEMO
-void MainWindow::OnDemoIcon()
-{
-	demoAction_->activate(Glib::Variant<Glib::ustring>::create("icon"));
-}
+void MainWindow::OnDemoIcon()     { ReplaceDemo(&iconDemo_); }
 #endif
-
 #ifndef DISABLE_TEXTURE_DEMO
-void MainWindow::OnDemoTexture()
-{
-	demoAction_->activate(Glib::Variant<Glib::ustring>::create("texture"));
-}
+void MainWindow::OnDemoTexture()  { ReplaceDemo(&textureDemo_); }
 #endif
-
 #ifndef DISABLE_GRAPHICS_DEMO
-void MainWindow::OnDemoGraphics()
-{
-	demoAction_->activate(Glib::Variant<Glib::ustring>::create("graphics"));
-}
+void MainWindow::OnDemoGraphics() { ReplaceDemo(&graphicsDemo_); }
 #endif
-
 #ifndef DISABLE_SCHOOLBOOK_DEMO
-void MainWindow::OnDemoSchoolbook()
-{
-	demoAction_->activate(Glib::Variant<Glib::ustring>::create("schoolbook"));
-}
+void MainWindow::OnDemoSchoolbook() { ReplaceDemo(&schoolbookDemo_); }
 #endif
-
 #ifndef DISABLE_BRAILLE_DEMO
-void MainWindow::OnDemoBraille()
-{
-	demoAction_->activate(Glib::Variant<Glib::ustring>::create("braille"));
-}
+void MainWindow::OnDemoBraille()  { ReplaceDemo(&brailleDemo_); }
 #endif
 
 

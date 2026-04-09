@@ -77,8 +77,7 @@ protected:
 	void ReplaceDemo(Demo *demo);
 	Gtk::Widget *CreateMenu();
 
-	Glib::RefPtr<Gio::SimpleAction> demoAction_;
-	Glib::RefPtr<Gio::SimpleAction> fullscreenAction_;
+	bool isFullscreen_ = false;
 
 	Gtk::Box mainbox_;
 	Gtk::Box demobox_;

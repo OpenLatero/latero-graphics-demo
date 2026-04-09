@@ -27,7 +27,7 @@
 #define NB_POINTS 1000
 
 DotGraph::DotGraph(Dot *dot) :
-	Gtk::Box(Gtk::ORIENTATION_VERTICAL),
+	Gtk::Box(Gtk::Orientation::VERTICAL),
 	plot_("blue", "white"),
 	dot_(dot)
 {	

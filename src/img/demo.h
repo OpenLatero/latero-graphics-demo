@@ -51,7 +51,7 @@ protected:
 	void LoadSet(const CardSet &set);
 	void Reset();
 
-	bool OnBoardClick(GdkEventButton*);
+	void OnBoardClick(int n_press, double x, double y);
 	void OnDemoClick(Card* card);
 	void OnRightClick(Card* card);
 	void OnSetChanged();
@@ -78,7 +78,7 @@ private:
 
 	// OLD (deprecated):
 	// std::vector<Glib::RefPtr<Gtk::RadioAction> > setActions_;
-	std::vector<Gtk::RadioButton*> setActions_;
+	std::vector<Gtk::CheckButton*> setActions_;
 
 	latero::graphics::INTPoint keyLocation_;
 	int currentSetIdx_;

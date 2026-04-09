@@ -61,18 +61,17 @@ int main(int argc, char *argv[])
 	if (vm.count("disable-audio")) disableAudio = true;
 
 
-	auto app = Gtk::Application::create(argc, argv, "org.openlatero.latero-graphics-demo");
-	
+	auto app = Gtk::Application::create("org.openlatero.latero-graphics-demo");
+
 	latero::Tactograph dev;
 
 	boost::posix_time::time_duration UpdatePeriod = boost::posix_time::microseconds((long)(1E6/UpdateRateHz));
-	latero::graphics::TactileEngine tEngine(&dev,UpdatePeriod);
+	latero::graphics::TactileEngine tEngine(&dev, UpdatePeriod);
 	latero::graphics::AudioEngine aEngine(&dev, boost::posix_time::milliseconds(30));
-	MainWindow wnd(&tEngine, &aEngine, disableAudio);
 
 	std::cout << "Starting graphical user interface...\n";
-	app->run(wnd);
+	int result = app->make_window_and_run<MainWindow>(argc, argv, &tEngine, &aEngine, disableAudio);
 
 	std::cout << "Exiting...\n";
-	return 0;
+	return result;
 }
