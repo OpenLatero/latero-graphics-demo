@@ -50,21 +50,20 @@ Demo::Demo(const latero::Tactograph *dev) :
 	Select(SEL_CATH);
 
 	preview_.ShowCursor();
-	Gtk::RadioButton::Group g = selButton_[0].get_group();
 	for (int i=1; i<NB_BUTTONS; ++i)
-		selButton_[i].set_group(g);
+		selButton_[i].set_group(selButton_[0]);
 
-	auto box = manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
-	auto buttonBox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+	auto box = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL);
+	auto buttonBox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
 
-	add(*box);
-	box->pack_start(preview_, true, true);
+	set_child(*box);
 	preview_.set_vexpand(true);
-	box->pack_start(*buttonBox, false, false);
+	box->append(preview_);
+	box->append(*buttonBox);
 	for (int i=0; i<NB_BUTTONS; ++i)
 	{
-		buttonBox->pack_start(selButton_[i]);
-		selButton_[i].signal_clicked().connect(
+		buttonBox->append(selButton_[i]);
+		selButton_[i].signal_toggled().connect(
 			sigc::mem_fun(*this, &Demo::OnSelChange));
 	}
 
@@ -72,8 +71,6 @@ Demo::Demo(const latero::Tactograph *dev) :
 	selButton_[1].set_label("cathedrale gothique");
 	selButton_[2].set_label("population attique");
 	selButton_[3].set_label("civilisations");
-
-	show_all_children();
 
 	auto keyController = Gtk::EventControllerKey::create();
 	keyController->signal_key_pressed().connect(

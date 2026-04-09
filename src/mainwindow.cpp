@@ -24,8 +24,8 @@
 #include <iostream>
 
 MainWindow::MainWindow(latero::graphics::TactileEngine *tEngine, latero::graphics::AudioEngine *aEngine, bool disableAudio) :
-	mainbox_(Gtk::ORIENTATION_VERTICAL),
-	demobox_(Gtk::ORIENTATION_VERTICAL),
+	mainbox_(Gtk::Orientation::VERTICAL),
+	demobox_(Gtk::Orientation::VERTICAL),
 #ifndef DISABLE_TEXTURE_DEMO
 	textureDemo_(tEngine->Dev()),
 #endif
@@ -51,9 +51,10 @@ MainWindow::MainWindow(latero::graphics::TactileEngine *tEngine, latero::graphic
 	set_title("LATERO Tactile Graphics Demonstration");
 	maximize();
 
-	add(mainbox_);
-	mainbox_.pack_start(*CreateMenu(), Gtk::PACK_SHRINK);
-	mainbox_.pack_start(demobox_);
+	set_child(mainbox_);
+	mainbox_.append(*CreateMenu());
+	demobox_.set_vexpand(true);
+	mainbox_.append(demobox_);
 
 	std::cout << "Starting tactile & audio engines...\n";
 	tEngine_->Start();
@@ -82,11 +83,9 @@ MainWindow::MainWindow(latero::graphics::TactileEngine *tEngine, latero::graphic
 #endif
 #endif
 #endif
-
-	show_all_children();
 }
 
-MainWindow::~MainWindow() 
+MainWindow::~MainWindow()
 {
 	std::cout << "~MainWindow()\n";
 
@@ -100,87 +99,79 @@ MainWindow::~MainWindow()
 
 Gtk::Widget *MainWindow::CreateMenu()
 {
-	auto menubar = Gtk::manage(new Gtk::MenuBar());
+	auto menuModel = Gio::Menu::create();
 
 	// File menu
-	auto fileMenu = Gtk::manage(new Gtk::Menu());
-	auto fileMenuItem = Gtk::manage(new Gtk::MenuItem("File"));
-	fileMenuItem->set_submenu(*fileMenu);
-
-	auto quitItem = Gtk::manage(new Gtk::MenuItem("Quit"));
-	quitItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnQuit));
-	fileMenu->append(*quitItem);
-	fileMenu->show_all();
+	auto fileMenu = Gio::Menu::create();
+	fileMenu->append("Quit", "win.quit");
+	menuModel->append_submenu("File", fileMenu);
 
 	// View menu
-	auto viewMenu = Gtk::manage(new Gtk::Menu());
-	auto viewMenuItem = Gtk::manage(new Gtk::MenuItem("View"));
-	viewMenuItem->set_submenu(*viewMenu);
-
-	auto fullscreenItem = Gtk::manage(new Gtk::CheckMenuItem("Fullscreen"));
-	actionFullscreen_ = fullscreenItem;
-	fullscreenItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnFullscreen));
-	viewMenu->append(*fullscreenItem);
-	viewMenu->show_all();
+	auto viewMenu = Gio::Menu::create();
+	viewMenu->append("Fullscreen", "win.fullscreen");
+	menuModel->append_submenu("View", viewMenu);
 
 	// Demo menu
-	auto demoMenu = Gtk::manage(new Gtk::Menu());
-	auto demoMenuItem = Gtk::manage(new Gtk::MenuItem("Demo"));
-	demoMenuItem->set_submenu(*demoMenu);
-
-	Gtk::RadioMenuItem::Group demoGroup;
-
+	auto demoMenu = Gio::Menu::create();
 #ifndef DISABLE_VECTOR_DEMO
-	auto vectorItem = Gtk::manage(new Gtk::RadioMenuItem(demoGroup, "Vector"));
-	actionDemoVector_ = vectorItem;
-	vectorItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnDemoVector));
-	demoMenu->append(*vectorItem);
+	demoMenu->append("Vector", "win.demo::vector");
 #endif
-
 #ifndef DISABLE_ICON_DEMO
-	auto iconItem = Gtk::manage(new Gtk::RadioMenuItem(demoGroup, "Icon"));
-	actionDemoIcon_ = iconItem;
-	iconItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnDemoIcon));
-	demoMenu->append(*iconItem);
+	demoMenu->append("Icon", "win.demo::icon");
 #endif
-
 #ifndef DISABLE_TEXTURE_DEMO
-	auto textureItem = Gtk::manage(new Gtk::RadioMenuItem(demoGroup, "Texture"));
-	actionDemoTexture_ = textureItem;
-	textureItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnDemoTexture));
-	demoMenu->append(*textureItem);
+	demoMenu->append("Texture", "win.demo::texture");
 #endif
-
 #ifndef DISABLE_GRAPHICS_DEMO
-	auto graphicsItem = Gtk::manage(new Gtk::RadioMenuItem(demoGroup, "Graphics"));
-	actionDemoGraphics_ = graphicsItem;
-	graphicsItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnDemoGraphics));
-	demoMenu->append(*graphicsItem);
+	demoMenu->append("Graphics", "win.demo::graphics");
 #endif
-
 #ifndef DISABLE_SCHOOLBOOK_DEMO
-	auto schoolbookItem = Gtk::manage(new Gtk::RadioMenuItem(demoGroup, "Schoolbook"));
-	actionDemoSchoolbook_ = schoolbookItem;
-	schoolbookItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnDemoSchoolbook));
-	demoMenu->append(*schoolbookItem);
+	demoMenu->append("Schoolbook", "win.demo::schoolbook");
 #endif
-
 #ifndef DISABLE_BRAILLE_DEMO
-	auto brailleItem = Gtk::manage(new Gtk::RadioMenuItem(demoGroup, "Braille"));
-	actionDemoBraille_ = brailleItem;
-	brailleItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnDemoBraille));
-	demoMenu->append(*brailleItem);
+	demoMenu->append("Braille", "win.demo::braille");
 #endif
+	menuModel->append_submenu("Demo", demoMenu);
 
-	demoMenu->show_all();
+	// Quit action
+	auto quitAction = Gio::SimpleAction::create("quit");
+	quitAction->signal_activate().connect([this](const Glib::VariantBase&) { OnQuit(); });
+	add_action(quitAction);
 
-	// Assemble menubar
-	menubar->append(*fileMenuItem);
-	menubar->append(*viewMenuItem);
-	menubar->append(*demoMenuItem);
-	menubar->show_all();
+	// Fullscreen toggle action
+	fullscreenAction_ = Gio::SimpleAction::create_stateful(
+		"fullscreen", Glib::Variant<bool>::create(false));
+	fullscreenAction_->signal_activate().connect(
+		[this](const Glib::VariantBase&) { OnFullscreen(); });
+	add_action(fullscreenAction_);
 
-	return menubar;
+	// Demo radio action
+	demoAction_ = Gio::SimpleAction::create_radio_string("demo", "none");
+	demoAction_->signal_activate().connect([this](const Glib::VariantBase& v) {
+		demoAction_->set_state(v);
+		auto target = Glib::VariantBase::cast_dynamic<Glib::Variant<Glib::ustring>>(v).get();
+#ifndef DISABLE_VECTOR_DEMO
+		if (target == "vector") ReplaceDemo(&vectorDemo_);
+#endif
+#ifndef DISABLE_ICON_DEMO
+		else if (target == "icon") ReplaceDemo(&iconDemo_);
+#endif
+#ifndef DISABLE_TEXTURE_DEMO
+		else if (target == "texture") ReplaceDemo(&textureDemo_);
+#endif
+#ifndef DISABLE_GRAPHICS_DEMO
+		else if (target == "graphics") ReplaceDemo(&graphicsDemo_);
+#endif
+#ifndef DISABLE_SCHOOLBOOK_DEMO
+		else if (target == "schoolbook") ReplaceDemo(&schoolbookDemo_);
+#endif
+#ifndef DISABLE_BRAILLE_DEMO
+		else if (target == "braille") ReplaceDemo(&brailleDemo_);
+#endif
+	});
+	add_action(demoAction_);
+
+	return Gtk::make_managed<Gtk::PopoverMenuBar>(menuModel);
 }
 
 void MainWindow::OnQuit()
@@ -190,58 +181,52 @@ void MainWindow::OnQuit()
 
 void MainWindow::OnFullscreen()
 {
-	if (actionFullscreen_ && actionFullscreen_->get_active())
-		fullscreen();
-	else
-		unfullscreen();
+	Glib::Variant<bool> state;
+	fullscreenAction_->get_state(state);
+	bool active = !state.get();
+	fullscreenAction_->set_state(Glib::Variant<bool>::create(active));
+	if (active) fullscreen(); else unfullscreen();
 }
 
 #ifndef DISABLE_VECTOR_DEMO
 void MainWindow::OnDemoVector()
 {
-	if (actionDemoVector_->get_active())
-		ReplaceDemo(&vectorDemo_);
+	demoAction_->activate(Glib::Variant<Glib::ustring>::create("vector"));
 }
 #endif
 
 #ifndef DISABLE_ICON_DEMO
 void MainWindow::OnDemoIcon()
 {
-	if (actionDemoIcon_->get_active())
-		ReplaceDemo(&iconDemo_);
-
+	demoAction_->activate(Glib::Variant<Glib::ustring>::create("icon"));
 }
 #endif
 
 #ifndef DISABLE_TEXTURE_DEMO
 void MainWindow::OnDemoTexture()
 {
-	if (actionDemoTexture_->get_active())
-		ReplaceDemo(&textureDemo_);
+	demoAction_->activate(Glib::Variant<Glib::ustring>::create("texture"));
 }
 #endif
 
 #ifndef DISABLE_GRAPHICS_DEMO
 void MainWindow::OnDemoGraphics()
 {
-	if (actionDemoGraphics_->get_active())
-		ReplaceDemo(&graphicsDemo_);
+	demoAction_->activate(Glib::Variant<Glib::ustring>::create("graphics"));
 }
 #endif
 
 #ifndef DISABLE_SCHOOLBOOK_DEMO
 void MainWindow::OnDemoSchoolbook()
 {
-	if (actionDemoSchoolbook_->get_active())
-		ReplaceDemo(&schoolbookDemo_);
+	demoAction_->activate(Glib::Variant<Glib::ustring>::create("schoolbook"));
 }
 #endif
 
 #ifndef DISABLE_BRAILLE_DEMO
 void MainWindow::OnDemoBraille()
 {
-	if (actionDemoBraille_->get_active())
-		ReplaceDemo(&brailleDemo_);
+	demoAction_->activate(Glib::Variant<Glib::ustring>::create("braille"));
 }
 #endif
 
@@ -250,8 +235,7 @@ void MainWindow::ReplaceDemo(Demo *demo)
 {
 	if (demo_) demobox_.remove(*demo_);
 	demo_ = demo;
-	demobox_.add(*demo_);
-	show_all_children();
+	demobox_.append(*demo_);
 	tEngine_->SetGenerator(demo_->Gen());
 	aEngine_->SetGenerator(demo_->Gen());
 }

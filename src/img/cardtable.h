@@ -28,7 +28,7 @@
 #include <gtkmm.h>
 #include "card.h"
 
-class CardTable : public Gtk::EventBox
+class CardTable : public Gtk::Box
 {
 public:
 	CardTable(uint sx, uint sy);

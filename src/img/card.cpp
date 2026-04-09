@@ -65,11 +65,12 @@ Card::~Card()
 
 void Card::Initialize()
 {
-	add(img_);
-	set_events(Gdk::BUTTON_PRESS_MASK);
-	signal_button_press_event().connect(
+	append(img_);
+	clickGesture_ = Gtk::GestureClick::create();
+	clickGesture_->set_button(0); // listen to all buttons
+	clickGesture_->signal_pressed().connect(
 		sigc::mem_fun(*this, &Card::OnClicked));
-	show_all_children();
+	add_controller(clickGesture_);
 }
 
 Card Card::operator= (const Card& p)
@@ -99,16 +100,15 @@ void Card::UpdateImg()
 		img_.Set(faceUpAnim_);
 
 	//img_.ShowCursor(state_  == state_sel);
-	show_all_children();
 }
 
-bool Card::OnClicked(GdkEventButton* b)
+void Card::OnClicked(int n_press, double x, double y)
 {
-	if (b->button == 1)
+	guint button = clickGesture_->get_current_button();
+	if (button == 1)
 		signal_clicked1(this);
-	else if (b->button == 3)
+	else if (button == 3)
 		signal_clicked3(this);
-	return true;
 }
 
 void Card::SetBlind(bool v)
