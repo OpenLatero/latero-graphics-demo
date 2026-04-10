@@ -436,7 +436,7 @@ void BrailleGen::SetMode(braille_mode_t mode)
 
 latero::graphics::gtk::Animation BrailleGen::GetIllustration(uint w, uint h) const
 {
-	Glib::RefPtr<Gdk::Pixbuf> rv = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, w, h);
+	Glib::RefPtr<Gdk::Pixbuf> rv = Gdk::Pixbuf::create(Gdk::Colorspace::RGB, true, 8, w, h);
 
 	// TODO: find a way to draw like that...
 	Cairo::RefPtr<Cairo::ImageSurface> surface = Cairo::ImageSurface::create(
