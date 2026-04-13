@@ -38,11 +38,9 @@ Demo::Demo(const latero::Tactograph *dev, Gtk::Window *window) :
 	preview_.set_vexpand(true);
 
 	// prepare main view...
-	mainBox_.pack_start(genToolbar_, Gtk::PACK_SHRINK);
-	mainBox_.pack_start(preview_);
-	add(mainBox_);
-
-	show_all_children();
+	mainBox_.append(genToolbar_);
+	mainBox_.append(preview_);
+	set_child(mainBox_);
 };
 
 }; // namespace

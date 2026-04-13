@@ -62,7 +62,7 @@ const std::string advanced_img	 	= img_path+"advanced.svg";
 class AdvancedButton : public Gtk::Button
 {
 public:
-	AdvancedButton() { set_image(*manage(new Gtk::Image(advanced_img))); }
+	AdvancedButton() { set_child(*Gtk::make_managed<Gtk::Image>(advanced_img)); }
 };
 
 
@@ -150,22 +150,21 @@ Toolbar::Toolbar(GeneratorPtr peer, Gtk::Window *window) :
 
 void Toolbar::Rebuild()
 {
-	remove();
+	unset_child();
 	
 	auto box = manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL));
 	auto vbox = manage(new Gtk::Box(Gtk::Orientation::VERTICAL));
 	latero::graphics::TextureCombo* txCombo = manage(new latero::graphics::TextureCombo(peer_->GetAreaTexture()));
 
-	add(*box);
-	box->pack_start(*manage(new ShapeCombo(peer_)), Gtk::PACK_SHRINK);
-	box->pack_start(*manage(new SizeCombo(peer_)), Gtk::PACK_SHRINK);
-	box->pack_start(*vbox, Gtk::PACK_SHRINK);
-	vbox->pack_start(*manage(new ContourCombo(peer_)));
-	vbox->pack_start(*manage(new ContourThicknessCombo(peer_)));
-	box->pack_start(*txCombo, Gtk::PACK_SHRINK);
+	set_child(*box);
+	box->append(*manage(new ShapeCombo(peer_)));
+	box->append(*manage(new SizeCombo(peer_)));
+	box->append(*vbox);
+	vbox->append(*manage(new ContourCombo(peer_)));
+	vbox->append(*manage(new ContourThicknessCombo(peer_)));
+	box->append(*txCombo);
 	AdvancedButton *advancedButton = manage(new AdvancedButton);
-	box->pack_start(*advancedButton, Gtk::PACK_SHRINK);
-	show_all_children();
+	box->append(*advancedButton);
 
 	advancedButton->signal_clicked().connect(sigc::mem_fun(*this, &Toolbar::OnAdvanced));
 	txCombo->SignalTextureChanged().connect(sigc::mem_fun(*this, &Toolbar::OnTextureChanged));
@@ -173,11 +172,16 @@ void Toolbar::Rebuild()
 
 void Toolbar::OnAdvanced()
 {
-	Gtk::Dialog genWidget("Icon Properties", *window_, true);
-	genWidget.get_content_area()->add(*manage(peer_->CreateWidget(peer_)));
-	genWidget.show_all_children();
-	genWidget.run();
-	Rebuild(); // reconstruct with new settings
+	Gtk::Dialog genWidget;
+	genWidget.set_title("Icon Properties");
+	genWidget.set_transient_for(*window_);
+	genWidget.set_modal(true);
+	genWidget.get_content_area()->append(*manage(peer_->CreateWidget(peer_)));
+	genWidget.signal_response().connect([this, &genWidget](int) {
+		genWidget.close();
+		Rebuild();
+	});
+	genWidget.present();
 }
 
 void Toolbar::OnTextureChanged(latero::graphics::TexturePtr tx)
