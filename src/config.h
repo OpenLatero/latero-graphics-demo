@@ -8,7 +8,7 @@
 //#define DISABLE_ICON_DEMO
 //#define DISABLE_VECTOR_DEMO
 //#define DISABLE_TEXTURE_DEMO
-#define DISABLE_BRAILLE_DEMO
+//#define DISABLE_BRAILLE_DEMO
 
 // for windows...
 //#ifndef M_PI

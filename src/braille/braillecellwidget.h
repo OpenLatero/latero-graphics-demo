@@ -36,7 +36,7 @@ public:
 	BrailleCellWidget(BrailleCell *peer);
 	virtual ~BrailleCellWidget() {};
 	void Refresh();
-	sigc::signal<void> signal_value_changed;
+	sigc::signal<void()> signal_value_changed;
 	void SetPattern(unsigned char pattern);
 protected:
 

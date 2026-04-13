@@ -38,11 +38,11 @@ DotSideWidget::DotSideWidget() :
 	txAmpAdj_->set_value(0.0);
 	txNbCyclesAdj_->set_value(0.0);
 
-	pack_start(shapeCombo_);
-	pack_start(*manage(new latero::graphics::gtk::HNumWidget("radius", radiusAdj_, 2)));
-	pack_start(*manage(new latero::graphics::gtk::HNumWidget("plateau (% of radius)", plateauAdj_, 2)));
-	pack_start(*manage(new latero::graphics::gtk::HNumWidget("texture amplitude", txAmpAdj_, 2)));
-	pack_start(*manage(new latero::graphics::gtk::HNumWidget("texture nb cycles", txNbCyclesAdj_, 0)));
+	append(shapeCombo_);
+	append(*manage(new latero::graphics::gtk::HNumWidget("radius", radiusAdj_, 2)));
+	append(*manage(new latero::graphics::gtk::HNumWidget("plateau (% of radius)", plateauAdj_, 2)));
+	append(*manage(new latero::graphics::gtk::HNumWidget("texture amplitude", txAmpAdj_, 2)));
+	append(*manage(new latero::graphics::gtk::HNumWidget("texture nb cycles", txNbCyclesAdj_, 0)));
 
 	shapeCombo_.signal_changed().connect(
 		sigc::mem_fun(*this, &DotSideWidget::OnChange));
@@ -111,10 +111,10 @@ DotWidget::DotWidget(Dot *peer) :
 	sideLockCheck_.set_active(peer_->GetLockedSides());
 	right_.Disable(peer_->GetLockedSides());
 
-	pack_start(left_);
-	pack_start(sideLockCheck_, Gtk::PACK_SHRINK);
-	pack_start(right_);
-	pack_start(*graph_);
+	append(left_);
+	append(sideLockCheck_);
+	append(right_);
+	append(*graph_);
 	graph_->Refresh();
 
 	left_.signal_value_changed.connect(

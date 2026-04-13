@@ -25,10 +25,7 @@
 #ifndef MODULATOR_WIDGET_H
 #define MODULATOR_WIDGET_H
 
-#include <gtkmm/grid.h>
-#include <gtkmm/box.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/radiobutton.h>
+#include <gtkmm.h>
 #include "modulator.h"
 
 class ModulatorWidget : public Gtk::Grid
@@ -47,7 +44,7 @@ protected:
     Glib::RefPtr<Gtk::Adjustment> rampMinAdj_, rampMaxAdj_;
     Glib::RefPtr<Gtk::Adjustment> rampMinAmpAdj_, rampMaxAmpAdj_;
     Glib::RefPtr<Gtk::Adjustment> maxRiseRateAdj_, maxFallRateAdj_;
-  	Gtk::RadioButton fixedMode_, velMode_;
+  	Gtk::CheckButton fixedMode_, velMode_;
 
 	Gtk::Box fixedBox_;
 	Gtk::Box velBox_;

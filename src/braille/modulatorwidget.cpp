@@ -48,8 +48,7 @@ ModulatorWidget::ModulatorWidget(Modulator *peer) :
 	maxRiseRateAdj_->set_value(0.5);
 	maxFallRateAdj_->set_value(0.5);
 
-	Gtk::RadioButton::Group group = fixedMode_.get_group();
-	velMode_.set_group(group);
+	velMode_.set_group(fixedMode_);
 	fixedMode_.set_active(true);
 	ampAdj_->set_value(peer_->GetFixedAmp());
 	double min,max;
@@ -74,30 +73,30 @@ ModulatorWidget::ModulatorWidget(Modulator *peer) :
 	attach(fixedMode_, 0, 0, 1, 1);
 	//attach(*fixedFrame, 1, 2, 0, 1);
 	attach(*fixedFrame, 1, 0, 1, 1);
-		fixedFrame->add(fixedBox_);
-		fixedBox_.pack_start(*manage(new Gtk::Label(" Amplitude (0-1) ")), Gtk::PACK_SHRINK);
-		fixedBox_.pack_start(*manage(new Gtk::SpinButton(ampAdj_,0, 3)), Gtk::PACK_SHRINK);
+		fixedFrame->set_child(fixedBox_);
+		fixedBox_.append(*manage(new Gtk::Label(" Amplitude (0-1) ")));
+		fixedBox_.append(*manage(new Gtk::SpinButton(ampAdj_,0, 3)));
 	//attach(velMode_, 0, 1, 1, 2, Gtk::SHRINK);
 	attach(velMode_, 0, 1, 1, 1);
 	//attach(*velFrame, 1, 2, 1, 2);
 	attach(*velFrame, 1, 1, 1, 1);
-		velFrame->add(velBox_);
-		velBox_.pack_start(*velAmpBox);
-			velAmpBox->pack_start(*manage(new Gtk::Label("Amplitude range (0-1): ")), Gtk::PACK_SHRINK);
-			velAmpBox->pack_start(*manage(new Gtk::SpinButton(rampMinAmpAdj_,0, 2)), Gtk::PACK_SHRINK);
-			velAmpBox->pack_start(*manage(new Gtk::Label("  to  ")), Gtk::PACK_SHRINK);
-			velAmpBox->pack_start(*manage(new Gtk::SpinButton(rampMaxAmpAdj_,0, 2)), Gtk::PACK_SHRINK);
-		velBox_.pack_start(*velRangeBox);
-			velRangeBox->pack_start(*manage(new Gtk::Label("Ramp range (mm/s): ")), Gtk::PACK_SHRINK);
-			velRangeBox->pack_start(*manage(new Gtk::SpinButton(rampMinAdj_,0, 2)), Gtk::PACK_SHRINK);
-			velRangeBox->pack_start(*manage(new Gtk::Label("  to  ")), Gtk::PACK_SHRINK);
-			velRangeBox->pack_start(*manage(new Gtk::SpinButton(rampMaxAdj_,0, 2)), Gtk::PACK_SHRINK);
-		velBox_.pack_start(*velRateBox);
-			velRateBox->pack_start(*manage(new Gtk::Label(" Maximum transition rate (sec/full): ")), Gtk::PACK_SHRINK);
-			velRateBox->pack_start(*manage(new Gtk::Label("rise ")), Gtk::PACK_SHRINK);
-			velRateBox->pack_start(*manage(new Gtk::SpinButton(maxRiseRateAdj_,0, 2)), Gtk::PACK_SHRINK);
-			velRateBox->pack_start(*manage(new Gtk::Label("  fall ")), Gtk::PACK_SHRINK);
-			velRateBox->pack_start(*manage(new Gtk::SpinButton(maxFallRateAdj_,0, 2)), Gtk::PACK_SHRINK);
+		velFrame->set_child(velBox_);
+		velBox_.append(*velAmpBox);
+			velAmpBox->append(*manage(new Gtk::Label("Amplitude range (0-1): ")));
+			velAmpBox->append(*manage(new Gtk::SpinButton(rampMinAmpAdj_,0, 2)));
+			velAmpBox->append(*manage(new Gtk::Label("  to  ")));
+			velAmpBox->append(*manage(new Gtk::SpinButton(rampMaxAmpAdj_,0, 2)));
+		velBox_.append(*velRangeBox);
+			velRangeBox->append(*manage(new Gtk::Label("Ramp range (mm/s): ")));
+			velRangeBox->append(*manage(new Gtk::SpinButton(rampMinAdj_,0, 2)));
+			velRangeBox->append(*manage(new Gtk::Label("  to  ")));
+			velRangeBox->append(*manage(new Gtk::SpinButton(rampMaxAdj_,0, 2)));
+		velBox_.append(*velRateBox);
+			velRateBox->append(*manage(new Gtk::Label(" Maximum transition rate (sec/full): ")));
+			velRateBox->append(*manage(new Gtk::Label("rise ")));
+			velRateBox->append(*manage(new Gtk::SpinButton(maxRiseRateAdj_,0, 2)));
+			velRateBox->append(*manage(new Gtk::Label("  fall ")));
+			velRateBox->append(*manage(new Gtk::SpinButton(maxFallRateAdj_,0, 2)));
 
 	ampAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &ModulatorWidget::OnChange));
@@ -105,9 +104,9 @@ ModulatorWidget::ModulatorWidget(Modulator *peer) :
 		sigc::mem_fun(*this, &ModulatorWidget::OnChange));
 	maxFallRateAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &ModulatorWidget::OnChange));
-  	fixedMode_.signal_clicked().connect(
+  	fixedMode_.signal_toggled().connect(
 		sigc::mem_fun(*this, &ModulatorWidget::OnChange));
-  	velMode_.signal_clicked().connect(
+  	velMode_.signal_toggled().connect(
 		sigc::mem_fun(*this, &ModulatorWidget::OnChange));
 	rampMinAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &ModulatorWidget::OnChange));

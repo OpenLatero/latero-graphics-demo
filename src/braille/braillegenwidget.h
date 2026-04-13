@@ -63,7 +63,7 @@ protected:
     Glib::RefPtr<Gtk::Adjustment> vibFreqAdj_;
 	ModulatorWidget vibModWidget_;
 
-	Gtk::RadioButton mode_[BRAILLE_MODE_SIZE];
+	Gtk::CheckButton mode_[BRAILLE_MODE_SIZE];
 	Gtk::CheckButton invertCheck_;
 };
 

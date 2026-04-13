@@ -40,7 +40,7 @@ public:
 	void AddShapes(const std::vector<std::string> &shapes);
 	void Disable(bool v);
 	void OnChange();
-	sigc::signal<void> signal_value_changed;
+	sigc::signal<void()> signal_value_changed;
 
 protected:
     Glib::RefPtr<Gtk::Adjustment> radiusAdj_;
@@ -58,7 +58,7 @@ public:
 	void OnChange();
 	bool LockedSides();
 
-	sigc::signal<void> signal_value_changed;
+	sigc::signal<void()> signal_value_changed;
 
 protected:
 

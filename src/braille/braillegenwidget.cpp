@@ -25,7 +25,7 @@
 #include "braillegenwidget.h"
 #include "braillegen.h"
 #include "braillecellwidget.h"
-#include <gtkmm/notebook.h>
+#include <gtkmm.h>
 #include "dot.h"
 #include <laterographics/gtk/numwidget.h>
 #include "virtualsurfacewidget.h"
@@ -61,14 +61,14 @@ BrailleGenWidget::BrailleGenWidget(BrailleGenPtr peer) :
 	vibFreqAdj_->set_value(peer_->GetVibFreq());
 
 	auto notebook = manage(new Gtk::Notebook);
-	strWidget_.set_halign(Gtk::ALIGN_CENTER);
-	strWidget_.set_valign(Gtk::ALIGN_CENTER);
+	strWidget_.set_halign(Gtk::Align::CENTER);
+	strWidget_.set_valign(Gtk::Align::CENTER);
 
 	auto vizWidget = CreateVizWidget();
-	pack_start(*vizWidget, true, true);
+	append(*vizWidget);
 
-	pack_start(strWidget_, Gtk::PACK_SHRINK);
-	pack_start(*notebook, false, false);
+	append(strWidget_);
+	append(*notebook);
 		notebook->append_page(*CreateParamsWidget(), "General Settings");
 		notebook->append_page(dot_, "Deflection Profile");
 		notebook->append_page(*CreateVibWidget(), "Vibration Settings");
@@ -88,11 +88,11 @@ Gtk::Widget *BrailleGenWidget::CreateVibWidget()
 	auto frame = manage(new Gtk::Frame("Vibration Parameters"));
 	auto box = manage(new Gtk::Box(Gtk::Orientation::VERTICAL));
 
-	frame->add(*box);
+	frame->set_child(*box);
 	frame->set_vexpand(false);
 	box->set_vexpand(false);
-	box->pack_start(*manage(new latero::graphics::gtk::HNumWidget("frequency", vibFreqAdj_,0)), Gtk::PACK_SHRINK);
-	box->pack_start(vibModWidget_, false, false);
+	box->append(*manage(new latero::graphics::gtk::HNumWidget("frequency", vibFreqAdj_,0)));
+	box->append(vibModWidget_);
 	vibModWidget_.set_vexpand(false);
 	vibFreqAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &BrailleGenWidget::OnChange));
@@ -112,24 +112,24 @@ Gtk::Widget *BrailleGenWidget::CreateParamsWidget()
 	auto halfScaledButton = manage(new Gtk::Button("scaled braille (half height)"));
 	auto vbdButton = manage(new Gtk::Button("vbd braille"));
 
-	box->pack_start(*CreateModeWidget(), Gtk::PACK_SHRINK);
-	box->pack_start(*paramBox);
-	box->pack_start(*presetFrame, Gtk::PACK_SHRINK);
+	box->append(*CreateModeWidget());
+	box->append(*paramBox);
+	box->append(*presetFrame);
 
-	paramBox->pack_start(
+	paramBox->append(
 		*manage(new latero::graphics::gtk::HNumWidget("dot width (% of space)", dotWidthAdj_,3)));
-	paramBox->pack_start(
+	paramBox->append(
 		*manage(new latero::graphics::gtk::HNumWidget("dot-to-dot spacing (in cell, % of standard)", intraDotDistAdj_,3)));
-	paramBox->pack_start(
+	paramBox->append(
 		*manage(new latero::graphics::gtk::HNumWidget("dot-to-dot spacing (between cells, % of standard)", interDotDistAdj_,3)));
-	paramBox->pack_start(
+	paramBox->append(
 		*manage(new latero::graphics::gtk::HNumWidget("offset", offsetAdj_,3)));
 
-	presetFrame->add(*presetBox);
-		presetBox->pack_start(*stdButton, Gtk::PACK_SHRINK);
-		presetBox->pack_start(*scaledButton, Gtk::PACK_SHRINK);
-		presetBox->pack_start(*halfScaledButton, Gtk::PACK_SHRINK);
-		presetBox->pack_start(*vbdButton, Gtk::PACK_SHRINK);
+	presetFrame->set_child(*presetBox);
+		presetBox->append(*stdButton);
+		presetBox->append(*scaledButton);
+		presetBox->append(*halfScaledButton);
+		presetBox->append(*vbdButton);
 
 	dotWidthAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &BrailleGenWidget::OnChange));
@@ -155,28 +155,27 @@ Gtk::Widget *BrailleGenWidget::CreateParamsWidget()
 
 Gtk::Widget *BrailleGenWidget::CreateModeWidget()
 {
-	Gtk::RadioButton::Group group = mode_[0].get_group();
 	for (int i=1; i<BRAILLE_MODE_SIZE; ++i)
-		mode_[i].set_group(group);
+		mode_[i].set_group(mode_[0]);
 	mode_[(int)peer_->GetMode()].set_active(true);
 	invertCheck_.set_active(peer_->GetInvert());
 
 	auto modeFrame = manage(new Gtk::Frame("mode"));
 	auto modeBox = manage(new Gtk::Box(Gtk::Orientation::VERTICAL));
 
-	modeFrame->add(*modeBox);
+	modeFrame->set_child(*modeBox);
 	//modeBox->pack_start(*manage(new Gtk::Label("single")));
-	modeBox->pack_start(mode_[BRAILLE_MODE_SINGLE_COMPACT]);
-	modeBox->pack_start(mode_[BRAILLE_MODE_SINGLE_DIAG]);
-	modeBox->pack_start(mode_[BRAILLE_MODE_SINGLE_SPARSE]);
+	modeBox->append(mode_[BRAILLE_MODE_SINGLE_COMPACT]);
+	modeBox->append(mode_[BRAILLE_MODE_SINGLE_DIAG]);
+	modeBox->append(mode_[BRAILLE_MODE_SINGLE_SPARSE]);
 	//modeBox->pack_start(*manage(new Gtk::Label("double")));
-	modeBox->pack_start(mode_[BRAILLE_MODE_DOUBLE]);
-	modeBox->pack_start(mode_[BRAILLE_MODE_DOUBLE_DOT_SHEAR]);
-	modeBox->pack_start(mode_[BRAILLE_MODE_DOUBLE_ROW_SHEAR]);
-	modeBox->pack_start(invertCheck_);
+	modeBox->append(mode_[BRAILLE_MODE_DOUBLE]);
+	modeBox->append(mode_[BRAILLE_MODE_DOUBLE_DOT_SHEAR]);
+	modeBox->append(mode_[BRAILLE_MODE_DOUBLE_ROW_SHEAR]);
+	modeBox->append(invertCheck_);
 
 	for (int i=0; i<BRAILLE_MODE_SIZE; ++i)
-  		mode_[i].signal_clicked().connect(
+  		mode_[i].signal_toggled().connect(
 			sigc::mem_fun(*this, &BrailleGenWidget::OnChange));
 	invertCheck_.signal_toggled().connect(
 		sigc::mem_fun(*this, &BrailleGenWidget::OnChange));
@@ -242,16 +241,16 @@ void BrailleGenWidget::OnVBDButton()
 Gtk::Widget *BrailleGenWidget::CreateVizWidget()
 {
 	auto box = manage(new Gtk::Box(Gtk::Orientation::VERTICAL));
-	box->set_halign(Gtk::ALIGN_FILL);
-	box->set_valign(Gtk::ALIGN_FILL);
+	box->set_halign(Gtk::Align::FILL);
+	box->set_valign(Gtk::Align::FILL);
 
-	VirtualSurfaceWidget *surf = manage(new VirtualSurfaceWidget(peer_));
+	VirtualSurfaceWidget *surf = Gtk::manage(new VirtualSurfaceWidget(peer_));
 	surf->set_size_request(1000,1.2*1000*peer_->Dev()->GetHeight()/peer_->Dev()->GetSurfaceWidth());
 	surf->set_margin_top(10);
 
 	PositionGraph *graph = manage(new PositionGraph(peer_));;
-	box->pack_start(*graph, true, true);
-	box->pack_start(*surf, false, false);
+	box->append(*graph);
+	box->append(*surf);
 
 	return box;
 }

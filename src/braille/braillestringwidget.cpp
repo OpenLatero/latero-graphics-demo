@@ -28,7 +28,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <gtkmm/radiobutton.h>
+
 #include <gtkmm/cssprovider.h>
 
 BrailleStringWidget::BrailleStringWidget(BrailleString *peer):
@@ -41,30 +41,29 @@ BrailleStringWidget::BrailleStringWidget(BrailleString *peer):
 {
     srand(static_cast<unsigned int>(time(NULL)));
 
-	Gtk::RadioButton::Group group = cellMode_.get_group();
-	textMode_.set_group(group);
+	textMode_.set_group(cellMode_);
 	cellMode_.set_active(true);
 
-	auto box = manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL));
+	auto box = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
 
-	add(*box);
-	box->pack_start(cellMode_, Gtk::PACK_SHRINK);
-	box->pack_start(cellBox_, Gtk::PACK_SHRINK);
+	set_child(*box);
+	box->append(cellMode_);
+	box->append(cellBox_);
 	for (uint i=0; i<peer_->GetSize(); ++i)
 	{
-		BrailleCellWidget *cellWidget = manage(new BrailleCellWidget(peer_->GetCell(i)));
+		BrailleCellWidget *cellWidget = Gtk::make_managed<BrailleCellWidget>(peer_->GetCell(i));
 		cell_.push_back(cellWidget);
-		cellBox_.pack_start(*cellWidget, Gtk::PACK_SHRINK);
+		cellBox_.append(*cellWidget);
 	}
-	box->pack_start(textMode_, Gtk::PACK_SHRINK);
-	box->pack_start(textBox_, Gtk::PACK_SHRINK);
-	textBox_.pack_start(entry_, Gtk::PACK_SHRINK);
-	textBox_.pack_start(randomButton_, Gtk::PACK_SHRINK);
-	textBox_.pack_start(wordButton_, Gtk::PACK_SHRINK);
+	box->append(textMode_);
+	box->append(textBox_);
+	textBox_.append(entry_);
+	textBox_.append(randomButton_);
+	textBox_.append(wordButton_);
 
-  	textMode_.signal_clicked().connect(
+	textMode_.signal_toggled().connect(
 		sigc::mem_fun(*this, &BrailleStringWidget::OnModeChange));
-  	cellMode_.signal_clicked().connect(
+	cellMode_.signal_toggled().connect(
 		sigc::mem_fun(*this, &BrailleStringWidget::OnModeChange));
 	randomButton_.signal_clicked().connect(
 		sigc::mem_fun(*this, &BrailleStringWidget::OnRandomClicked));

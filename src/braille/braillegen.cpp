@@ -24,6 +24,7 @@
 
 #include "braillegen.h"
 #include "braillegenwidget.h"
+#include <cairomm/cairomm.h>
 
 #define NB_BRAILLE_CELLS 5
 
@@ -441,7 +442,7 @@ latero::graphics::gtk::Animation BrailleGen::GetIllustration(uint w, uint h) con
 	// TODO: find a way to draw like that...
 	Cairo::RefPtr<Cairo::ImageSurface> surface = Cairo::ImageSurface::create(
 		(unsigned char*)rv->get_pixels(),
-		Cairo::FORMAT_ARGB32,
+		Cairo::Surface::Format::ARGB32,
 		rv->get_width(),
 		rv->get_height(),
 		rv->get_rowstride()

@@ -26,9 +26,7 @@
 #ifndef BRAILLE_STRING_WIDGET_H
 #define BRAILLE_STRING_WIDGET_H
 
-#include <gtkmm/frame.h>
-#include <gtkmm/entry.h>
-#include <gtkmm/radiobutton.h>
+#include <gtkmm.h>
 #include "braillestring.h"
 #include "braillecellwidget.h"
 
@@ -38,7 +36,7 @@ public:
 	BrailleStringWidget(BrailleString *peer);
 	virtual ~BrailleStringWidget();
 
-	sigc::signal<void> signal_value_changed;
+	sigc::signal<void()> signal_value_changed;
 protected:
 	void CreateWords();
 	void OnModeChange();
@@ -48,8 +46,8 @@ protected:
 	void OnWordClicked();
 	void OnInsertText(const Glib::ustring& str, int* pos);
 
-	Gtk::RadioButton cellMode_;
-	Gtk::RadioButton textMode_;
+	Gtk::CheckButton cellMode_;
+	Gtk::CheckButton textMode_;
 	Gtk::Box cellBox_;
 	Gtk::Box textBox_;
 
