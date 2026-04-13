@@ -24,6 +24,7 @@
 
 #include "cardset.h"
 #include <iostream>
+#include <random>
 #include "settings.h"
 
 CardSet::CardSet()
@@ -112,7 +113,8 @@ bool CardSet::Load(std::string file, const latero::Tactograph *dev, uint scale)
 
 void CardSet::Shuffle()
 {
-	std::random_shuffle(begin(), end());
+	std::mt19937 rng(std::random_device{}());
+	std::shuffle(begin(), end(), rng);
 }
 
 #endif

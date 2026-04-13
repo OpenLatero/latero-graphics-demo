@@ -51,6 +51,8 @@ Demo::Demo(const latero::Tactograph *dev) :
 		if (i > 0) button->set_group(*setActions_[0]);
 		setActions_.push_back(button);
 	}
+	if (!setActions_.empty())
+		setActions_[0]->set_active(true);
 
 	auto box = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL);
 	auto hbox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
