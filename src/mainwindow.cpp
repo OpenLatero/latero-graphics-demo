@@ -52,9 +52,11 @@ MainWindow::MainWindow(latero::graphics::TactileEngine *tEngine, latero::graphic
 	maximize();
 
 	set_child(mainbox_);
-	mainbox_.append(*CreateMenu());
+	//mainbox_.append(*CreateMenu());
 	demobox_.set_vexpand(true);
 	mainbox_.append(demobox_);
+
+	signal_realize().connect(sigc::mem_fun(*this, &MainWindow::CreateMenu));
 
 	std::cout << "Starting tactile & audio engines...\n";
 	tEngine_->Start();
@@ -97,7 +99,7 @@ MainWindow::~MainWindow()
 
 
 
-Gtk::Widget *MainWindow::CreateMenu()
+void MainWindow::CreateMenu()
 {
 	auto menuModel = Gio::Menu::create();
 
@@ -133,50 +135,30 @@ Gtk::Widget *MainWindow::CreateMenu()
 #endif
 	menuModel->append_submenu("Demo", demoMenu);
 
-	auto actionGroup = Gio::SimpleActionGroup::create();
-
-	auto quitAction = Gio::SimpleAction::create("quit");
-	quitAction->signal_activate().connect([this](const Glib::VariantBase&) { OnQuit(); });
-	actionGroup->add_action(quitAction);
-
-	auto fullscreenAction = Gio::SimpleAction::create("fullscreen");
-	fullscreenAction->signal_activate().connect([this](const Glib::VariantBase&) { OnFullscreen(); });
-	actionGroup->add_action(fullscreenAction);
+	add_action("quit", sigc::mem_fun(*this, &MainWindow::OnQuit));
+	add_action("fullscreen", sigc::mem_fun(*this, &MainWindow::OnFullscreen));
 
 #ifndef DISABLE_VECTOR_DEMO
-	auto vectorAction = Gio::SimpleAction::create("demo-vector");
-	vectorAction->signal_activate().connect([this](const Glib::VariantBase&) { ReplaceDemo(&vectorDemo_); });
-	actionGroup->add_action(vectorAction);
+	add_action("demo-vector", [this]{ ReplaceDemo(&vectorDemo_); });
 #endif
 #ifndef DISABLE_ICON_DEMO
-	auto iconAction = Gio::SimpleAction::create("demo-icon");
-	iconAction->signal_activate().connect([this](const Glib::VariantBase&) { ReplaceDemo(&iconDemo_); });
-	actionGroup->add_action(iconAction);
+	add_action("demo-icon", [this]{ ReplaceDemo(&iconDemo_); });
 #endif
 #ifndef DISABLE_TEXTURE_DEMO
-	auto textureAction = Gio::SimpleAction::create("demo-texture");
-	textureAction->signal_activate().connect([this](const Glib::VariantBase&) { ReplaceDemo(&textureDemo_); });
-	actionGroup->add_action(textureAction);
+	add_action("demo-texture", [this]{ ReplaceDemo(&textureDemo_); });
 #endif
 #ifndef DISABLE_GRAPHICS_DEMO
-	auto graphicsAction = Gio::SimpleAction::create("demo-graphics");
-	graphicsAction->signal_activate().connect([this](const Glib::VariantBase&) { ReplaceDemo(&graphicsDemo_); });
-	actionGroup->add_action(graphicsAction);
+	add_action("demo-graphics", [this]{ ReplaceDemo(&graphicsDemo_); });
 #endif
 #ifndef DISABLE_SCHOOLBOOK_DEMO
-	auto schoolbookAction = Gio::SimpleAction::create("demo-schoolbook");
-	schoolbookAction->signal_activate().connect([this](const Glib::VariantBase&) { ReplaceDemo(&schoolbookDemo_); });
-	actionGroup->add_action(schoolbookAction);
+	add_action("demo-schoolbook", [this]{ ReplaceDemo(&schoolbookDemo_); });
 #endif
 #ifndef DISABLE_BRAILLE_DEMO
-	auto brailleAction = Gio::SimpleAction::create("demo-braille");
-	brailleAction->signal_activate().connect([this](const Glib::VariantBase&) { ReplaceDemo(&brailleDemo_); });
-	actionGroup->add_action(brailleAction);
+	add_action("demo-braille", [this]{ ReplaceDemo(&brailleDemo_); });
 #endif
 
-	insert_action_group("win", actionGroup);
-
-	return Gtk::make_managed<Gtk::PopoverMenuBar>(menuModel);
+	get_application()->set_menubar(menuModel);
+	set_show_menubar(true);
 }
 
 void MainWindow::OnQuit()

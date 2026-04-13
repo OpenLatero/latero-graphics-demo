@@ -34,7 +34,7 @@
 #include "braille/demo.h"
 #include "vector/demo.h"
 
-class MainWindow : public Gtk::Window
+class MainWindow : public Gtk::ApplicationWindow
 {
 public:
 	MainWindow(latero::graphics::TactileEngine *tEngine, latero::graphics::AudioEngine *aEngine, bool disableAudio);
@@ -75,7 +75,7 @@ protected:
 #endif
 
 	void ReplaceDemo(Demo *demo);
-	Gtk::Widget *CreateMenu();
+	void CreateMenu();
 
 	bool isFullscreen_ = false;
 
