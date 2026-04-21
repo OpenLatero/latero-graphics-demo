@@ -73,6 +73,7 @@ Demo::Demo(const latero::Tactograph *dev) :
 	preview_.AnimateCursor(true);
 	preview_.SetGenerator(peer_);
 	preview_.set_vexpand(true);
+	preview_.set_size_request(100,100); // make sure it doesn't get too small
 
 	auto vbox = manage(new Gtk::Box(Gtk::Orientation::VERTICAL));
 
