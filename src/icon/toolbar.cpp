@@ -27,6 +27,7 @@
 #include <gtkmm.h>
 #include <laterographics/gtk/imagecombo.h>
 #include "../config.h"
+#include <iostream>
 
 namespace IconDemo {
 
@@ -172,16 +173,17 @@ void Toolbar::Rebuild()
 
 void Toolbar::OnAdvanced()
 {
-	Gtk::Dialog genWidget;
-	genWidget.set_title("Icon Properties");
-	genWidget.set_transient_for(*window_);
-	genWidget.set_modal(true);
-	genWidget.get_content_area()->append(*manage(peer_->CreateWidget(peer_)));
-	genWidget.signal_response().connect([this, &genWidget](int) {
-		genWidget.close();
+	auto *dlg = new Gtk::Dialog;
+	dlg->set_title("Icon Properties");
+	dlg->set_transient_for(*window_);
+	dlg->set_modal(true);
+	dlg->get_content_area()->append(*manage(peer_->CreateWidget(peer_)));
+	dlg->signal_response().connect([this, dlg](int) {
+		dlg->close();
+		delete dlg;
 		Rebuild();
 	});
-	genWidget.present();
+	dlg->present();
 }
 
 void Toolbar::OnTextureChanged(latero::graphics::TexturePtr tx)
