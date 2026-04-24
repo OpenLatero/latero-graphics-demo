@@ -63,7 +63,12 @@ const std::string advanced_img	 	= img_path+"advanced.svg";
 class AdvancedButton : public Gtk::Button
 {
 public:
-	AdvancedButton() { set_child(*Gtk::make_managed<Gtk::Image>(advanced_img)); }
+	AdvancedButton()
+	{
+		auto *img = Gtk::make_managed<Gtk::Image>(advanced_img);
+		img->set_pixel_size(48);
+		set_child(*img);
+	}
 };
 
 
