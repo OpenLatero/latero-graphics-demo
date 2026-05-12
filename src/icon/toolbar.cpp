@@ -178,17 +178,16 @@ void Toolbar::Rebuild()
 
 void Toolbar::OnAdvanced()
 {
-	auto *dlg = new Gtk::Dialog;
-	dlg->set_title("Icon Properties");
-	dlg->set_transient_for(*window_);
-	dlg->set_modal(true);
-	dlg->get_content_area()->append(*manage(peer_->CreateWidget(peer_)));
-	dlg->signal_response().connect([this, dlg](int) {
-		dlg->close();
-		delete dlg;
+	auto *win = new Gtk::Window;
+	win->set_title("Icon Properties");
+	win->set_transient_for(*window_);
+	win->set_modal(true);
+	win->set_child(*manage(peer_->CreateWidget(peer_)));
+	win->signal_hide().connect([this, win]() {
+		delete win;
 		Rebuild();
 	});
-	dlg->present();
+	win->present();
 }
 
 void Toolbar::OnTextureChanged(latero::graphics::TexturePtr tx)
