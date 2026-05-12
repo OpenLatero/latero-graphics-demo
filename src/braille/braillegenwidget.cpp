@@ -244,7 +244,7 @@ Gtk::Widget *BrailleGenWidget::CreateVizWidget()
 	box->set_halign(Gtk::Align::FILL);
 	box->set_valign(Gtk::Align::FILL);
 
-	VirtualSurfaceWidget *surf = Gtk::manage(new VirtualSurfaceWidget(peer_));
+	VirtualSurfaceWidget *surf = Gtk::make_managed<VirtualSurfaceWidget>(peer_);
 	surf->set_size_request(1000,1.2*1000*peer_->Dev()->GetHeight()/peer_->Dev()->GetSurfaceWidth());
 	surf->set_margin_top(10);
 
