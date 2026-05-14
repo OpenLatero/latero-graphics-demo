@@ -22,7 +22,7 @@
 #include "../config.h"
 #ifndef DISABLE_ICON_DEMO
 
-#include <laterographics/graphics/texture/texturecombo.h>
+#include <laterographics/graphics/texture/texturedropdown.h>
 #include "toolbar.h"
 #include <gtkmm.h>
 #include <laterographics/gtk/imagecombo.h>
@@ -160,7 +160,7 @@ void Toolbar::Rebuild()
 	
 	auto box = manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL));
 	auto vbox = manage(new Gtk::Box(Gtk::Orientation::VERTICAL));
-	latero::graphics::TextureCombo* txCombo = manage(new latero::graphics::TextureCombo(peer_->GetAreaTexture()));
+	latero::graphics::TextureDropDown* txCombo = manage(new latero::graphics::TextureDropDown(peer_->GetAreaTexture()));
 
 	set_child(*box);
 	box->append(*manage(new ShapeCombo(peer_)));
