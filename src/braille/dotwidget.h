@@ -25,9 +25,7 @@
 #ifndef DOT_WIDGET_H
 #define DOT_WIDGET_H
 
-#include <gtkmm/checkbutton.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/comboboxtext.h>
+#include <gtkmm.h>
 #include "dot.h"
 #include "dotgraph.h"
 
@@ -47,7 +45,8 @@ protected:
     Glib::RefPtr<Gtk::Adjustment> plateauAdj_;
     Glib::RefPtr<Gtk::Adjustment> txAmpAdj_;
     Glib::RefPtr<Gtk::Adjustment> txNbCyclesAdj_;
-	Gtk::ComboBoxText shapeCombo_;
+    Glib::RefPtr<Gtk::StringList> shapeList_;
+	Gtk::DropDown shapeDropDown_;
 };
 
 

@@ -25,7 +25,7 @@
 #include <laterographics/graphics/texture/texturedropdown.h>
 #include "toolbar.h"
 #include <gtkmm.h>
-#include <laterographics/gtk/imagecombo.h>
+#include <laterographics/gtk/imagedropdown.h>
 #include "../config.h"
 #include <iostream>
 
@@ -72,65 +72,65 @@ public:
 };
 
 
-class SizeCombo : public latero::graphics::gtk::ImageCombo
+class SizeDropDown : public latero::graphics::gtk::ImageDropDown
 {
 public:
-	SizeCombo(GeneratorPtr peer) : peer_(peer)
+	SizeDropDown(GeneratorPtr peer) : peer_(peer)
 	{
 		Append(Generator::SIZE_S, size_img_s);
 		Append(Generator::SIZE_M, size_img_m);
 		Append(Generator::SIZE_L, size_img_l);
 		SetActive(peer_->GetSize());
-		SignalChanged().connect(sigc::mem_fun(*this, &SizeCombo::OnChange) );
+		SignalChanged().connect(sigc::mem_fun(*this, &SizeDropDown::OnChange) );
 	}
-	virtual ~SizeCombo() {};
+	virtual ~SizeDropDown() {};
 protected:
 	void OnChange(int id)  { peer_->SetSize(id); }
 	GeneratorPtr peer_;
 };
 
 
-class ContourThicknessCombo : public latero::graphics::gtk::ImageCombo
+class ContourThicknessDropDown : public latero::graphics::gtk::ImageDropDown
 {
 public:
-	ContourThicknessCombo(GeneratorPtr peer)  : peer_(peer)
+	ContourThicknessDropDown(GeneratorPtr peer)  : peer_(peer)
 	{
 		Append(Generator::CONTOUR_THICK_S, thickness_img_s);
 		Append(Generator::CONTOUR_THICK_M, thickness_img_m);
 		Append(Generator::CONTOUR_THICK_L, thickness_img_l);
 		SetActive(peer_->GetContourThickness());
-		SignalChanged().connect(sigc::mem_fun(*this, &ContourThicknessCombo::OnChange) );
+		SignalChanged().connect(sigc::mem_fun(*this, &ContourThicknessDropDown::OnChange) );
 	}
-	virtual ~ContourThicknessCombo() {};
+	virtual ~ContourThicknessDropDown() {};
 protected:
 	void OnChange(int id) { peer_->SetContourThickness(id); };
 	GeneratorPtr peer_;
 };
 
 
-class ContourCombo : public latero::graphics::gtk::ImageCombo
+class ContourDropDown : public latero::graphics::gtk::ImageDropDown
 {
 public:
-	ContourCombo(GeneratorPtr peer)  : peer_(peer)
+	ContourDropDown(GeneratorPtr peer)  : peer_(peer)
 	{
 		Append(Generator::CONTOUR_NONE, contour_img_none);
 		Append(Generator::CONTOUR_VIB, contour_img_vib);
 		Append(Generator::CONTOUR_STROKE, contour_img_stroke);
 		Append(Generator::CONTOUR_DOT, contour_img_dot);
 		SetActive(peer_->GetContour());
-		SignalChanged().connect(sigc::mem_fun(*this, &ContourCombo::OnChange) );
+		SignalChanged().connect(sigc::mem_fun(*this, &ContourDropDown::OnChange) );
 	}
-	virtual ~ContourCombo() {};
+	virtual ~ContourDropDown() {};
 protected:
 	void OnChange(int id) { peer_->SetContour(id); }
 	GeneratorPtr peer_;
 };
 
 
-class ShapeCombo : public latero::graphics::gtk::ImageCombo
+class ShapeDropDown : public latero::graphics::gtk::ImageDropDown
 {
 public:
-	ShapeCombo(GeneratorPtr peer) : peer_(peer)
+	ShapeDropDown(GeneratorPtr peer) : peer_(peer)
 	{
 		Append(Generator::SHAPE_CIRCLE, shape_img_circle);
 		Append(Generator::SHAPE_SQUARE, shape_img_square);
@@ -139,9 +139,9 @@ public:
 		Append(Generator::SHAPE_PLUS, shape_img_plus);
 		Append(Generator::SHAPE_DIAMOND, shape_img_diamond);
 		SetActive(peer_->GetShape());
-		SignalChanged().connect(sigc::mem_fun(*this, &ShapeCombo::OnChange) );
+		SignalChanged().connect(sigc::mem_fun(*this, &ShapeDropDown::OnChange) );
 	}
-	virtual ~ShapeCombo() {};
+	virtual ~ShapeDropDown() {};
 protected:
 	void OnChange(int id)  { peer_->SetShape(id); }
 	GeneratorPtr peer_;
@@ -160,20 +160,20 @@ void Toolbar::Rebuild()
 	
 	auto box = manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL));
 	auto vbox = manage(new Gtk::Box(Gtk::Orientation::VERTICAL));
-	latero::graphics::TextureDropDown* txCombo = manage(new latero::graphics::TextureDropDown(peer_->GetAreaTexture()));
+	latero::graphics::TextureDropDown* txDropDown = manage(new latero::graphics::TextureDropDown(peer_->GetAreaTexture()));
 
 	set_child(*box);
-	box->append(*manage(new ShapeCombo(peer_)));
-	box->append(*manage(new SizeCombo(peer_)));
+	box->append(*manage(new ShapeDropDown(peer_)));
+	box->append(*manage(new SizeDropDown(peer_)));
 	box->append(*vbox);
-	vbox->append(*manage(new ContourCombo(peer_)));
-	vbox->append(*manage(new ContourThicknessCombo(peer_)));
-	box->append(*txCombo);
+	vbox->append(*manage(new ContourDropDown(peer_)));
+	vbox->append(*manage(new ContourThicknessDropDown(peer_)));
+	box->append(*txDropDown);
 	AdvancedButton *advancedButton = manage(new AdvancedButton);
 	box->append(*advancedButton);
 
 	advancedButton->signal_clicked().connect(sigc::mem_fun(*this, &Toolbar::OnAdvanced));
-	txCombo->SignalTextureChanged().connect(sigc::mem_fun(*this, &Toolbar::OnTextureChanged));
+	txDropDown->SignalTextureChanged().connect(sigc::mem_fun(*this, &Toolbar::OnTextureChanged));
 }
 
 void Toolbar::OnAdvanced()
