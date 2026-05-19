@@ -19,11 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
-
-#ifndef VIRTUAL_SURFACE_WIDGET_H
-#define VIRTUAL_SURFACE_WIDGET_H
 
 #include <gtkmm.h>
 #include <latero/tactileimg.h>
@@ -100,8 +99,5 @@ protected:
 	boost::posix_time::ptime bgUpdateTime_;
 };
 
-
-
-#endif
 #endif
 

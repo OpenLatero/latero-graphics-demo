@@ -19,11 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_ICON_DEMO
-
-#ifndef ICON_DEMO_GENERATOR_H
-#define ICON_DEMO_GENERATOR_H
 
 #include <laterographics/graphics/texture/texturefwd.h>
 #include "../generatorhandle.h"
@@ -84,5 +83,4 @@ protected:
 
 } // namespace
 
-#endif
 #endif // !DISABLED

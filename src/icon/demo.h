@@ -19,11 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_ICON_DEMO
-
-#ifndef ICON_DEMO_H
-#define ICON_DEMO_H
 
 #include "../demo.h"
 #include <laterographics/virtualsurfacewidget.h>
@@ -49,5 +48,4 @@ protected:
 
 }; // namespace
 
-#endif
 #endif // !DISABLED

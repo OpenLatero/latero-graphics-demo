@@ -19,8 +19,7 @@
 //
 // -----------------------------------------------------------
 
-#ifndef MAIN_WINDOW_H
-#define MAIN_WINDOW_H
+#pragma once
 
 #include "config.h"
 #include <gtkmm.h>
@@ -85,5 +84,3 @@ protected:
 	latero::graphics::AudioEngine *aEngine_;
 	Demo *demo_;
 };
-
-#endif

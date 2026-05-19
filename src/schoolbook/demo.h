@@ -19,8 +19,7 @@
 //
 // -----------------------------------------------------------
 
-#ifndef SCHOOLBOOK_DEMO_H
-#define SCHOOLBOOK_DEMO_H
+#pragma once
 
 #include "../config.h"
 
@@ -59,5 +58,4 @@ private:
 
 }; // namespace
 
-#endif
 #endif

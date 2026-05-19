@@ -19,11 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
-
-#ifndef POSITION_GRAPH_H
-#define POSITION_GRAPH_H
 
 #include "braillegen.h"
 #include <laterographics/gtk/plot.h>
@@ -46,5 +45,4 @@ protected:
 	boost::posix_time::ptime lastUpdated_;
 };
 
-#endif
 #endif

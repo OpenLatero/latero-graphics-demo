@@ -19,11 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
-
-#ifndef MODULATOR_H
-#define MODULATOR_H
 
 #include <laterographics/modifiable.h>
 #include <string>
@@ -69,5 +68,4 @@ protected:
 	double amp_;
 };
 
-#endif
 #endif

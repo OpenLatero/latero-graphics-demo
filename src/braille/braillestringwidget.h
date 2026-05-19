@@ -19,12 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
-
-
-#ifndef BRAILLE_STRING_WIDGET_H
-#define BRAILLE_STRING_WIDGET_H
 
 #include <gtkmm.h>
 #include "braillestring.h"
@@ -61,5 +59,4 @@ protected:
 	std::vector<std::string> words_;
 };
 
-#endif
 #endif

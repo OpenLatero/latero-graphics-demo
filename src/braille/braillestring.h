@@ -19,11 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
-
-#ifndef BRAILLE_STRING_H
-#define BRAILLE_STRING_H
 
 #include "braillecell.h"
 #include <string>
@@ -50,5 +49,4 @@ public:
 	std::vector<BrailleCell> cells_;
 };
 
-#endif
 #endif

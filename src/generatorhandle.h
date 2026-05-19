@@ -19,8 +19,7 @@
 //
 // -----------------------------------------------------------
 
-#ifndef GENERATOR_HANDLE_H
-#define GENERATOR_HANDLE_H
+#pragma once
 
 #include <laterographics/generator.h>
 
@@ -43,5 +42,3 @@ protected:
 	virtual void DoRender_(const latero::graphics::State *state, latero::BiasedImg &frame);
 	latero::graphics::GeneratorPtr gen_;
 };
-
-#endif

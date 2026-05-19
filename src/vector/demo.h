@@ -19,11 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_VECTOR_DEMO
-
-#ifndef VECTOR_DEMO_H
-#define VECTOR_DEMO_H
 
 #include <laterographics/virtualsurfacewidget.h>
 #include <laterographics/graphics/canvas.h>
@@ -50,5 +49,4 @@ protected:
 
 }; // namespace
 
-#endif
 #endif

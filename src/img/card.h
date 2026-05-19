@@ -19,11 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_GRAPHICS_DEMO
-
-#ifndef CARD_H
-#define CARD_H
 
 #include "gtkmm.h"
 #include <laterographics/virtualsurfacewidget.h>
@@ -79,5 +78,4 @@ protected:
 
 };
 
-#endif
 #endif

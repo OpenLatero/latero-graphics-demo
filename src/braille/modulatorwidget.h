@@ -19,11 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
-
-#ifndef MODULATOR_WIDGET_H
-#define MODULATOR_WIDGET_H
 
 #include <gtkmm.h>
 #include "modulator.h"
@@ -50,5 +49,4 @@ protected:
 	Gtk::Box velBox_;
 };
 
-#endif
 #endif

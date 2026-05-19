@@ -19,8 +19,7 @@
 //
 // -----------------------------------------------------------
 
-#ifndef CARD_TABLE_H
-#define CARD_TABLE_H
+#pragma once
 
 #include "../config.h"
 #ifndef DISABLE_GRAPHICS_DEMO
@@ -46,6 +45,5 @@ protected:
 	uint sx_, sy_;
 };
 
-#endif
 #endif
 

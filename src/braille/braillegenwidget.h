@@ -19,11 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
-
-#ifndef BRAILLE_GEN_WIDGET_H
-#define BRAILLE_GEN_WIDGET_H
 
 #include "braillegen.h"
 #include <gtkmm/checkbutton.h>
@@ -67,5 +66,4 @@ protected:
 	Gtk::CheckButton invertCheck_;
 };
 
-#endif
 #endif

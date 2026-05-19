@@ -19,11 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
-
-#ifndef DOT_WIDGET_H
-#define DOT_WIDGET_H
 
 #include <gtkmm.h>
 #include "dot.h"
@@ -68,5 +67,4 @@ protected:
 	DotGraph *graph_;
 };
 
-#endif
 #endif

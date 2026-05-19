@@ -19,8 +19,7 @@
 //
 // -----------------------------------------------------------
 
-#ifndef CARDSET_H
-#define CARDSET_H
+#pragma once
 
 #include "../config.h"
 #ifndef DISABLE_GRAPHICS_DEMO
@@ -55,5 +54,4 @@ private:
 
 };
 
-#endif
 #endif

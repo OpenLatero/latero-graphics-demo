@@ -20,8 +20,7 @@
 //
 // -----------------------------------------------------------
 
-#ifndef IMG_DEMO_H
-#define IMG_DEMO_H
+#pragma once
 
 #include "../config.h"
 #ifndef DISABLE_GRAPHICS_DEMO
@@ -86,5 +85,4 @@ private:
 
 } // namespace
 
-#endif
 #endif
