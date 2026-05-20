@@ -37,6 +37,7 @@ public:
 	void SetGenerator(latero::graphics::GeneratorPtr gen);
 	latero::graphics::GeneratorPtr GetGenerator();
 	virtual bool OnKeyPress(guint keyval, guint keycode, Gdk::ModifierType state);
+	virtual Gtk::Widget *CreateWidget(latero::graphics::GeneratorPtr ptr);
 
 protected:
 	virtual void DoRender_(const latero::graphics::State *state, latero::BiasedImg &frame);
