@@ -84,8 +84,8 @@ BrailleStringWidget::BrailleStringWidget(BrailleString *peer):
 	entry_.set_text(peer_->Get());
 	
     auto css = Gtk::CssProvider::create();
-    css->load_from_data("entry { font-size: 40pt; }");
-    entry_.get_style_context()->add_provider(css, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    css->load_from_string("entry { font-size: 40pt; }");
+    Gtk::StyleProvider::add_provider_for_display(Gdk::Display::get_default(), css, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
 	CreateWords();
 	

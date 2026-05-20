@@ -41,8 +41,8 @@ public:
 
 	void SetDisplayState(double pos, const latero::BiasedImg &frame);
 
-	inline uint GetWidth() { return get_allocation().get_width(); };
-	inline uint GetHeight() { return get_allocation().get_height(); };
+	inline uint GetWidth() { return get_width(); };
+	inline uint GetHeight() { return get_height(); };
 
 protected:
 	void Invalidate();
