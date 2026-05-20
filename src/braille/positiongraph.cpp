@@ -27,7 +27,7 @@
 #define NB_POINTS 1000
 
 PositionGraph::PositionGraph(BrailleGenPtr peer) :
-	peer_(peer), y_(0)
+	peer_(peer), y_(0), lastUpdated_(boost::posix_time::neg_infin)
 {
 	set_row_spacing(5);
 	set_size_request(-1, 100);
