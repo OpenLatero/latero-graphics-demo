@@ -19,11 +19,11 @@
 //
 // -----------------------------------------------------------
 
-#ifndef MAIN_WINDOW_H
-#define MAIN_WINDOW_H
+#pragma once
 
 #include "config.h"
 #include <gtkmm.h>
+#include <giomm.h>
 #include <laterographics/tactileengine.h>
 #include <laterographics/audioengine.h>
 #include "img/demo.h"
@@ -33,7 +33,7 @@
 #include "braille/demo.h"
 #include "vector/demo.h"
 
-class MainWindow : public Gtk::Window
+class MainWindow : public Gtk::ApplicationWindow
 {
 public:
 	MainWindow(latero::graphics::TactileEngine *tEngine, latero::graphics::AudioEngine *aEngine, bool disableAudio);
@@ -46,44 +46,37 @@ protected:
 #ifndef DISABLE_TEXTURE_DEMO
 	TextureDemo::Demo textureDemo_;
 	void OnDemoTexture();
-	Gtk::RadioMenuItem* actionDemoTexture_;
 #endif
 
 #ifndef DISABLE_ICON_DEMO
 	IconDemo::Demo iconDemo_;
 	void OnDemoIcon();
-	Gtk::RadioMenuItem* actionDemoIcon_;
 #endif
 
 #ifndef DISABLE_VECTOR_DEMO
 	VectorDemo::Demo vectorDemo_;
 	void OnDemoVector();
-	Gtk::RadioMenuItem* actionDemoVector_;
 #endif
 
 #ifndef DISABLE_SCHOOLBOOK_DEMO
 	SchoolbookDemo::Demo schoolbookDemo_;
 	void OnDemoSchoolbook();
-	Gtk::RadioMenuItem* actionDemoSchoolbook_;
 #endif
 
 #ifndef DISABLE_GRAPHICS_DEMO
 	ImgDemo::Demo graphicsDemo_;
 	void OnDemoGraphics();
-	Gtk::RadioMenuItem* actionDemoGraphics_;
 #endif
 
 #ifndef DISABLE_BRAILLE_DEMO
 	BrailleDemo::Demo brailleDemo_;
 	void OnDemoBraille();
-	Gtk::RadioMenuItem* actionDemoBraille_;
 #endif
 
 	void ReplaceDemo(Demo *demo);
+	void CreateMenu();
 
-	Gtk::Widget *CreateMenu();
-
-	Gtk::CheckMenuItem* actionFullscreen_;
+	bool isFullscreen_ = false;
 
 	Gtk::Box mainbox_;
 	Gtk::Box demobox_;
@@ -91,9 +84,3 @@ protected:
 	latero::graphics::AudioEngine *aEngine_;
 	Demo *demo_;
 };
-
-
-
-#endif
-
-

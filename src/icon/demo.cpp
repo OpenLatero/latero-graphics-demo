@@ -29,7 +29,7 @@ namespace IconDemo {
 
 Demo::Demo(const latero::Tactograph *dev, Gtk::Window *window) :
 	peer_(GeneratorPtr(new Generator(dev))),
-	mainBox_(Gtk::ORIENTATION_VERTICAL),
+	mainBox_(Gtk::Orientation::VERTICAL),
 	preview_(dev, peer_, true),
 	genToolbar_(peer_,window)
 {
@@ -38,11 +38,9 @@ Demo::Demo(const latero::Tactograph *dev, Gtk::Window *window) :
 	preview_.set_vexpand(true);
 
 	// prepare main view...
-	mainBox_.pack_start(genToolbar_, Gtk::PACK_SHRINK);
-	mainBox_.pack_start(preview_);
-	add(mainBox_);
-
-	show_all_children();
+	mainBox_.append(genToolbar_);
+	mainBox_.append(preview_);
+	set_child(mainBox_);
 };
 
 }; // namespace

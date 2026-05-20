@@ -19,12 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
-
-
-#ifndef DOT_H
-#define DOT_H
 
 #include <string>
 #include <vector>
@@ -88,5 +86,4 @@ protected:
 	bool lockedSides_;
 };
 
-#endif
 #endif

@@ -19,8 +19,7 @@
 //
 // -----------------------------------------------------------
 
-#ifndef GENERATOR_HANDLE_H
-#define GENERATOR_HANDLE_H
+#pragma once
 
 #include <laterographics/generator.h>
 
@@ -37,11 +36,10 @@ public:
 	virtual void PlayAudio(latero::graphics::AudioDevicePtr dev);
 	void SetGenerator(latero::graphics::GeneratorPtr gen);
 	latero::graphics::GeneratorPtr GetGenerator();
-	virtual bool OnKeyPress(GdkEventKey* event);
+	virtual bool OnKeyPress(guint keyval, guint keycode, Gdk::ModifierType state);
+	virtual Gtk::Widget *CreateWidget(latero::graphics::GeneratorPtr ptr);
 
 protected:
 	virtual void DoRender_(const latero::graphics::State *state, latero::BiasedImg &frame);
 	latero::graphics::GeneratorPtr gen_;
 };
-
-#endif

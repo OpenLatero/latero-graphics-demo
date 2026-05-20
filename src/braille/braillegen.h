@@ -19,11 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
-
-#ifndef BRAILLE_GEN_H
-#define BRAILLE_GEN_H
 
 #include "braillegenfwd.h"
 #include <laterographics/generator.h>
@@ -137,6 +136,5 @@ public: // submodules
 
 };
 
-#endif
 #endif
 

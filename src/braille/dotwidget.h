@@ -19,15 +19,12 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
 
-#ifndef DOT_WIDGET_H
-#define DOT_WIDGET_H
-
-#include <gtkmm/checkbutton.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/comboboxtext.h>
+#include <gtkmm.h>
 #include "dot.h"
 #include "dotgraph.h"
 
@@ -40,14 +37,15 @@ public:
 	void AddShapes(const std::vector<std::string> &shapes);
 	void Disable(bool v);
 	void OnChange();
-	sigc::signal<void> signal_value_changed;
+	sigc::signal<void()> signal_value_changed;
 
 protected:
     Glib::RefPtr<Gtk::Adjustment> radiusAdj_;
     Glib::RefPtr<Gtk::Adjustment> plateauAdj_;
     Glib::RefPtr<Gtk::Adjustment> txAmpAdj_;
     Glib::RefPtr<Gtk::Adjustment> txNbCyclesAdj_;
-	Gtk::ComboBoxText shapeCombo_;
+    Glib::RefPtr<Gtk::StringList> shapeList_;
+	Gtk::DropDown shapeDropDown_;
 };
 
 
@@ -58,7 +56,7 @@ public:
 	void OnChange();
 	bool LockedSides();
 
-	sigc::signal<void> signal_value_changed;
+	sigc::signal<void()> signal_value_changed;
 
 protected:
 
@@ -69,5 +67,4 @@ protected:
 	DotGraph *graph_;
 };
 
-#endif
 #endif

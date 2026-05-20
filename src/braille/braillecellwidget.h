@@ -19,11 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
-
-#ifndef BRAILLE_CELL_WIDGET_H
-#define BRAILLE_CELL_WIDGET_H
 
 #include <gtkmm/box.h>
 #include <gtkmm/checkbutton.h>
@@ -36,7 +35,7 @@ public:
 	BrailleCellWidget(BrailleCell *peer);
 	virtual ~BrailleCellWidget() {};
 	void Refresh();
-	sigc::signal<void> signal_value_changed;
+	sigc::signal<void()> signal_value_changed;
 	void SetPattern(unsigned char pattern);
 protected:
 
@@ -46,5 +45,4 @@ protected:
 	Gtk::CheckButton dots_[2][3];
 };
 
-#endif
 #endif

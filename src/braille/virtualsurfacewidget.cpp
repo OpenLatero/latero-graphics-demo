@@ -33,23 +33,26 @@ VirtualSurfaceArea::VirtualSurfaceArea(const latero::Tactograph *dev) :
 	dev_(dev),
 	tdState_(dev->GetFrameSizeX(), dev->GetFrameSizeY())
 {
-    signal_draw().connect(sigc::mem_fun(*this, &VirtualSurfaceArea::OnDraw));
+    set_draw_func(sigc::mem_fun(*this, &VirtualSurfaceArea::OnDraw));
 }
 
 
-bool VirtualSurfaceArea::OnDraw(const Cairo::RefPtr<Cairo::Context>& cr)
+void VirtualSurfaceArea::OnDraw(const Cairo::RefPtr<Cairo::Context>& cr, int width, int height)
 {
 	if (!bg_)
 	{
 		cr->set_source_rgb(1.0, 1.0, 1.0);
 		cr->paint();
-		return true;
+		return;
 	}
+
+	if (GetWidth() == 0 || GetHeight() == 0)
+		return;
 
 	Glib::RefPtr<Gdk::Pixbuf> buf = bg_;
 	if (buf)
 	{
-		buf = buf->scale_simple(GetWidth(),GetHeight(),Gdk::INTERP_NEAREST);
+		buf = buf->scale_simple(GetWidth(),GetHeight(),Gdk::InterpType::NEAREST);
         Gdk::Cairo::set_source_pixbuf(cr, buf, 0, 0);
         cr->paint();
 	}
@@ -76,8 +79,8 @@ bool VirtualSurfaceArea::OnDraw(const Cairo::RefPtr<Cairo::Context>& cr)
 			cr->stroke();
 		}
 	}
-	return true;	
 }
+
 
 
 void VirtualSurfaceArea::SetDisplayState(double pos, const latero::BiasedImg &f)
@@ -91,12 +94,7 @@ void VirtualSurfaceArea::SetDisplayState(double pos, const latero::BiasedImg &f)
 
 void VirtualSurfaceArea::Invalidate()
 {
-    Glib::RefPtr<Gdk::Window> win = get_window();
-    if (win)
-    {
-        Gdk::Rectangle r(0, 0, get_allocation().get_width(), get_allocation().get_height());
-        win->invalidate_rect(r, false);
-    }
+    queue_draw();
 }
 
 
@@ -124,15 +122,12 @@ bool VirtualSurfaceWidget::OnCheckPeer()
 
 void VirtualSurfaceWidget::RefreshBackground()
 {
+	if (surface_.GetWidth() == 0 || surface_.GetHeight() == 0)
+		return;
 	bgUpdateTime_ = boost::posix_time::microsec_clock::universal_time();
 	latero::graphics::gtk::Animation anim = peer_->GetIllustration(surface_.GetWidth(),surface_.GetHeight());
 	surface_.SetBackground(anim);
 }
 
 
-void VirtualSurfaceWidget::on_size_allocate(Gtk::Allocation& allocation)
-{
-	EventBox::on_size_allocate(allocation);
-	RefreshBackground();
-}
 #endif

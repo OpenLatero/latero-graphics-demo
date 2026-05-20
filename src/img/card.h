@@ -19,17 +19,16 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_GRAPHICS_DEMO
-
-#ifndef CARD_H
-#define CARD_H
 
 #include "gtkmm.h"
 #include <laterographics/virtualsurfacewidget.h>
 #include <laterographics/generator.h>
 
-class Card : public Gtk::EventBox
+class Card : public Gtk::Box
 {
 public:
 	Card(latero::graphics::GeneratorPtr gen, uint width, uint height, uint scale);
@@ -49,8 +48,8 @@ public:
 		return gen_;
 	}
 
-	sigc::signal<void,Card*> signal_clicked1;
-	sigc::signal<void,Card*> signal_clicked3;
+	sigc::signal<void(Card*)> signal_clicked1;
+	sigc::signal<void(Card*)> signal_clicked3;
 
 	latero::graphics::gtk::Animation GetLargeFaceUpAnim();
 
@@ -63,7 +62,8 @@ public:
 	void ClearImg();
 protected:
 
-	bool OnClicked(GdkEventButton*);
+	void OnClicked(int n_press, double x, double y);
+	Glib::RefPtr<Gtk::GestureClick> clickGesture_;
 	bool blindMode_;
 
 	latero::graphics::GeneratorPtr gen_;
@@ -78,5 +78,4 @@ protected:
 
 };
 
-#endif
 #endif

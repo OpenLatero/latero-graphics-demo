@@ -19,17 +19,14 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
-
-#ifndef BRAILLE_GEN_FWD
-#define BRAILLE_GEN_FWD
 
 #include <boost/shared_ptr.hpp>
 
 class BrailleGen;
 typedef boost::shared_ptr<BrailleGen> BrailleGenPtr;
 
-
-#endif
 #endif

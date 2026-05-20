@@ -19,8 +19,7 @@
 //
 // -----------------------------------------------------------
 
-#ifndef DEMO_H
-#define DEMO_H
+#pragma once
 
 #include <gtkmm.h>
 #include <laterographics/generator.h>
@@ -32,5 +31,3 @@ public:
 	virtual ~Demo() {};
 	virtual latero::graphics::GeneratorPtr Gen() = 0;
 };
-
-#endif

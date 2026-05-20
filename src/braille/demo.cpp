@@ -29,8 +29,7 @@ namespace BrailleDemo {
 Demo::Demo(const latero::Tactograph *dev)
 {
 	gen_ = BrailleGen::Create(dev);
-	add(*gen_->CreateWidget(gen_));
-	show_all_children();
+	set_child(*gen_->CreateWidget(gen_));
 };
 
 }; // namespace

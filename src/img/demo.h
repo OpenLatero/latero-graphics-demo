@@ -20,8 +20,7 @@
 //
 // -----------------------------------------------------------
 
-#ifndef IMG_DEMO_H
-#define IMG_DEMO_H
+#pragma once
 
 #include "../config.h"
 #ifndef DISABLE_GRAPHICS_DEMO
@@ -51,13 +50,13 @@ protected:
 	void LoadSet(const CardSet &set);
 	void Reset();
 
-	bool OnBoardClick(GdkEventButton*);
+	void OnBoardClick(int n_press, double x, double y);
 	void OnDemoClick(Card* card);
 	void OnRightClick(Card* card);
 	void OnSetChanged();
 	bool OnIdle();
 	void OnShowCursor();
-	bool OnKeyPress(GdkEventKey* event);
+	bool OnKeyPress(guint keyval, guint keycode, Gdk::ModifierType state);
 	void UpdateZoom(Card* card);
 
 
@@ -78,7 +77,7 @@ private:
 
 	// OLD (deprecated):
 	// std::vector<Glib::RefPtr<Gtk::RadioAction> > setActions_;
-	std::vector<Gtk::RadioButton*> setActions_;
+	std::vector<Gtk::CheckButton*> setActions_;
 
 	latero::graphics::INTPoint keyLocation_;
 	int currentSetIdx_;
@@ -86,5 +85,4 @@ private:
 
 } // namespace
 
-#endif
 #endif

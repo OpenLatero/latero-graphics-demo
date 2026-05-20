@@ -19,11 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
-
-#ifndef BRAILLE_CELL_H
-#define BRAILLE_CELL_H
 
 #define DOT_1 (1<<0)
 #define DOT_2 (1<<1)
@@ -56,5 +55,4 @@ protected:
 	unsigned char dot_;
 };
 
-#endif
 #endif

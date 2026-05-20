@@ -27,8 +27,8 @@
 CardTable::CardTable(uint sx, uint sy) :
 	sx_(sx), sy_(sy)
 {
-	add(grid_);
-	grid_.set_border_width(10);
+	append(grid_);
+	grid_.set_margin(10);
 	grid_.set_row_spacing(10);
 	grid_.set_column_spacing(10);
 }
@@ -58,12 +58,10 @@ void CardTable::SetCard(uint x, uint y, Card* card)
 
 void CardTable::RemoveCards()
 {
-    auto children = grid_.get_children();
-    for (auto child : children)
+    for (auto card : cards_)
     {
-        Card *card = (Card*)child;
         card->ClearImg();
-        grid_.remove(*child);
+        grid_.remove(*card);
     }
     cards_.clear();
 }

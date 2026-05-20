@@ -69,7 +69,15 @@ latero::graphics::GeneratorPtr GeneratorHandle::GetGenerator()
 	return gen_;
 }
 
-bool GeneratorHandle::OnKeyPress(GdkEventKey* event)
+bool GeneratorHandle::OnKeyPress(guint keyval, guint keycode, Gdk::ModifierType state)
 {
-	return GetGenerator()->OnKeyPress(event);
+	return GetGenerator()->OnKeyPress(keyval, keycode, state);
+}
+
+Gtk::Widget *GeneratorHandle::CreateWidget(latero::graphics::GeneratorPtr)
+{
+	LATERO_GRAPHICS_GUARD;
+	if (gen_)
+		return gen_->CreateWidget(gen_);
+	return Generator::CreateWidget(latero::graphics::GeneratorPtr());
 }

@@ -19,11 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
-
-#ifndef DOT_GRAPH_H
-#define DOT_GRAPH_H
 
 #include "dot.h"
 #include <laterographics/gtk/plot.h>
@@ -40,5 +39,4 @@ protected:
 	Dot *dot_;
 };
 
-#endif
 #endif

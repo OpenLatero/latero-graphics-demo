@@ -73,17 +73,16 @@ Demo::Demo(const latero::Tactograph *dev) :
 	preview_.AnimateCursor(true);
 	preview_.SetGenerator(peer_);
 	preview_.set_vexpand(true);
+	preview_.set_size_request(100,100); // make sure it doesn't get too small
 
-	auto vbox = manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
+	auto vbox = manage(new Gtk::Box(Gtk::Orientation::VERTICAL));
 
 	vectorWidget_ = (CanvasWidget*)manage(peer_->CreateWidget(peer_));
 
-	add(*vbox);
-	vbox->pack_start(preview_, true, true);
-	vbox->pack_start(*vectorWidget_, false, false);;
+	set_child(*vbox);
+	vbox->append(preview_);
+	vbox->append(*vectorWidget_);
 	vectorWidget_->set_vexpand(false);
-
-	show_all_children();
 };
 
 }; // namespace

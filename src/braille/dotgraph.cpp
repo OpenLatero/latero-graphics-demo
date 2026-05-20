@@ -27,14 +27,14 @@
 #define NB_POINTS 1000
 
 DotGraph::DotGraph(Dot *dot) :
-	Gtk::Box(Gtk::ORIENTATION_VERTICAL),
+	Gtk::Box(Gtk::Orientation::VERTICAL),
 	plot_("blue", "white"),
 	dot_(dot)
 {	
 	plot_.set_size_request(200, 200);
 	plot_.SetRangeX(-1.0, 1.0);
 	plot_.SetRangeY(0.0, 1.0);
-	pack_start(plot_);
+	append(plot_);
 }
 
 void DotGraph::Refresh()

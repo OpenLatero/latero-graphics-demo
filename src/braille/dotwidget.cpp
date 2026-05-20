@@ -27,7 +27,7 @@
 #include <laterographics/gtk/numwidget.h>
 
 DotSideWidget::DotSideWidget() :
-	Gtk::Box(Gtk::ORIENTATION_VERTICAL),
+	Gtk::Box(Gtk::Orientation::VERTICAL),
 	radiusAdj_(Gtk::Adjustment::create(0,0.0,1.0)),
 	plateauAdj_(Gtk::Adjustment::create(0,0.0,1.0)),
 	txAmpAdj_(Gtk::Adjustment::create(0,0.0,0.5)),
@@ -38,13 +38,15 @@ DotSideWidget::DotSideWidget() :
 	txAmpAdj_->set_value(0.0);
 	txNbCyclesAdj_->set_value(0.0);
 
-	pack_start(shapeCombo_);
-	pack_start(*manage(new latero::graphics::gtk::HNumWidget("radius", radiusAdj_, 2)));
-	pack_start(*manage(new latero::graphics::gtk::HNumWidget("plateau (% of radius)", plateauAdj_, 2)));
-	pack_start(*manage(new latero::graphics::gtk::HNumWidget("texture amplitude", txAmpAdj_, 2)));
-	pack_start(*manage(new latero::graphics::gtk::HNumWidget("texture nb cycles", txNbCyclesAdj_, 0)));
+	shapeList_ = Gtk::StringList::create({});
+	shapeDropDown_.set_model(shapeList_);
+	append(shapeDropDown_);
+	append(*manage(new latero::graphics::gtk::HNumWidget("radius", radiusAdj_, 2)));
+	append(*manage(new latero::graphics::gtk::HNumWidget("plateau (% of radius)", plateauAdj_, 2)));
+	append(*manage(new latero::graphics::gtk::HNumWidget("texture amplitude", txAmpAdj_, 2)));
+	append(*manage(new latero::graphics::gtk::HNumWidget("texture nb cycles", txNbCyclesAdj_, 0)));
 
-	shapeCombo_.signal_changed().connect(
+	shapeDropDown_.property_selected().signal_changed().connect(
 		sigc::mem_fun(*this, &DotSideWidget::OnChange));
 	radiusAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &DotSideWidget::OnChange));
@@ -61,7 +63,8 @@ Dot::SideParams DotSideWidget::Get()
 	Dot::SideParams p;
 	p.radius = radiusAdj_->get_value();
 	p.plateau = plateauAdj_->get_value();
-	p.shape = shapeCombo_.get_active_text();
+	auto idx = shapeDropDown_.get_selected();
+	p.shape = (idx != GTK_INVALID_LIST_POSITION) ? std::string(shapeList_->get_string(idx)) : "";
 	p.txAmp = txAmpAdj_->get_value();
 	p.txNbCycles = (uint)txNbCyclesAdj_->get_value();
 	return p;
@@ -71,7 +74,9 @@ void DotSideWidget::Set(const Dot::SideParams &p)
 {
 	radiusAdj_->set_value(p.radius);
 	plateauAdj_->set_value(p.plateau);
-	shapeCombo_.set_active_text(p.shape);
+	for (guint i = 0; i < shapeList_->get_n_items(); ++i) {
+		if (shapeList_->get_string(i) == p.shape) { shapeDropDown_.set_selected(i); break; }
+	}
 	txAmpAdj_->set_value(p.txAmp);
 	txNbCyclesAdj_->set_value(p.txNbCycles);
 }
@@ -79,13 +84,13 @@ void DotSideWidget::Set(const Dot::SideParams &p)
 void DotSideWidget::AddShapes(const std::vector<std::string> &shapes)
 {
 	for (uint i=0; i<shapes.size(); ++i)
-		shapeCombo_.append(shapes[i]);
+		shapeList_->append(shapes[i]);
 }
 
 void DotSideWidget::Disable(bool v)
 {
 	set_sensitive(!v);
-	shapeCombo_.set_sensitive(!v);
+	shapeDropDown_.set_sensitive(!v);
 }
 
 void DotSideWidget::OnChange()
@@ -95,7 +100,7 @@ void DotSideWidget::OnChange()
 
 
 DotWidget::DotWidget(Dot *peer) :
-	Gtk::Box(Gtk::ORIENTATION_HORIZONTAL),
+	Gtk::Box(Gtk::Orientation::HORIZONTAL),
 	peer_(peer)
 {
 	graph_ = manage(new DotGraph(peer));
@@ -111,10 +116,10 @@ DotWidget::DotWidget(Dot *peer) :
 	sideLockCheck_.set_active(peer_->GetLockedSides());
 	right_.Disable(peer_->GetLockedSides());
 
-	pack_start(left_);
-	pack_start(sideLockCheck_, Gtk::PACK_SHRINK);
-	pack_start(right_);
-	pack_start(*graph_);
+	append(left_);
+	append(sideLockCheck_);
+	append(right_);
+	append(*graph_);
 	graph_->Refresh();
 
 	left_.signal_value_changed.connect(

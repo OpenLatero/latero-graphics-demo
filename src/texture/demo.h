@@ -19,11 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_TEXTURE_DEMO
-
-#ifndef TEXTURE_DEMO_H
-#define TEXTURE_DEMO_H
 
 #include "../demo.h"
 #include <laterographics/virtualsurfacewidget.h>
@@ -52,5 +51,4 @@ protected:
 
 }; // namespace
 
-#endif
 #endif

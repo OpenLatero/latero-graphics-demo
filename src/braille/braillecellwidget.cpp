@@ -23,7 +23,6 @@
 #ifndef DISABLE_BRAILLE_DEMO
 
 #include "braillecellwidget.h"
-#include <gtkmm/table.h>
 #include <gtkmm.h>
 
 BrailleCellWidget::BrailleCellWidget(BrailleCell *peer):
@@ -33,7 +32,7 @@ BrailleCellWidget::BrailleCellWidget(BrailleCell *peer):
 	Refresh();
 
 	Gtk::Grid *grid = new Gtk::Grid();
-	add(*manage(grid));
+	set_child(*manage(grid));
 
 	for (uint x=0; x<2; ++x)
 	{

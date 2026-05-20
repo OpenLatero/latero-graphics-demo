@@ -19,11 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
-
-#ifndef BRAILLE_DEMO_H
-#define BRAILLE_DEMO_H
 
 #include "../demo.h"
 #include "braillegen.h"
@@ -42,5 +41,4 @@ protected:
 
 }; // namespace
 
-#endif
 #endif

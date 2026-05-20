@@ -23,6 +23,7 @@
 #ifndef DISABLE_TEXTURE_DEMO
 
 #include "demo.h"
+#include <cairomm/cairomm.h>
 #include <laterographics/graphics/texture/stock.h>
 #include <laterographics/graphics/texture/texture.h>
 #include <laterographics/graphics/group.h>
@@ -42,16 +43,14 @@ Demo::Demo(const latero::Tactograph *dev) :
 	preview_.SetGenerator(gen_);
 	preview_.set_vexpand(true);
 
-	auto vbox = manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
+	auto vbox = manage(new Gtk::Box(Gtk::Orientation::VERTICAL));
 
 	waveWidget_ = manage(peer_->CreateWidget(peer_));
 
-	add(*vbox);
-	vbox->pack_start(preview_);
-	vbox->pack_start(*waveWidget_, Gtk::PACK_SHRINK);
+	set_child(*vbox);
+	vbox->append(preview_);
+	vbox->append(*waveWidget_);
 	waveWidget_->set_vexpand(false);
-
-	show_all_children();
 };
 
 Glib::RefPtr<Gdk::Pixbuf> Demo::GetMask(const latero::Tactograph *dev)
@@ -59,10 +58,10 @@ Glib::RefPtr<Gdk::Pixbuf> Demo::GetMask(const latero::Tactograph *dev)
 	int h = 1000;
 	int w = 1000*dev->GetSurfaceWidth()/dev->GetSurfaceHeight();
 
-	Glib::RefPtr<Gdk::Pixbuf> buf = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, w, h);
+	Glib::RefPtr<Gdk::Pixbuf> buf = Gdk::Pixbuf::create(Gdk::Colorspace::RGB, true, 8, w, h);
 	Cairo::RefPtr<Cairo::ImageSurface> surface = Cairo::ImageSurface::create(
 		(unsigned char*)buf->get_pixels(),
-		Cairo::FORMAT_ARGB32,
+		Cairo::Surface::Format::ARGB32,
 		buf->get_width(),
 		buf->get_height(),
 		buf->get_rowstride()

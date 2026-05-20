@@ -19,8 +19,7 @@
 //
 // -----------------------------------------------------------
 
-#ifndef CARD_TABLE_H
-#define CARD_TABLE_H
+#pragma once
 
 #include "../config.h"
 #ifndef DISABLE_GRAPHICS_DEMO
@@ -28,7 +27,7 @@
 #include <gtkmm.h>
 #include "card.h"
 
-class CardTable : public Gtk::EventBox
+class CardTable : public Gtk::Box
 {
 public:
 	CardTable(uint sx, uint sy);
@@ -46,6 +45,5 @@ protected:
 	uint sx_, sy_;
 };
 
-#endif
 #endif
 

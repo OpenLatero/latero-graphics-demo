@@ -24,8 +24,8 @@
 #include <iostream>
 
 MainWindow::MainWindow(latero::graphics::TactileEngine *tEngine, latero::graphics::AudioEngine *aEngine, bool disableAudio) :
-	mainbox_(Gtk::ORIENTATION_VERTICAL),
-	demobox_(Gtk::ORIENTATION_VERTICAL),
+	mainbox_(Gtk::Orientation::VERTICAL),
+	demobox_(Gtk::Orientation::VERTICAL),
 #ifndef DISABLE_TEXTURE_DEMO
 	textureDemo_(tEngine->Dev()),
 #endif
@@ -51,9 +51,12 @@ MainWindow::MainWindow(latero::graphics::TactileEngine *tEngine, latero::graphic
 	set_title("LATERO Tactile Graphics Demonstration");
 	maximize();
 
-	add(mainbox_);
-	mainbox_.pack_start(*CreateMenu(), Gtk::PACK_SHRINK);
-	mainbox_.pack_start(demobox_);
+	set_child(mainbox_);
+	//mainbox_.append(*CreateMenu());
+	demobox_.set_vexpand(true);
+	mainbox_.append(demobox_);
+
+	signal_realize().connect(sigc::mem_fun(*this, &MainWindow::CreateMenu));
 
 	std::cout << "Starting tactile & audio engines...\n";
 	tEngine_->Start();
@@ -82,11 +85,9 @@ MainWindow::MainWindow(latero::graphics::TactileEngine *tEngine, latero::graphic
 #endif
 #endif
 #endif
-
-	show_all_children();
 }
 
-MainWindow::~MainWindow() 
+MainWindow::~MainWindow()
 {
 	std::cout << "~MainWindow()\n";
 
@@ -98,89 +99,66 @@ MainWindow::~MainWindow()
 
 
 
-Gtk::Widget *MainWindow::CreateMenu()
+void MainWindow::CreateMenu()
 {
-	auto menubar = Gtk::manage(new Gtk::MenuBar());
+	auto menuModel = Gio::Menu::create();
 
 	// File menu
-	auto fileMenu = Gtk::manage(new Gtk::Menu());
-	auto fileMenuItem = Gtk::manage(new Gtk::MenuItem("File"));
-	fileMenuItem->set_submenu(*fileMenu);
-
-	auto quitItem = Gtk::manage(new Gtk::MenuItem("Quit"));
-	quitItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnQuit));
-	fileMenu->append(*quitItem);
-	fileMenu->show_all();
+	auto fileMenu = Gio::Menu::create();
+	fileMenu->append("Quit", "win.quit");
+	menuModel->append_submenu("File", fileMenu);
 
 	// View menu
-	auto viewMenu = Gtk::manage(new Gtk::Menu());
-	auto viewMenuItem = Gtk::manage(new Gtk::MenuItem("View"));
-	viewMenuItem->set_submenu(*viewMenu);
-
-	auto fullscreenItem = Gtk::manage(new Gtk::CheckMenuItem("Fullscreen"));
-	actionFullscreen_ = fullscreenItem;
-	fullscreenItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnFullscreen));
-	viewMenu->append(*fullscreenItem);
-	viewMenu->show_all();
+	auto viewMenu = Gio::Menu::create();
+	viewMenu->append("Fullscreen", "win.fullscreen");
+	menuModel->append_submenu("View", viewMenu);
 
 	// Demo menu
-	auto demoMenu = Gtk::manage(new Gtk::Menu());
-	auto demoMenuItem = Gtk::manage(new Gtk::MenuItem("Demo"));
-	demoMenuItem->set_submenu(*demoMenu);
+	auto demoMenu = Gio::Menu::create();
+#ifndef DISABLE_VECTOR_DEMO
+	demoMenu->append("Vector", "win.demo-vector");
+#endif
+#ifndef DISABLE_ICON_DEMO
+	demoMenu->append("Icon", "win.demo-icon");
+#endif
+#ifndef DISABLE_TEXTURE_DEMO
+	demoMenu->append("Texture", "win.demo-texture");
+#endif
+#ifndef DISABLE_GRAPHICS_DEMO
+	demoMenu->append("Graphics", "win.demo-graphics");
+#endif
+#ifndef DISABLE_SCHOOLBOOK_DEMO
+	demoMenu->append("Schoolbook", "win.demo-schoolbook");
+#endif
+#ifndef DISABLE_BRAILLE_DEMO
+	demoMenu->append("Braille", "win.demo-braille");
+#endif
+	menuModel->append_submenu("Demo", demoMenu);
 
-	Gtk::RadioMenuItem::Group demoGroup;
+	add_action("quit", sigc::mem_fun(*this, &MainWindow::OnQuit));
+	add_action("fullscreen", sigc::mem_fun(*this, &MainWindow::OnFullscreen));
 
 #ifndef DISABLE_VECTOR_DEMO
-	auto vectorItem = Gtk::manage(new Gtk::RadioMenuItem(demoGroup, "Vector"));
-	actionDemoVector_ = vectorItem;
-	vectorItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnDemoVector));
-	demoMenu->append(*vectorItem);
+	add_action("demo-vector", [this]{ ReplaceDemo(&vectorDemo_); });
 #endif
-
 #ifndef DISABLE_ICON_DEMO
-	auto iconItem = Gtk::manage(new Gtk::RadioMenuItem(demoGroup, "Icon"));
-	actionDemoIcon_ = iconItem;
-	iconItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnDemoIcon));
-	demoMenu->append(*iconItem);
+	add_action("demo-icon", [this]{ ReplaceDemo(&iconDemo_); });
 #endif
-
 #ifndef DISABLE_TEXTURE_DEMO
-	auto textureItem = Gtk::manage(new Gtk::RadioMenuItem(demoGroup, "Texture"));
-	actionDemoTexture_ = textureItem;
-	textureItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnDemoTexture));
-	demoMenu->append(*textureItem);
+	add_action("demo-texture", [this]{ ReplaceDemo(&textureDemo_); });
 #endif
-
 #ifndef DISABLE_GRAPHICS_DEMO
-	auto graphicsItem = Gtk::manage(new Gtk::RadioMenuItem(demoGroup, "Graphics"));
-	actionDemoGraphics_ = graphicsItem;
-	graphicsItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnDemoGraphics));
-	demoMenu->append(*graphicsItem);
+	add_action("demo-graphics", [this]{ ReplaceDemo(&graphicsDemo_); });
 #endif
-
 #ifndef DISABLE_SCHOOLBOOK_DEMO
-	auto schoolbookItem = Gtk::manage(new Gtk::RadioMenuItem(demoGroup, "Schoolbook"));
-	actionDemoSchoolbook_ = schoolbookItem;
-	schoolbookItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnDemoSchoolbook));
-	demoMenu->append(*schoolbookItem);
+	add_action("demo-schoolbook", [this]{ ReplaceDemo(&schoolbookDemo_); });
 #endif
-
 #ifndef DISABLE_BRAILLE_DEMO
-	auto brailleItem = Gtk::manage(new Gtk::RadioMenuItem(demoGroup, "Braille"));
-	actionDemoBraille_ = brailleItem;
-	brailleItem->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::OnDemoBraille));
-	demoMenu->append(*brailleItem);
+	add_action("demo-braille", [this]{ ReplaceDemo(&brailleDemo_); });
 #endif
 
-	demoMenu->show_all();
-
-	// Assemble menubar
-	menubar->append(*fileMenuItem);
-	menubar->append(*viewMenuItem);
-	menubar->append(*demoMenuItem);
-	menubar->show_all();
-
-	return menubar;
+	get_application()->set_menubar(menuModel);
+	set_show_menubar(true);
 }
 
 void MainWindow::OnQuit()
@@ -190,59 +168,27 @@ void MainWindow::OnQuit()
 
 void MainWindow::OnFullscreen()
 {
-	if (actionFullscreen_ && actionFullscreen_->get_active())
-		fullscreen();
-	else
-		unfullscreen();
+	isFullscreen_ = !isFullscreen_;
+	if (isFullscreen_) fullscreen(); else unfullscreen();
 }
 
 #ifndef DISABLE_VECTOR_DEMO
-void MainWindow::OnDemoVector()
-{
-	if (actionDemoVector_->get_active())
-		ReplaceDemo(&vectorDemo_);
-}
+void MainWindow::OnDemoVector()   { ReplaceDemo(&vectorDemo_); }
 #endif
-
 #ifndef DISABLE_ICON_DEMO
-void MainWindow::OnDemoIcon()
-{
-	if (actionDemoIcon_->get_active())
-		ReplaceDemo(&iconDemo_);
-
-}
+void MainWindow::OnDemoIcon()     { ReplaceDemo(&iconDemo_); }
 #endif
-
 #ifndef DISABLE_TEXTURE_DEMO
-void MainWindow::OnDemoTexture()
-{
-	if (actionDemoTexture_->get_active())
-		ReplaceDemo(&textureDemo_);
-}
+void MainWindow::OnDemoTexture()  { ReplaceDemo(&textureDemo_); }
 #endif
-
 #ifndef DISABLE_GRAPHICS_DEMO
-void MainWindow::OnDemoGraphics()
-{
-	if (actionDemoGraphics_->get_active())
-		ReplaceDemo(&graphicsDemo_);
-}
+void MainWindow::OnDemoGraphics() { ReplaceDemo(&graphicsDemo_); }
 #endif
-
 #ifndef DISABLE_SCHOOLBOOK_DEMO
-void MainWindow::OnDemoSchoolbook()
-{
-	if (actionDemoSchoolbook_->get_active())
-		ReplaceDemo(&schoolbookDemo_);
-}
+void MainWindow::OnDemoSchoolbook() { ReplaceDemo(&schoolbookDemo_); }
 #endif
-
 #ifndef DISABLE_BRAILLE_DEMO
-void MainWindow::OnDemoBraille()
-{
-	if (actionDemoBraille_->get_active())
-		ReplaceDemo(&brailleDemo_);
-}
+void MainWindow::OnDemoBraille()  { ReplaceDemo(&brailleDemo_); }
 #endif
 
 
@@ -250,8 +196,7 @@ void MainWindow::ReplaceDemo(Demo *demo)
 {
 	if (demo_) demobox_.remove(*demo_);
 	demo_ = demo;
-	demobox_.add(*demo_);
-	show_all_children();
+	demobox_.append(*demo_);
 	tEngine_->SetGenerator(demo_->Gen());
 	aEngine_->SetGenerator(demo_->Gen());
 }

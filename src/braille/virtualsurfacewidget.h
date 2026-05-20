@@ -19,17 +19,12 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
 
-#ifndef VIRTUAL_SURFACE_WIDGET_H
-#define VIRTUAL_SURFACE_WIDGET_H
-
-#include <gtkmm/uimanager.h>
-#include <gtkmm/drawingarea.h>
-#include <gtkmm/alignment.h>
-#include <gtkmm/aspectframe.h>
-#include <gtkmm/eventbox.h>
+#include <gtkmm.h>
 #include <latero/tactileimg.h>
 #include <latero/tactograph.h>
 #include <laterographics/point.h>
@@ -46,12 +41,12 @@ public:
 
 	void SetDisplayState(double pos, const latero::BiasedImg &frame);
 
-	inline uint GetWidth() { return get_allocation().get_width(); };
-	inline uint GetHeight() { return get_allocation().get_height(); };
+	inline uint GetWidth() { return get_width(); };
+	inline uint GetHeight() { return get_height(); };
 
 protected:
 	void Invalidate();
-	bool OnDraw(const Cairo::RefPtr<Cairo::Context>& cr);
+	void OnDraw(const Cairo::RefPtr<Cairo::Context>& cr, int width, int height);
 
 	Glib::RefPtr<Gdk::Pixbuf> bg_;
 
@@ -65,18 +60,17 @@ protected:
  * This widget represents the virtual surface explored by a tactile display. It is implement as an AspectFrame enclosing a 
  * DrawingArea so that the aspect ratio can be maintained.
  */
-class VirtualSurfaceWidget : public Gtk::EventBox
+class VirtualSurfaceWidget : public Gtk::Box
 {
 public:
 	VirtualSurfaceWidget(BrailleGenPtr peer) :
- 		frame_("", 0.5, 0.5, peer->Dev()->GetSurfaceWidth()/peer->Dev()->GetHeight(), false),
-		surface_(peer->Dev()), 
+		Gtk::Box(Gtk::Orientation::VERTICAL),
+ 		frame_(0.5, 0.5, peer->Dev()->GetSurfaceWidth()/peer->Dev()->GetHeight(), false),
+		surface_(peer->Dev()),
 		peer_(peer)
 	{
-		add(frame_);
-		frame_.unset_label(); // this is necessary to remove blank above surface
-		frame_.set_shadow_type(Gtk::SHADOW_NONE); // this removes the border
-		frame_.add(surface_);
+		append(frame_);
+		frame_.set_child(surface_);
 
 		Glib::signal_timeout().connect(
 			sigc::mem_fun(*this, &VirtualSurfaceWidget::RefreshCursor),
@@ -87,6 +81,9 @@ public:
 			sigc::mem_fun(*this, &VirtualSurfaceWidget::OnCheckPeer),
 			(uint)333, // ms
 			Glib::PRIORITY_DEFAULT_IDLE);
+
+		surface_.signal_resize().connect(
+			[this](int, int) { RefreshBackground(); });
 	}
 
 	virtual ~VirtualSurfaceWidget() {}
@@ -95,8 +92,6 @@ protected:
 	bool RefreshCursor();
 	bool OnCheckPeer();
 	void RefreshBackground();
-	virtual void on_size_allocate(Gtk::Allocation& allocation);
-
 
 	Gtk::AspectFrame frame_;
 	VirtualSurfaceArea surface_;
@@ -104,8 +99,5 @@ protected:
 	boost::posix_time::ptime bgUpdateTime_;
 };
 
-
-
-#endif
 #endif
 

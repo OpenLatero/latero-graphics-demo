@@ -19,8 +19,7 @@
 //
 // -----------------------------------------------------------
 
-#ifndef SCHOOLBOOK_DEMO_H
-#define SCHOOLBOOK_DEMO_H
+#pragma once
 
 #include "../config.h"
 
@@ -44,12 +43,12 @@ public:
 
 private:
 	void OnSelChange();
-	bool OnKeyPress(GdkEventKey* event);
+	bool OnKeyPress(guint keyval, guint keycode, Gdk::ModifierType state);
 	void Select(int i);
 	void CreateGenerators();
 
 	latero::graphics::VirtualSurfaceWidget preview_;
-	Gtk::RadioButton selButton_[NB_BUTTONS];
+	Gtk::CheckButton selButton_[NB_BUTTONS];
 
 	int sel_;
 	std::vector<latero::graphics::GeneratorPtr> list_;
@@ -59,5 +58,4 @@ private:
 
 }; // namespace
 
-#endif
 #endif

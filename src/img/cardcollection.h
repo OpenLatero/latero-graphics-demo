@@ -19,11 +19,10 @@
 //
 // -----------------------------------------------------------
 
+#pragma once
+
 #include "../config.h"
 #ifndef DISABLE_GRAPHICS_DEMO
-
-#ifndef CARDCOLLECTION_H
-#define CARDCOLLECTION_H
 
 #include "cardset.h"
 
@@ -50,5 +49,4 @@ private:
 
 };
 
-#endif
 #endif
