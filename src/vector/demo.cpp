@@ -77,7 +77,7 @@ Demo::Demo(const latero::Tactograph *dev) :
 
 	auto vbox = manage(new Gtk::Box(Gtk::Orientation::VERTICAL));
 
-	vectorWidget_ = (CanvasWidget*)manage(peer_->CreateWidget(peer_));
+	vectorWidget_ = (CanvasWidget*)peer_->CreateWidget(peer_);
 
 	set_child(*vbox);
 	vbox->append(preview_);

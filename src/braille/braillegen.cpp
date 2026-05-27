@@ -595,7 +595,7 @@ Gtk::Widget *BrailleGen::CreateWidget(latero::graphics::GeneratorPtr ptr)
 {
 	BrailleGenPtr gen = boost::dynamic_pointer_cast<BrailleGen>(ptr);
 	if (!gen) return Generator::CreateWidget(ptr); // default
-	return new BrailleGenWidget(gen);
+	return Gtk::make_managed<BrailleGenWidget>(gen);
 }
 
 void BrailleGen::BasicRender_(const latero::graphics::State *state, latero::RangeImg &frame)

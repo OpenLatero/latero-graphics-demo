@@ -182,7 +182,7 @@ void Toolbar::OnAdvanced()
 	win->set_title("Icon Properties");
 	win->set_transient_for(*window_);
 	win->set_modal(true);
-	win->set_child(*manage(peer_->CreateWidget(peer_)));
+	win->set_child(*peer_->CreateWidget(peer_));
 	win->signal_hide().connect([this, win]() {
 		delete win;
 		Rebuild();
