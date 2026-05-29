@@ -4,7 +4,7 @@ Program that showcases the Latero device's functionality. See [OpenLatero.org](h
 
 ## Installation
 
-### macOS
+### MacOS
 
 Tested on macOS Tahoe 26.3.1.
 
