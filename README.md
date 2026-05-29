@@ -6,9 +6,9 @@ Program that showcases the Latero device's functionality. See [OpenLatero.org](h
 
 ### MacOS
 
-Tested on macOS Tahoe 26.3.1.
+#### Install OpenLatero libraries
 
-Install the latero and latero-graphics libraries.
+Install the [latero](https://github.com/OpenLatero/latero) and [latero-graphics](https://github.com/OpenLatero/latero-graphics) libraries.
 
 #### Build and run the app
 
