@@ -70,7 +70,7 @@ Gtk::Widget *BrailleGenWidget::CreateVibWidget()
 	frame->set_child(*box);
 	frame->set_vexpand(false);
 	box->set_vexpand(false);
-	box->append(*manage(new latero::graphics::gtk::HNumWidget("frequency", vibFreqAdj_,0)));
+	box->append(*manage(new latero::graphics::gtk::HVNumWidget(Gtk::Orientation::HORIZONTAL, "frequency", vibFreqAdj_,0)));
 	box->append(vibModWidget_);
 	vibModWidget_.set_vexpand(false);
 	vibFreqAdj_->signal_value_changed().connect(
@@ -96,13 +96,13 @@ Gtk::Widget *BrailleGenWidget::CreateParamsWidget()
 	box->append(*presetFrame);
 
 	paramBox->append(
-		*manage(new latero::graphics::gtk::HNumWidget("dot width (% of space)", dotWidthAdj_,3)));
+		*manage(new latero::graphics::gtk::HVNumWidget(Gtk::Orientation::HORIZONTAL, "dot width (% of space)", dotWidthAdj_,3)));
 	paramBox->append(
-		*manage(new latero::graphics::gtk::HNumWidget("dot-to-dot spacing (in cell, % of standard)", intraDotDistAdj_,3)));
+		*manage(new latero::graphics::gtk::HVNumWidget(Gtk::Orientation::HORIZONTAL, "dot-to-dot spacing (in cell, % of standard)", intraDotDistAdj_,3)));
 	paramBox->append(
-		*manage(new latero::graphics::gtk::HNumWidget("dot-to-dot spacing (between cells, % of standard)", interDotDistAdj_,3)));
+		*manage(new latero::graphics::gtk::HVNumWidget(Gtk::Orientation::HORIZONTAL, "dot-to-dot spacing (between cells, % of standard)", interDotDistAdj_,3)));
 	paramBox->append(
-		*manage(new latero::graphics::gtk::HNumWidget("offset", offsetAdj_,3)));
+		*manage(new latero::graphics::gtk::HVNumWidget(Gtk::Orientation::HORIZONTAL, "offset", offsetAdj_,3)));
 
 	presetFrame->set_child(*presetBox);
 		presetBox->append(*stdButton);
