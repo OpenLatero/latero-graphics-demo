@@ -20,10 +20,10 @@ DotSideWidget::DotSideWidget() :
 	shapeList_ = Gtk::StringList::create({});
 	shapeDropDown_.set_model(shapeList_);
 	append(shapeDropDown_);
-	append(*manage(new latero::graphics::gtk::HVNumWidget(Gtk::Orientation::HORIZONTAL, "radius", radiusAdj_, 2)));
-	append(*manage(new latero::graphics::gtk::HVNumWidget(Gtk::Orientation::HORIZONTAL, "plateau (% of radius)", plateauAdj_, 2)));
-	append(*manage(new latero::graphics::gtk::HVNumWidget(Gtk::Orientation::HORIZONTAL, "texture amplitude", txAmpAdj_, 2)));
-	append(*manage(new latero::graphics::gtk::HVNumWidget(Gtk::Orientation::HORIZONTAL, "texture nb cycles", txNbCyclesAdj_, 0)));
+	append(*manage(new latero::graphics::gtk::HVNumWidget(Gtk::Orientation::HORIZONTAL, radiusAdj_, 2, "radius")));
+	append(*manage(new latero::graphics::gtk::HVNumWidget(Gtk::Orientation::HORIZONTAL, plateauAdj_, 2, "plateau (% of radius)")));
+	append(*manage(new latero::graphics::gtk::HVNumWidget(Gtk::Orientation::HORIZONTAL, txAmpAdj_, 2, "texture amplitude")));
+	append(*manage(new latero::graphics::gtk::HVNumWidget(Gtk::Orientation::HORIZONTAL, txNbCyclesAdj_, 0, "texture nb cycles")));
 
 	shapeDropDown_.property_selected().signal_changed().connect(
 		sigc::mem_fun(*this, &DotSideWidget::OnChange));
