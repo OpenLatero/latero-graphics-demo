@@ -137,18 +137,18 @@ void Toolbar::Rebuild()
 {
 	unset_child();
 	
-	auto box = manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL));
-	auto vbox = manage(new Gtk::Box(Gtk::Orientation::VERTICAL));
-	latero::graphics::TextureDropDown* txDropDown = manage(new latero::graphics::TextureDropDown(peer_->GetAreaTexture()));
+	auto box = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
+	auto vbox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL);
+	latero::graphics::TextureDropDown* txDropDown = Gtk::make_managed<latero::graphics::TextureDropDown>(peer_->GetAreaTexture());
 
 	set_child(*box);
-	box->append(*manage(new ShapeDropDown(peer_)));
-	box->append(*manage(new SizeDropDown(peer_)));
+	box->append(*Gtk::make_managed<ShapeDropDown>(peer_));
+	box->append(*Gtk::make_managed<SizeDropDown>(peer_));
 	box->append(*vbox);
-	vbox->append(*manage(new ContourDropDown(peer_)));
-	vbox->append(*manage(new ContourThicknessDropDown(peer_)));
+	vbox->append(*Gtk::make_managed<ContourDropDown>(peer_));
+	vbox->append(*Gtk::make_managed<ContourThicknessDropDown>(peer_));
 	box->append(*txDropDown);
-	AdvancedButton *advancedButton = manage(new AdvancedButton);
+	AdvancedButton *advancedButton = Gtk::make_managed<AdvancedButton>();
 	box->append(*advancedButton);
 
 	advancedButton->signal_clicked().connect(sigc::mem_fun(*this, &Toolbar::OnAdvanced));

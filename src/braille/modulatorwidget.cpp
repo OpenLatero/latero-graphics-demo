@@ -40,11 +40,11 @@ ModulatorWidget::ModulatorWidget(Modulator *peer) :
 	maxRiseRateAdj_->set_value(peer_->GetMaxRiseRate());
 	maxFallRateAdj_->set_value(peer_->GetMaxFallRate());
 
-	auto fixedFrame = manage(new Gtk::Frame);
-	auto velFrame = manage(new Gtk::Frame);
-	auto velAmpBox = manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL));
-	auto velRangeBox = manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL));
-	auto velRateBox = manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL));
+	auto fixedFrame = Gtk::make_managed<Gtk::Frame>();
+	auto velFrame = Gtk::make_managed<Gtk::Frame>();
+	auto velAmpBox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
+	auto velRangeBox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
+	auto velRateBox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
 
 	set_vexpand(false);
 
@@ -53,29 +53,29 @@ ModulatorWidget::ModulatorWidget(Modulator *peer) :
 	//attach(*fixedFrame, 1, 2, 0, 1);
 	attach(*fixedFrame, 1, 0, 1, 1);
 		fixedFrame->set_child(fixedBox_);
-		fixedBox_.append(*manage(new Gtk::Label(" Amplitude (0-1) ")));
-		fixedBox_.append(*manage(new Gtk::SpinButton(ampAdj_,0, 3)));
+		fixedBox_.append(*Gtk::make_managed<Gtk::Label>(" Amplitude (0-1) "));
+		fixedBox_.append(*Gtk::make_managed<Gtk::SpinButton>(ampAdj_,0, 3));
 	//attach(velMode_, 0, 1, 1, 2, Gtk::SHRINK);
 	attach(velMode_, 0, 1, 1, 1);
 	//attach(*velFrame, 1, 2, 1, 2);
 	attach(*velFrame, 1, 1, 1, 1);
 		velFrame->set_child(velBox_);
 		velBox_.append(*velAmpBox);
-			velAmpBox->append(*manage(new Gtk::Label("Amplitude range (0-1): ")));
-			velAmpBox->append(*manage(new Gtk::SpinButton(rampMinAmpAdj_,0, 2)));
-			velAmpBox->append(*manage(new Gtk::Label("  to  ")));
-			velAmpBox->append(*manage(new Gtk::SpinButton(rampMaxAmpAdj_,0, 2)));
+			velAmpBox->append(*Gtk::make_managed<Gtk::Label>("Amplitude range (0-1): "));
+			velAmpBox->append(*Gtk::make_managed<Gtk::SpinButton>(rampMinAmpAdj_,0, 2));
+			velAmpBox->append(*Gtk::make_managed<Gtk::Label>("  to  "));
+			velAmpBox->append(*Gtk::make_managed<Gtk::SpinButton>(rampMaxAmpAdj_,0, 2));
 		velBox_.append(*velRangeBox);
-			velRangeBox->append(*manage(new Gtk::Label("Ramp range (mm/s): ")));
-			velRangeBox->append(*manage(new Gtk::SpinButton(rampMinAdj_,0, 2)));
-			velRangeBox->append(*manage(new Gtk::Label("  to  ")));
-			velRangeBox->append(*manage(new Gtk::SpinButton(rampMaxAdj_,0, 2)));
+			velRangeBox->append(*Gtk::make_managed<Gtk::Label>("Ramp range (mm/s): "));
+			velRangeBox->append(*Gtk::make_managed<Gtk::SpinButton>(rampMinAdj_,0, 2));
+			velRangeBox->append(*Gtk::make_managed<Gtk::Label>("  to  "));
+			velRangeBox->append(*Gtk::make_managed<Gtk::SpinButton>(rampMaxAdj_,0, 2));
 		velBox_.append(*velRateBox);
-			velRateBox->append(*manage(new Gtk::Label(" Maximum transition rate (sec/full): ")));
-			velRateBox->append(*manage(new Gtk::Label("rise ")));
-			velRateBox->append(*manage(new Gtk::SpinButton(maxRiseRateAdj_,0, 2)));
-			velRateBox->append(*manage(new Gtk::Label("  fall ")));
-			velRateBox->append(*manage(new Gtk::SpinButton(maxFallRateAdj_,0, 2)));
+			velRateBox->append(*Gtk::make_managed<Gtk::Label>(" Maximum transition rate (sec/full): "));
+			velRateBox->append(*Gtk::make_managed<Gtk::Label>("rise "));
+			velRateBox->append(*Gtk::make_managed<Gtk::SpinButton>(maxRiseRateAdj_,0, 2));
+			velRateBox->append(*Gtk::make_managed<Gtk::Label>("  fall "));
+			velRateBox->append(*Gtk::make_managed<Gtk::SpinButton>(maxFallRateAdj_,0, 2));
 
 	ampAdj_->signal_value_changed().connect(
 		sigc::mem_fun(*this, &ModulatorWidget::OnChange));

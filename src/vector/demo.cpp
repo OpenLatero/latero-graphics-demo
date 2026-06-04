@@ -54,7 +54,7 @@ Demo::Demo(const latero::Tactograph *dev) :
 	preview_.set_vexpand(true);
 	preview_.set_size_request(100,100); // make sure it doesn't get too small
 
-	auto vbox = manage(new Gtk::Box(Gtk::Orientation::VERTICAL));
+	auto vbox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL);
 
 	vectorWidget_ = (CanvasWidget*)peer_->CreateWidget(peer_);
 

@@ -22,7 +22,7 @@ Demo::Demo(const latero::Tactograph *dev) :
 	preview_.SetGenerator(gen_);
 	preview_.set_vexpand(true);
 
-	auto vbox = manage(new Gtk::Box(Gtk::Orientation::VERTICAL));
+	auto vbox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL);
 
 	waveWidget_ = manage(peer_->CreateWidget(peer_));
 
