@@ -70,7 +70,7 @@ Gtk::Widget *BrailleGenWidget::CreateVibWidget()
 	frame->set_child(*box);
 	frame->set_vexpand(false);
 	box->set_vexpand(false);
-	box->append(*Gtk::make_managed<latero::graphics::gtk::NumWidget>(Gtk::Orientation::HORIZONTAL, vibFreqAdj_,0, "frequency", latero::graphics::gtk::name_none));
+	box->append(*Gtk::make_managed<latero::graphics::gtk::NumWidget>(Gtk::Orientation::HORIZONTAL, vibFreqAdj_,0, "frequency"));
 	box->append(vibModWidget_);
 	vibModWidget_.set_vexpand(false);
 	vibFreqAdj_->signal_value_changed().connect(
