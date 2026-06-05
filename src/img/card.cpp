@@ -4,7 +4,6 @@
 #include "card.h"
 
 Card::Card(latero::graphics::GeneratorPtr gen, uint width, uint height, uint scale) :
-	blindMode_(false),
 	gen_(gen),
 	width_(width), 
 	height_(height),
@@ -30,7 +29,6 @@ Card::Card(const Card& p) :
 	faceUpAnim_ = p.faceUpAnim_;
 	width_ = p.width_;
 	height_ = p.height_;
-	blindMode_ = p.blindMode_;
 	gen_ = p.gen_;
 	largeFaceUpAnim_ = p.largeFaceUpAnim_;
 
@@ -59,7 +57,6 @@ Card Card::operator= (const Card& p)
 	faceUpAnim_ = p.faceUpAnim_;
 	width_ = p.width_;
 	height_ = p.height_;
-	blindMode_ = p.blindMode_;
 	gen_ = p.gen_;
 	UpdateImg();
 	return *this;
@@ -73,12 +70,7 @@ void Card::ClearImg()
 
 void Card::UpdateImg()
 {
-	if (blindMode_)
-		img_.Clear(0xffffffff);
-	else
-		img_.Set(faceUpAnim_);
-
-	//img_.ShowCursor(state_  == state_sel);
+	img_.Set(faceUpAnim_);
 }
 
 void Card::OnClicked(int n_press, double x, double y)
@@ -88,12 +80,6 @@ void Card::OnClicked(int n_press, double x, double y)
 		signal_clicked1(this);
 	else if (button == 3)
 		signal_clicked3(this);
-}
-
-void Card::SetBlind(bool v)
-{
-	blindMode_ = v;
-	UpdateImg();
 }
 
 void Card::SetDisplayState(const latero::graphics::Point &center, double angle, const latero::BiasedImg &frame)

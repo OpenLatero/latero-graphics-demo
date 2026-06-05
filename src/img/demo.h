@@ -47,14 +47,13 @@ private:
 	CardSet demoCards_;
 	const CardSet* currentSet_;
 
+	// large visualization of the current card, at the top of the window
 	latero::graphics::BaseVirtualSurfaceWidget zoomImg_;
 
 	CardTable demoTable_;
 	Card* curCard_; // currently activated card	
 	GeneratorHandlePtr gen_;
 
-	// OLD (deprecated):
-	// std::vector<Glib::RefPtr<Gtk::RadioAction> > setActions_;
 	std::vector<Gtk::CheckButton*> setActions_;
 
 	latero::graphics::INTPoint keyLocation_;

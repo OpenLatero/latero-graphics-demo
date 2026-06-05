@@ -94,8 +94,12 @@ bool VirtualSurfaceWidget::RefreshCursor()
 
 bool VirtualSurfaceWidget::OnCheckPeer()
 {
-	if (peer_->GetLastModified() > bgUpdateTime_)
-		RefreshBackground();
+	if (peer_)
+	{
+		// if the background has never been updated or peer has been modified since
+		if (bgUpdateTime_.is_not_a_date_time() || (peer_->GetLastModified() > bgUpdateTime_))
+			RefreshBackground();
+	}
 	return true;
 }
 

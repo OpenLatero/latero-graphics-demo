@@ -18,10 +18,8 @@ public:
 
 	void Initialize();
 
-	void SetBlind(bool v);
-
-	void SetDisplayState(const latero::graphics::Point &center, double angle, const latero::BiasedImg &frame);
-	void HideTD();
+	void SetDisplayState(const latero::graphics::Point &center, double angle, const latero::BiasedImg &frame); // used but probably has no effect
+	void HideTD(); // never used
 
 	inline latero::graphics::GeneratorPtr GetGenerator() {
 		return gen_;
@@ -30,9 +28,10 @@ public:
 	sigc::signal<void(Card*)> signal_clicked1;
 	sigc::signal<void(Card*)> signal_clicked3;
 
+	/** This is used to set the content of the large display. */
 	latero::graphics::gtk::Animation GetLargeFaceUpAnim();
 
-
+	/** This is used to mark the card as selected. */
 	void ShowCursor(bool v) {
 		img_.ShowBorder(v);
 	}
@@ -43,7 +42,6 @@ protected:
 
 	void OnClicked(int n_press, double x, double y);
 	Glib::RefPtr<Gtk::GestureClick> clickGesture_;
-	bool blindMode_;
 
 	latero::graphics::GeneratorPtr gen_;
 
