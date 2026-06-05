@@ -59,57 +59,44 @@ Demo::~Demo()
 
 void Demo::LoadCards(const latero::Tactograph *dev)
 {
-	std::string path = media_dir+"/img/";
+	std::vector<std::string> files;
+	
+	files = { "umbrella.gen", "car.gen", "house.gen", "phone.gen", "necklace.gen", "leaf.gen", 
+		      "cloud.gen", "cup.gen", "sun.gen", "balloons.gen", "hand.gen", "fork.gen" };
+	assert(files.size() == 12);
+	cardPages_.push_back(CreateCardsFromFiles(media_dir+"/img/vib-objects/", files, dev));
 
-	auto cardSet1 = std::vector<CardPtr>();
-	std::string path1 = media_dir+"/img/vib-objects/";
-	std::vector<std::string> files1 = {
-		"umbrella.gen", "car.gen", "house.gen", "phone.gen", "necklace.gen", "leaf.gen", 
-		"cloud.gen", "cup.gen", "sun.gen", "balloons.gen", "hand.gen", "fork.gen" };
-	for (const auto& file : files1)
-	{
-		if (cardSet1.size() < 12)
-		{
-			latero::graphics::GeneratorPtr gen = latero::graphics::Generator::Create(path1 + file, dev);
-			cardSet1.push_back(Card::Create(gen,DefaultCardWidth, DefaultCardWidth * dev->GetSurfaceHeight() / dev->GetSurfaceWidth(), SCALE_UP_FACTOR));
-		}
-	}
-	cardCollection_.push_back(cardSet1);
-
-	auto cardSet2 = std::vector<CardPtr>();
-	std::string path2 = media_dir+"/img/combo-objects/";
-	std::vector<std::string> files2 = {
-		"leaf.gen", "car.gen", "crown.gen", "umbrella.gen", "sun.gen", "cup.gen", 
-		"boat.gen", "candle.gen", "shirt.gen", "flashlight.gen", "necklace.gen", "insect.gen" };
-	for (const auto& file : files2)
-	{
-		if (cardSet2.size() < 12)
-		{
-			latero::graphics::GeneratorPtr gen = latero::graphics::Generator::Create(path2 + file, dev);
-			cardSet2.push_back(Card::Create(gen,DefaultCardWidth, DefaultCardWidth * dev->GetSurfaceHeight() / dev->GetSurfaceWidth(), SCALE_UP_FACTOR));
-		}
-	}
-	cardCollection_.push_back(cardSet2);
+	files = { "leaf.gen", "car.gen", "crown.gen", "umbrella.gen", "sun.gen", "cup.gen", 
+		      "boat.gen", "candle.gen", "shirt.gen", "flashlight.gen", "necklace.gen", "insect.gen" };
+	assert(files.size() == 12);
+	cardPages_.push_back(CreateCardsFromFiles(media_dir+"/img/combo-objects/", files, dev));
 }
 
-void Demo::LoadSet(std::vector<CardPtr> set)
+std::vector<CardPtr> Demo::CreateCardsFromFiles(const std::string &path, const std::vector<std::string> &files, const latero::Tactograph *dev)
+{
+	std::vector<CardPtr> cards;
+	for (const auto& file : files)
+	{
+		latero::graphics::GeneratorPtr gen = latero::graphics::Generator::Create(path+file, dev);
+		cards.push_back(Card::Create(gen,DefaultCardWidth, DefaultCardWidth * dev->GetSurfaceHeight() / dev->GetSurfaceWidth(), SCALE_UP_FACTOR));
+	}
+	return cards;
+}
+
+void Demo::LoadPage(std::vector<CardPtr> set)
 {
 	for (uint i=0; i<set.size(); ++i)
- 		set[i]->signal_clicked.connect(sigc::mem_fun(*this, &Demo::OnCardClicked));
+ 		set[i]->signal_clicked.connect(sigc::mem_fun(*this, &Demo::OnCardSelected));
 
 	UpdateGrid(set);
 }
 
-void Demo::UpdateZoom(CardPtr card)
-{
-	latero::graphics::gtk::Animation  anim = card->GetLargeFaceUpAnim();
-	zoomImg_.Set(anim);
-}
 
-void Demo::OnCardClicked(CardPtr card)
+void Demo::OnCardSelected(CardPtr card)
 {
 	gen_->SetGenerator(card->GetGenerator());
-	UpdateZoom(card);
+	latero::graphics::gtk::Animation  anim = card->GetLargeFaceUpAnim();
+	zoomImg_.Set(anim);
 }
 
 
@@ -136,21 +123,21 @@ bool Demo::OnIdle()
 
 void Demo::OnPrevPage()
 {
-	page_ = (page_ - 1 + cardCollection_.size()) % cardCollection_.size();
+	page_ = (page_ - 1 + cardPages_.size()) % cardPages_.size();
 	UpdatePage();
 }
 
 void Demo::OnNextPage	()
 {
-	page_ = (page_+1)%cardCollection_.size();
+	page_ = (page_+1)%cardPages_.size();
 	UpdatePage();
 }
 
 void Demo::UpdatePage()
 {
-	auto set = cardCollection_[page_];
-	LoadSet(set);
-	OnCardClicked(set[0]);
+	auto set = cardPages_[page_];
+	LoadPage(set);
+	OnCardSelected(set[0]);
 }
 
 

@@ -23,17 +23,19 @@ protected:
 	void OnNextPage();
 	void UpdatePage();
 
-	void LoadSet(std::vector<CardPtr> set);
-
-	void OnCardClicked(CardPtr card);
-	bool OnIdle();
-	void UpdateZoom(CardPtr card);
-
 	void LoadCards(const latero::Tactograph *dev);
+	void LoadPage(std::vector<CardPtr> set);
+
+	std::vector<CardPtr> CreateCardsFromFiles(const std::string &path, const std::vector<std::string> &files, const latero::Tactograph *dev);
+
+
+	void OnCardSelected(CardPtr card);
+	bool OnIdle();
+
+
 	void UpdateGrid(std::vector<CardPtr> cards);
 
-
-	std::vector< std::vector<CardPtr> > cardCollection_;
+	std::vector< std::vector<CardPtr> > cardPages_;
 
 	// large visualization of the current card, at the top of the window
 	latero::graphics::BaseVirtualSurfaceWidget zoomImg_;
