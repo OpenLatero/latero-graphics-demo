@@ -36,8 +36,6 @@ private:
 	void SetCurrentCard(CardPtr card);
 	std::vector<CardSet*> cardCollection_;
 
-	const CardSet* currentSet_;
-
 	// large visualization of the current card, at the top of the window
 	latero::graphics::BaseVirtualSurfaceWidget zoomImg_;
 

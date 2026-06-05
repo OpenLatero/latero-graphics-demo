@@ -11,7 +11,7 @@
 namespace ImgDemo {
 
 Demo::Demo(const latero::Tactograph *dev) :
-	currentSet_(NULL),
+	//currentSet_(NULL),
 	zoomImg_(dev),
 	demoTable_(NbCardsX,NbCardsY),
 	curCard_(NULL),
@@ -101,7 +101,7 @@ void Demo::UpdateSet()
 {
 	CardSet *set = cardCollection_[currentSetIdx_];
 	LoadSet(*set);
-	OnDemoClick(demoTable_.GetFirstCard());
+	OnDemoClick((*set)[0]);
 }
 
 
@@ -109,23 +109,18 @@ void Demo::ClearSet()
 {
 	demoTable_.RemoveCards();
 	zoomImg_.Clear(0xffffffff);
-	currentSet_ = NULL;
 	SetCurrentCard(NULL);
 }
 
 
 void Demo::LoadSet(const CardSet &set)
 {
-	if (&set == currentSet_)
-		return;
 	ClearSet();
-
-	currentSet_ = &set;
 
 	for (uint i=0; i<set.size(); ++i)
  		set[i]->signal_clicked.connect(sigc::mem_fun(*this, &Demo::OnDemoClick));
 
-	demoTable_.SetCards(*currentSet_);
+	demoTable_.SetCards(set);
 }
 
 void Demo::UpdateZoom(CardPtr card)

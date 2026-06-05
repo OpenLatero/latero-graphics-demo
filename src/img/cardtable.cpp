@@ -41,18 +41,5 @@ void CardTable::RemoveCards()
     cards_.clear();
 }
 
-void CardTable::GetLocation(CardPtr card, int &x, int &y)
-{
-	for (x=0; x<(int)sx_; ++x)
-		for (y=0; y<(int)sy_; ++y)
-			if (GetCard(x,y) == card)
-				return;
-	assert(0); 
-}
 
-CardPtr CardTable::GetCard(uint x, uint y)
-{
-	assert(x<sx_ && y<sy_);
-	return cards_[y*sx_+x];
-}
 #endif
