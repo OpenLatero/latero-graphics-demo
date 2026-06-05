@@ -14,8 +14,6 @@ public:
 	~Card();
 
 	Card(const Card& p);
-	Card operator= (const Card& p);
-
 
 	inline latero::graphics::GeneratorPtr GetGenerator() {
 		return gen_;

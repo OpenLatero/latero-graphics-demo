@@ -2,6 +2,7 @@
 #ifndef DISABLE_GRAPHICS_DEMO
 
 #include "card.h"
+#include <iostream>
 
 Card::Card(latero::graphics::GeneratorPtr gen, uint width, uint height, uint scale) :
 	gen_(gen),
@@ -19,8 +20,6 @@ Card::Card(latero::graphics::GeneratorPtr gen, uint width, uint height, uint sca
 
 	Initialize();
 }
-
-
 
 Card::Card(const Card& p) :
 	img_(p.gen_->Dev())
@@ -50,18 +49,6 @@ void Card::Initialize()
 	add_controller(clickGesture_);
 	UpdateImg();
 }
-
-Card Card::operator= (const Card& p)
-{ 
-	if (&p == this) return *this;
-	largeFaceUpAnim_ = p.largeFaceUpAnim_;
-	faceUpAnim_ = p.faceUpAnim_;
-	width_ = p.width_;
-	height_ = p.height_;
-	gen_ = p.gen_;
-	UpdateImg();
-	return *this;
-};
 
 
 void Card::UpdateImg()
