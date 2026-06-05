@@ -11,7 +11,7 @@ public:
 	CardCollection();
 	virtual ~CardCollection();
 
-	bool Load(std::string file, const latero::Tactograph *dev, uint scale);
+	void LoadCardSet(std::string file, const latero::Tactograph *dev, uint scale);
 
 };
 

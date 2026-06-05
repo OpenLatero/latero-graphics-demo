@@ -19,7 +19,8 @@ Demo::Demo(const latero::Tactograph *dev) :
 { 
 	gen_ = GeneratorHandlePtr(new GeneratorHandle(dev));
 
-	cardCollection_.Load(media_dir+"/img/main.col", dev, SCALE_UP_FACTOR);
+	cardCollection_.LoadCardSet(media_dir+"/img/vib-objects/vib-objects.set", dev, SCALE_UP_FACTOR);
+	cardCollection_.LoadCardSet(media_dir+"/img/combo-objects/combo-objects.set", dev, SCALE_UP_FACTOR);
 
 	auto box = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL);
 	auto hbox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
