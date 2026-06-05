@@ -6,10 +6,9 @@
 CardTable::CardTable(uint sx, uint sy) :
 	sx_(sx), sy_(sy)
 {
-	append(grid_);
-	grid_.set_margin(10);
-	grid_.set_row_spacing(10);
-	grid_.set_column_spacing(10);
+	set_margin(10);
+	set_row_spacing(10);
+	set_column_spacing(10);
 }
 
 CardTable::~CardTable()
@@ -18,27 +17,22 @@ CardTable::~CardTable()
 
 void CardTable::SetCards(std::vector<CardPtr> cards)
 {
-	RemoveCards();
-    cards_ = cards;
 	for (uint x=0; x<sx_; ++x)
+	{
 		for (uint y=0; y<sy_; ++y)
-			SetCard(x, y, cards[y*sx_+x]);
-}
-
-void CardTable::SetCard(uint x, uint y, CardPtr card)
-{
-	/** @todo: doesn't work if a card is already at that location */
-	grid_.attach(*card, x, y, 1, 1);
-	card->set_vexpand(true);
-	card->set_hexpand(true);	
-    cards_[y*sx_+x] = card;
+		{
+			auto card = cards[y*sx_+x];
+			card->set_vexpand(true);
+			card->set_hexpand(true);	
+			attach(*card, x, y, 1, 1);
+		}
+	}	
 }
 
 void CardTable::RemoveCards()
 {
-    for (auto card : cards_)
-        grid_.remove(*card);
-    cards_.clear();
+	for (auto* child : get_children())
+    	remove(*child);
 }
 
 
