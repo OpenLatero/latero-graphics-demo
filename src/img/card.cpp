@@ -6,11 +6,8 @@
 
 Card::Card(latero::graphics::GeneratorPtr gen, uint width, uint height, uint scale) :
 	gen_(gen),
-	width_(width), 
-	height_(height),
 	img_(gen->Dev())
 {  
-	//img_.SetRounded();
 	assert(gen);
 
 	// too slow to be done at runtime
@@ -24,10 +21,7 @@ Card::Card(latero::graphics::GeneratorPtr gen, uint width, uint height, uint sca
 Card::Card(const Card& p) :
 	img_(p.gen_->Dev())
 {
-	//img_.SetRounded();
 	faceUpAnim_ = p.faceUpAnim_;
-	width_ = p.width_;
-	height_ = p.height_;
 	gen_ = p.gen_;
 	largeFaceUpAnim_ = p.largeFaceUpAnim_;
 
@@ -43,21 +37,13 @@ void Card::Initialize()
 {
 	append(img_);
 	clickGesture_ = Gtk::GestureClick::create();
-	clickGesture_->set_button(0); // listen to all buttons
+	clickGesture_->set_button(1);
 	clickGesture_->signal_pressed().connect(
-		sigc::mem_fun(*this, &Card::OnClicked));
+		[this](int, double, double) { signal_clicked(this); });
 	add_controller(clickGesture_);
 	img_.Set(faceUpAnim_);
 }
 
-
-
-void Card::OnClicked(int n_press, double x, double y)
-{
-	guint button = clickGesture_->get_current_button();
-	if (button == 1)
-		signal_clicked1(this);
-}
 
 latero::graphics::gtk::Animation Card::GetLargeFaceUpAnim()
 {

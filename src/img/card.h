@@ -19,7 +19,7 @@ public:
 		return gen_;
 	}
 
-	sigc::signal<void(Card*)> signal_clicked1;
+	sigc::signal<void(Card*)> signal_clicked;
 
 	/** This is used to set the content of the large display. */
 	latero::graphics::gtk::Animation GetLargeFaceUpAnim();
@@ -27,16 +27,13 @@ public:
 protected:
 	void Initialize();
 
-	void OnClicked(int n_press, double x, double y);
-	Glib::RefPtr<Gtk::GestureClick> clickGesture_;
+Glib::RefPtr<Gtk::GestureClick> clickGesture_;
 
 	latero::graphics::GeneratorPtr gen_;
 
-	uint width_, height_;
-
 	latero::graphics::gtk::Animation largeFaceUpAnim_;
 	latero::graphics::gtk::Animation faceUpAnim_;
-	
+
 	latero::graphics::BaseVirtualSurfaceWidget img_;
 
 };

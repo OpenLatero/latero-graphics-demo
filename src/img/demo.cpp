@@ -20,7 +20,6 @@ Demo::Demo(const latero::Tactograph *dev) :
 { 
 	gen_ = GeneratorHandlePtr(new GeneratorHandle(dev));
 
-	//zoomImg_.SetRounded();
 	cardSets_.Load(media_dir+"/img/main.col", dev, SCALE_UP_FACTOR);
 
 	for (uint i=0; i<cardSets_.size(); ++i)
@@ -38,20 +37,15 @@ Demo::Demo(const latero::Tactograph *dev) :
 	auto prevButton = Gtk::make_managed<Gtk::Button>("<");
 	auto nextButton = Gtk::make_managed<Gtk::Button>(">");
 
-	set_child(*box);
 	zoomImg_.set_vexpand(true);
+	demoTable_.set_hexpand(true);
+
+	set_child(*box);
 	box->append(zoomImg_);
 	box->append(*hbox);
 		hbox->append(*prevButton);
-		demoTable_.set_hexpand(true);
 		hbox->append(demoTable_);
 		hbox->append(*nextButton);
-
-	auto clickGesture = Gtk::GestureClick::create();
-	clickGesture->set_button(3);
-	clickGesture->signal_pressed().connect(
-		sigc::mem_fun(*this, &Demo::OnBoardClick));
-	add_controller(clickGesture);
 
 	prevButton->signal_clicked().connect(sigc::mem_fun(*this, &Demo::OnPrevSet));
 	nextButton->signal_clicked().connect(sigc::mem_fun(*this, &Demo::OnNextSet));
@@ -127,21 +121,10 @@ void Demo::LoadSet(const CardSet &set)
 
 	for (uint i=0; i<demoCards_.size(); ++i)
 	{
- 		demoCards_[i]->signal_clicked1.connect(sigc::mem_fun(*this, &Demo::OnDemoClick));
+ 		demoCards_[i]->signal_clicked.connect(sigc::mem_fun(*this, &Demo::OnDemoClick));
 	}
 
 	demoTable_.SetCards(demoCards_);
-}
-
-void Demo::Reset()
-{
-	zoomImg_.Clear(0xffffffff);
-	SetCurrentCard(NULL);
-}
-
-void Demo::OnRightClick(Card* card)
-{
-	Reset();
 }
 
 void Demo::UpdateZoom(Card* card)
@@ -152,17 +135,9 @@ void Demo::UpdateZoom(Card* card)
 
 void Demo::OnDemoClick(Card* card)
 {
-	Reset();
 	SetCurrentCard(card);
 	UpdateZoom(card);
-
 	demoTable_.GetLocation(card, keyLocation_.x, keyLocation_.y);
-}
-
-
-void Demo::OnBoardClick(int n_press, double x, double y)
-{
-	Reset();
 }
 
 
@@ -183,10 +158,6 @@ bool Demo::OnIdle()
 		Glib::PRIORITY_DEFAULT_IDLE); 
 
 	return false;
-}
-
-void Demo::OnShowCursor()
-{
 }
 
 bool Demo::OnKeyPress(guint keyval, guint keycode, Gdk::ModifierType state)

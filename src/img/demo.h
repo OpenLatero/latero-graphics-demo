@@ -16,7 +16,6 @@ class Demo : public ::Demo
 public:
 	Demo(const latero::Tactograph *dev);
 	virtual ~Demo();
-
 	virtual latero::graphics::GeneratorPtr Gen();
 
 protected:
@@ -26,14 +25,10 @@ protected:
 	void UpdateSet();
 	void ClearSet();
 	void LoadSet(const CardSet &set);
-	void Reset();
 
-	void OnBoardClick(int n_press, double x, double y);
 	void OnDemoClick(Card* card);
-	void OnRightClick(Card* card);
 	void OnSetChanged();
 	bool OnIdle();
-	void OnShowCursor();
 	bool OnKeyPress(guint keyval, guint keycode, Gdk::ModifierType state);
 	void UpdateZoom(Card* card);
 
