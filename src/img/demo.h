@@ -38,7 +38,7 @@ protected:
 	std::vector< std::vector<CardPtr> > cardPages_;
 
 	// large visualization of the current card, at the top of the window
-	latero::graphics::BaseVirtualSurfaceWidget zoomImg_;
+	latero::graphics::BaseVirtualSurfaceWidget display_;
 
 	GeneratorHandlePtr gen_;
 

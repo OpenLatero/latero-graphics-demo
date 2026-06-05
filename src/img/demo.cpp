@@ -14,7 +14,7 @@
 namespace ImgDemo {
 
 Demo::Demo(const latero::Tactograph *dev) :
-	zoomImg_(dev),
+	display_(dev),
 	page_(0)
 { 
 	gen_ = GeneratorHandlePtr(new GeneratorHandle(dev));
@@ -30,11 +30,11 @@ Demo::Demo(const latero::Tactograph *dev) :
 	auto prevButton = Gtk::make_managed<Gtk::Button>("<");
 	auto nextButton = Gtk::make_managed<Gtk::Button>(">");
 
-	zoomImg_.set_vexpand(true);
+	display_.set_vexpand(true);
 	grid_.set_hexpand(true);
 
 	set_child(*box);
-	box->append(zoomImg_);
+	box->append(display_);
 	box->append(*hbox);
 		hbox->append(*prevButton);
 		hbox->append(grid_);
@@ -50,7 +50,7 @@ Demo::Demo(const latero::Tactograph *dev) :
 		REFRESH_INTERVAL_MS,
 		Glib::PRIORITY_DEFAULT_IDLE); 
 
-	zoomImg_.ShowCursor();
+	display_.ShowCursor();
 }
 
 Demo::~Demo()
@@ -60,7 +60,7 @@ Demo::~Demo()
 void Demo::LoadCards(const latero::Tactograph *dev)
 {
 	std::vector<std::string> files;
-	
+
 	files = { "umbrella.gen", "car.gen", "house.gen", "phone.gen", "necklace.gen", "leaf.gen", 
 		      "cloud.gen", "cup.gen", "sun.gen", "balloons.gen", "hand.gen", "fork.gen" };
 	assert(files.size() == 12);
@@ -78,7 +78,7 @@ std::vector<CardPtr> Demo::CreateCardsFromFiles(const std::string &path, const s
 	for (const auto& file : files)
 	{
 		latero::graphics::GeneratorPtr gen = latero::graphics::Generator::Create(path+file, dev);
-		cards.push_back(Card::Create(gen,DefaultCardWidth, DefaultCardWidth * dev->GetSurfaceHeight() / dev->GetSurfaceWidth(), SCALE_UP_FACTOR));
+		cards.push_back(Card::Create(gen));
 	}
 	return cards;
 }
@@ -96,7 +96,7 @@ void Demo::OnCardSelected(CardPtr card)
 {
 	gen_->SetGenerator(card->GetGenerator());
 	latero::graphics::gtk::Animation  anim = card->GetLargeFaceUpAnim();
-	zoomImg_.Set(anim);
+	display_.Set(anim);
 }
 
 
@@ -107,7 +107,7 @@ bool Demo::OnIdle()
 		latero::BiasedImg frame = gen_->GetLatestFrame();
 		latero::graphics::Point center = gen_->GetDisplayCenter();
 		double angle = gen_->GetDisplayOrientation();
-		zoomImg_.SetDisplayState(center, angle, frame);
+		display_.SetDisplayState(center, angle, frame);
 	}
 
 

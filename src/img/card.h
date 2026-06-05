@@ -15,13 +15,11 @@ class Card : public Gtk::Box, public boost::enable_shared_from_this<Card>
 {
 public:
 
-	static CardPtr Create(latero::graphics::GeneratorPtr gen, uint width, uint height, uint scale) {
-		return CardPtr(new Card(gen, width, height, scale));
+	static CardPtr Create(latero::graphics::GeneratorPtr gen) {
+		return CardPtr(new Card(gen));
 	}
 
 	~Card();
-
-	Card(const Card& p);
 
 	inline latero::graphics::GeneratorPtr GetGenerator() {
 		return gen_;
@@ -33,8 +31,7 @@ public:
 	latero::graphics::gtk::Animation GetLargeFaceUpAnim();
 
 protected:
-	Card(latero::graphics::GeneratorPtr gen, uint width, uint height, uint scale);
-	void Initialize();
+	Card(latero::graphics::GeneratorPtr gen);
 
 	Glib::RefPtr<Gtk::GestureClick> clickGesture_;
 
