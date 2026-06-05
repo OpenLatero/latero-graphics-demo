@@ -62,11 +62,6 @@ Card Card::operator= (const Card& p)
 	return *this;
 };
 
-void Card::ClearImg()
-{
-	img_.Clear(0xffffffff);
-}
-
 
 void Card::UpdateImg()
 {
@@ -81,17 +76,6 @@ void Card::OnClicked(int n_press, double x, double y)
 	else if (button == 3)
 		signal_clicked3(this);
 }
-
-void Card::SetDisplayState(const latero::graphics::Point &center, double angle, const latero::BiasedImg &frame)
-{
-	img_.SetDisplayState(center, angle, frame);
-}
-
-void Card::HideTD()
-{
-	img_.ShowCursor(false);
-}
-
 
 latero::graphics::gtk::Animation Card::GetLargeFaceUpAnim()
 {

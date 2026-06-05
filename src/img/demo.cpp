@@ -136,7 +136,6 @@ void Demo::LoadSet(const CardSet &set)
 
 void Demo::Reset()
 {
-	GetCard(keyLocation_.x, keyLocation_.y)->ShowCursor(false);
 	zoomImg_.Clear(0xffffffff);
 	SetCurrentCard(NULL);
 }
@@ -175,7 +174,6 @@ bool Demo::OnIdle()
 		latero::BiasedImg frame = gen_->GetLatestFrame();
 		latero::graphics::Point center = gen_->GetDisplayCenter();
 		double angle = gen_->GetDisplayOrientation();
-		curCard_->SetDisplayState(center, angle, frame);
 		zoomImg_.SetDisplayState(center, angle, frame);
 	}
 
@@ -194,7 +192,6 @@ void Demo::OnShowCursor()
 
 bool Demo::OnKeyPress(guint keyval, guint keycode, Gdk::ModifierType state)
 {
-	GetCard(keyLocation_.x, keyLocation_.y)->ShowCursor(false);
 	const auto key = keyval;
 
 	// select
@@ -232,12 +229,6 @@ bool Demo::OnKeyPress(guint keyval, guint keycode, Gdk::ModifierType state)
 
 	keyLocation_.y = keyLocation_.y%2;
 	if (keyLocation_.y<0) keyLocation_.y = 1;
-
-	auto card = GetCard(keyLocation_.x, keyLocation_.y);
-	if (card)
-		card->ShowCursor(true);
-	else
-		printf("No card at location %d,%d\n", keyLocation_.x, keyLocation_.y);
 
 	return true;
 }

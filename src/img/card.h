@@ -16,10 +16,6 @@ public:
 	Card(const Card& p);
 	Card operator= (const Card& p);
 
-	void Initialize();
-
-	void SetDisplayState(const latero::graphics::Point &center, double angle, const latero::BiasedImg &frame); // used but probably has no effect
-	void HideTD(); // never used
 
 	inline latero::graphics::GeneratorPtr GetGenerator() {
 		return gen_;
@@ -31,14 +27,10 @@ public:
 	/** This is used to set the content of the large display. */
 	latero::graphics::gtk::Animation GetLargeFaceUpAnim();
 
-	/** This is used to mark the card as selected. */
-	void ShowCursor(bool v) {
-		img_.ShowBorder(v);
-	}
-
 	void UpdateImg();
-	void ClearImg();
+
 protected:
+	void Initialize();
 
 	void OnClicked(int n_press, double x, double y);
 	Glib::RefPtr<Gtk::GestureClick> clickGesture_;

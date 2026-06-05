@@ -38,10 +38,7 @@ void CardTable::SetCard(uint x, uint y, Card* card)
 void CardTable::RemoveCards()
 {
     for (auto card : cards_)
-    {
-        card->ClearImg();
         grid_.remove(*card);
-    }
     cards_.clear();
 }
 
