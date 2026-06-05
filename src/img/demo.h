@@ -3,9 +3,11 @@
 #include "../config.h"
 #ifndef DISABLE_GRAPHICS_DEMO
 
-#include "cardset.h"
 #include "../generatorhandle.h"
 #include "../demo.h"
+#include <vector>
+#include <laterographics/generator.h>
+#include "card.h"
 
 namespace ImgDemo {
 
@@ -23,22 +25,19 @@ protected:
 
 	void LoadSet(std::vector<CardPtr> set);
 
-	void OnDemoClick(CardPtr card);
+	void OnCardClicked(CardPtr card);
 	bool OnIdle();
 	void UpdateZoom(CardPtr card);
 
-
-private:
 	void LoadCards(const latero::Tactograph *dev);
 	void UpdateGrid(std::vector<CardPtr> cards);
 
-	void SetCurrentCard(CardPtr card);
-	std::vector<CardSet*> cardCollection_;
+
+	std::vector< std::vector<CardPtr> > cardCollection_;
 
 	// large visualization of the current card, at the top of the window
 	latero::graphics::BaseVirtualSurfaceWidget zoomImg_;
 
-	CardPtr curCard_; // currently activated card	
 	GeneratorHandlePtr gen_;
 
 	int page_;

@@ -4,6 +4,9 @@
 #include "demo.h"
 #include "settings.h"
 #include "../generatorhandle.h"
+#include <vector>
+#include <laterographics/generator.h>
+#include "card.h"
 
 #define REFRESH_INTERVAL_MS 30
 #define SCALE_UP_FACTOR 5
@@ -12,7 +15,6 @@ namespace ImgDemo {
 
 Demo::Demo(const latero::Tactograph *dev) :
 	zoomImg_(dev),
-	curCard_(NULL),
 	page_(0)
 { 
 	gen_ = GeneratorHandlePtr(new GeneratorHandle(dev));
@@ -53,43 +55,38 @@ Demo::Demo(const latero::Tactograph *dev) :
 
 Demo::~Demo()
 {
-   for (auto *card : cardCollection_)
-        delete card;
-	cardCollection_.clear();
-
-	//ClearSet();
 }
 
 void Demo::LoadCards(const latero::Tactograph *dev)
 {
 	std::string path = media_dir+"/img/";
 
-	auto cardSet1 = new CardSet();	
+	auto cardSet1 = std::vector<CardPtr>();
 	std::string path1 = media_dir+"/img/vib-objects/";
 	std::vector<std::string> files1 = {
 		"umbrella.gen", "car.gen", "house.gen", "phone.gen", "necklace.gen", "leaf.gen", 
 		"cloud.gen", "cup.gen", "sun.gen", "balloons.gen", "hand.gen", "fork.gen" };
 	for (const auto& file : files1)
 	{
-		if (cardSet1->size() < 12)
+		if (cardSet1.size() < 12)
 		{
 			latero::graphics::GeneratorPtr gen = latero::graphics::Generator::Create(path1 + file, dev);
-			cardSet1->push_back(Card::Create(gen,DefaultCardWidth, DefaultCardWidth * dev->GetSurfaceHeight() / dev->GetSurfaceWidth(), SCALE_UP_FACTOR));
+			cardSet1.push_back(Card::Create(gen,DefaultCardWidth, DefaultCardWidth * dev->GetSurfaceHeight() / dev->GetSurfaceWidth(), SCALE_UP_FACTOR));
 		}
 	}
 	cardCollection_.push_back(cardSet1);
 
-	auto cardSet2 = new CardSet();
+	auto cardSet2 = std::vector<CardPtr>();
 	std::string path2 = media_dir+"/img/combo-objects/";
 	std::vector<std::string> files2 = {
 		"leaf.gen", "car.gen", "crown.gen", "umbrella.gen", "sun.gen", "cup.gen", 
 		"boat.gen", "candle.gen", "shirt.gen", "flashlight.gen", "necklace.gen", "insect.gen" };
 	for (const auto& file : files2)
 	{
-		if (cardSet2->size() < 12)
+		if (cardSet2.size() < 12)
 		{
 			latero::graphics::GeneratorPtr gen = latero::graphics::Generator::Create(path2 + file, dev);
-			cardSet2->push_back(Card::Create(gen,DefaultCardWidth, DefaultCardWidth * dev->GetSurfaceHeight() / dev->GetSurfaceWidth(), SCALE_UP_FACTOR));
+			cardSet2.push_back(Card::Create(gen,DefaultCardWidth, DefaultCardWidth * dev->GetSurfaceHeight() / dev->GetSurfaceWidth(), SCALE_UP_FACTOR));
 		}
 	}
 	cardCollection_.push_back(cardSet2);
@@ -98,7 +95,7 @@ void Demo::LoadCards(const latero::Tactograph *dev)
 void Demo::LoadSet(std::vector<CardPtr> set)
 {
 	for (uint i=0; i<set.size(); ++i)
- 		set[i]->signal_clicked.connect(sigc::mem_fun(*this, &Demo::OnDemoClick));
+ 		set[i]->signal_clicked.connect(sigc::mem_fun(*this, &Demo::OnCardClicked));
 
 	UpdateGrid(set);
 }
@@ -109,16 +106,16 @@ void Demo::UpdateZoom(CardPtr card)
 	zoomImg_.Set(anim);
 }
 
-void Demo::OnDemoClick(CardPtr card)
+void Demo::OnCardClicked(CardPtr card)
 {
-	SetCurrentCard(card);
+	gen_->SetGenerator(card->GetGenerator());
 	UpdateZoom(card);
 }
 
 
 bool Demo::OnIdle()
 {
-	if (curCard_)
+	if (gen_)
 	{
 		latero::BiasedImg frame = gen_->GetLatestFrame();
 		latero::graphics::Point center = gen_->GetDisplayCenter();
@@ -151,20 +148,12 @@ void Demo::OnNextPage	()
 
 void Demo::UpdatePage()
 {
-	CardSet *set = cardCollection_[page_];
-	LoadSet(*set);
-	OnDemoClick((*set)[0]);
+	auto set = cardCollection_[page_];
+	LoadSet(set);
+	OnCardClicked(set[0]);
 }
 
 
-void Demo::SetCurrentCard(CardPtr card)
-{
-	curCard_ = card;
-	if (card)
-		gen_->SetGenerator(card->GetGenerator());
-	else
-		gen_->SetGenerator(latero::graphics::GeneratorPtr());
-}
 
 void Demo::UpdateGrid(std::vector<CardPtr> cards)
 {
@@ -184,7 +173,10 @@ void Demo::UpdateGrid(std::vector<CardPtr> cards)
 }
 
 
-latero::graphics::GeneratorPtr Demo::Gen() { return gen_; };
+latero::graphics::GeneratorPtr Demo::Gen()
+{ 
+	return gen_; 
+};
 
 } // namespace
 
