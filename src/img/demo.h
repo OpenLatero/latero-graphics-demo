@@ -25,15 +25,15 @@ protected:
 	void ClearSet();
 	void LoadSet(const CardSet &set);
 
-	void OnDemoClick(Card* card);
+	void OnDemoClick(CardPtr card);
 	bool OnIdle();
-	void UpdateZoom(Card* card);
+	void UpdateZoom(CardPtr card);
 
 
 private:
 	void LoadCards(const latero::Tactograph *dev);
 
-	void SetCurrentCard(Card *card);
+	void SetCurrentCard(CardPtr card);
 	std::vector<CardSet*> cardCollection_;
 
 	CardSet demoCards_;
@@ -43,7 +43,7 @@ private:
 	latero::graphics::BaseVirtualSurfaceWidget zoomImg_;
 
 	CardTable demoTable_;
-	Card* curCard_; // currently activated card	
+	CardPtr curCard_; // currently activated card	
 	GeneratorHandlePtr gen_;
 
 	int currentSetIdx_;

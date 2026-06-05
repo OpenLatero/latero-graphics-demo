@@ -11,17 +11,17 @@ class CardTable : public Gtk::Box
 public:
 	CardTable(uint sx, uint sy);
 	~CardTable();
-	void SetCards(std::vector<Card*> &cards);
-	void SetCard(uint x, uint y, Card* card);
+	void SetCards(std::vector<CardPtr> &cards);
+	void SetCard(uint x, uint y, CardPtr card);
 	void RemoveCards();
-	void GetLocation(Card* card, int &x, int &y);
-	Card* GetCard(uint x, uint y);
-	Card* GetFirstCard() { return cards_.empty() ? nullptr : cards_[0]; }
+	void GetLocation(CardPtr card, int &x, int &y);
+	CardPtr GetCard(uint x, uint y);
+	CardPtr GetFirstCard() { return cards_.empty() ? nullptr : cards_[0]; }
 
 protected:
 	
 	Gtk::Grid grid_;
-    std::vector<Card*> cards_;
+    std::vector<CardPtr> cards_;
 	uint sx_, sy_;
 };
 

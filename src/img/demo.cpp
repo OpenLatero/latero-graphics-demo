@@ -111,7 +111,7 @@ void Demo::LoadSet(const CardSet &set)
 
 	currentSet_ = &set;
 	for (uint i=0; i<set.size(); ++i)
-		demoCards_.push_back(new Card(*set[i]));
+		demoCards_.push_back(set[i]);
 
 	for (uint i=0; i<demoCards_.size(); ++i)
 	{
@@ -121,13 +121,13 @@ void Demo::LoadSet(const CardSet &set)
 	demoTable_.SetCards(demoCards_);
 }
 
-void Demo::UpdateZoom(Card* card)
+void Demo::UpdateZoom(CardPtr card)
 {
 	latero::graphics::gtk::Animation  anim = card->GetLargeFaceUpAnim();
 	zoomImg_.Set(anim);
 }
 
-void Demo::OnDemoClick(Card* card)
+void Demo::OnDemoClick(CardPtr card)
 {
 	SetCurrentCard(card);
 	UpdateZoom(card);
@@ -169,7 +169,7 @@ void Demo::OnNextSet()
 	UpdateSet();
 }
 
-void Demo::SetCurrentCard(Card *card)
+void Demo::SetCurrentCard(CardPtr card)
 {
 	curCard_ = card;
 	if (card)

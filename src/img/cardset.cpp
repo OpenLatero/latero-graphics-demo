@@ -24,7 +24,7 @@ bool CardSet::LoadGenerator(std::string file, const latero::Tactograph *dev, uin
 	if (size() < 12)
 	{
 		latero::graphics::GeneratorPtr gen = latero::graphics::Generator::Create(file, dev);
-		Card *c = new Card(gen,DefaultCardWidth, DefaultCardWidth * dev->GetSurfaceHeight() / dev->GetSurfaceWidth(), scale);
+		auto c = Card::Create(gen,DefaultCardWidth, DefaultCardWidth * dev->GetSurfaceHeight() / dev->GetSurfaceWidth(), scale);
 		push_back(c);
 	}
 	return true;

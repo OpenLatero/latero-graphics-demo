@@ -39,7 +39,7 @@ void Card::Initialize()
 	clickGesture_ = Gtk::GestureClick::create();
 	clickGesture_->set_button(1);
 	clickGesture_->signal_pressed().connect(
-		[this](int, double, double) { signal_clicked(this); });
+		[this](int, double, double) { signal_clicked(shared_from_this()); });
 	add_controller(clickGesture_);
 	img_.Set(faceUpAnim_);
 }

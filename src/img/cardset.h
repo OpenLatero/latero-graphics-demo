@@ -7,7 +7,7 @@
 #include <laterographics/generator.h>
 #include "card.h"
 
-class CardSet : public std::vector<Card*>
+class CardSet : public std::vector<CardPtr>
 {
 public:
 	CardSet();
@@ -17,7 +17,7 @@ public:
 	{
 		while (size())
 		{
-			delete back();
+			//delete back();
 			pop_back();
 		}
 	}

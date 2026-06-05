@@ -16,7 +16,7 @@ CardTable::~CardTable()
 {
 }
 
-void CardTable::SetCards(std::vector<Card*> &cards)
+void CardTable::SetCards(std::vector<CardPtr> &cards)
 {
 	RemoveCards();
     cards_ = cards;
@@ -25,7 +25,7 @@ void CardTable::SetCards(std::vector<Card*> &cards)
 			SetCard(x, y, cards[y*sx_+x]);
 }
 
-void CardTable::SetCard(uint x, uint y, Card* card)
+void CardTable::SetCard(uint x, uint y, CardPtr card)
 {
 	/** @todo: doesn't work if a card is already at that location */
 	grid_.attach(*card, x, y, 1, 1);
@@ -41,7 +41,7 @@ void CardTable::RemoveCards()
     cards_.clear();
 }
 
-void CardTable::GetLocation(Card* card, int &x, int &y)
+void CardTable::GetLocation(CardPtr card, int &x, int &y)
 {
 	for (x=0; x<(int)sx_; ++x)
 		for (y=0; y<(int)sy_; ++y)
@@ -50,7 +50,7 @@ void CardTable::GetLocation(Card* card, int &x, int &y)
 	assert(0); 
 }
 
-Card* CardTable::GetCard(uint x, uint y)
+CardPtr CardTable::GetCard(uint x, uint y)
 {
 	assert(x<sx_ && y<sy_);
 	return cards_[y*sx_+x];

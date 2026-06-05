@@ -3,14 +3,22 @@
 #include "../config.h"
 #ifndef DISABLE_GRAPHICS_DEMO
 
+#include <boost/enable_shared_from_this.hpp>
 #include "gtkmm.h"
 #include <laterographics/virtualsurfacewidget.h>
 #include <laterographics/generator.h>
 
-class Card : public Gtk::Box
+class Card;
+typedef boost::shared_ptr<Card> CardPtr;
+
+class Card : public Gtk::Box, public boost::enable_shared_from_this<Card>
 {
 public:
-	Card(latero::graphics::GeneratorPtr gen, uint width, uint height, uint scale);
+	static CardPtr Create(latero::graphics::GeneratorPtr gen, uint width, uint height, uint scale) {
+		return CardPtr(new Card(gen, width, height, scale));
+	}
+
+
 	~Card();
 
 	Card(const Card& p);
@@ -19,15 +27,16 @@ public:
 		return gen_;
 	}
 
-	sigc::signal<void(Card*)> signal_clicked;
+	sigc::signal<void(CardPtr)> signal_clicked;
 
 	/** This is used to set the content of the large display. */
 	latero::graphics::gtk::Animation GetLargeFaceUpAnim();
 
 protected:
+	Card(latero::graphics::GeneratorPtr gen, uint width, uint height, uint scale);
 	void Initialize();
 
-Glib::RefPtr<Gtk::GestureClick> clickGesture_;
+	Glib::RefPtr<Gtk::GestureClick> clickGesture_;
 
 	latero::graphics::GeneratorPtr gen_;
 
