@@ -31,6 +31,8 @@ protected:
 
 
 private:
+	void LoadCards(const latero::Tactograph *dev);
+
 	void SetCurrentCard(Card *card);
 	std::vector<CardSet*> cardCollection_;
 

@@ -19,25 +19,9 @@ Demo::Demo(const latero::Tactograph *dev) :
 { 
 	gen_ = GeneratorHandlePtr(new GeneratorHandle(dev));
 
-	std::string path = media_dir+"/img/";
+	LoadCards(dev);
 
-	auto cardSet1 = new CardSet();	
-	std::string path1 = media_dir+"/img/vib-objects/";
-	std::vector<std::string> files1 = {
-		"umbrella.gen", "car.gen", "house.gen", "phone.gen", "necklace.gen", "leaf.gen", 
-		"cloud.gen", "cup.gen", "sun.gen", "balloons.gen", "hand.gen", "fork.gen" };
-	for (const auto& file : files1)
-		cardSet1->LoadGenerator(path1 + file, dev, SCALE_UP_FACTOR);
-	cardCollection_.push_back(cardSet1);
-
-	auto cardSet2 = new CardSet();
-	std::string path2 = media_dir+"/img/combo-objects/";
-	std::vector<std::string> files2 = {
-		"leaf.gen", "car.gen", "crown.gen", "umbrella.gen", "sun.gen", "cup.gen", 
-		"boat.gen", "candle.gen", "shirt.gen", "flashlight.gen", "necklace.gen", "insect.gen" };
-	for (const auto& file : files2)
-		cardSet2->LoadGenerator(path2 + file, dev, SCALE_UP_FACTOR);
-	cardCollection_.push_back(cardSet2);	
+	
 	
 
 	auto box = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL);
@@ -75,6 +59,29 @@ Demo::~Demo()
 	cardCollection_.clear();
 
 	ClearSet();
+}
+
+void Demo::LoadCards(const latero::Tactograph *dev)
+{
+	std::string path = media_dir+"/img/";
+
+	auto cardSet1 = new CardSet();	
+	std::string path1 = media_dir+"/img/vib-objects/";
+	std::vector<std::string> files1 = {
+		"umbrella.gen", "car.gen", "house.gen", "phone.gen", "necklace.gen", "leaf.gen", 
+		"cloud.gen", "cup.gen", "sun.gen", "balloons.gen", "hand.gen", "fork.gen" };
+	for (const auto& file : files1)
+		cardSet1->LoadGenerator(path1 + file, dev, SCALE_UP_FACTOR);
+	cardCollection_.push_back(cardSet1);
+
+	auto cardSet2 = new CardSet();
+	std::string path2 = media_dir+"/img/combo-objects/";
+	std::vector<std::string> files2 = {
+		"leaf.gen", "car.gen", "crown.gen", "umbrella.gen", "sun.gen", "cup.gen", 
+		"boat.gen", "candle.gen", "shirt.gen", "flashlight.gen", "necklace.gen", "insect.gen" };
+	for (const auto& file : files2)
+		cardSet2->LoadGenerator(path2 + file, dev, SCALE_UP_FACTOR);
+	cardCollection_.push_back(cardSet2);
 }
 
 
