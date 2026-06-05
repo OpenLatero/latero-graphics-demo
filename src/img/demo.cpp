@@ -20,7 +20,7 @@ Demo::Demo(const latero::Tactograph *dev) :
 { 
 	gen_ = GeneratorHandlePtr(new GeneratorHandle(dev));
 
-	zoomImg_.SetRounded();
+	//zoomImg_.SetRounded();
 	cardSets_.Load(media_dir+"/img/main.col", dev, SCALE_UP_FACTOR);
 
 	for (uint i=0; i<cardSets_.size(); ++i)

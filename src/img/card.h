@@ -26,7 +26,6 @@ public:
 
 protected:
 	void Initialize();
-	void UpdateImg();	
 
 	void OnClicked(int n_press, double x, double y);
 	Glib::RefPtr<Gtk::GestureClick> clickGesture_;
@@ -37,8 +36,7 @@ protected:
 
 	latero::graphics::gtk::Animation largeFaceUpAnim_;
 	latero::graphics::gtk::Animation faceUpAnim_;
-
-	// TODO: make sure img_ is used only for cards we are actually using! (i.e. when inserted in table!)
+	
 	latero::graphics::BaseVirtualSurfaceWidget img_;
 
 };

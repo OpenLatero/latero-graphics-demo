@@ -10,7 +10,7 @@ Card::Card(latero::graphics::GeneratorPtr gen, uint width, uint height, uint sca
 	height_(height),
 	img_(gen->Dev())
 {  
-	img_.SetRounded();
+	//img_.SetRounded();
 	assert(gen);
 
 	// too slow to be done at runtime
@@ -24,7 +24,7 @@ Card::Card(latero::graphics::GeneratorPtr gen, uint width, uint height, uint sca
 Card::Card(const Card& p) :
 	img_(p.gen_->Dev())
 {
-	img_.SetRounded();
+	//img_.SetRounded();
 	faceUpAnim_ = p.faceUpAnim_;
 	width_ = p.width_;
 	height_ = p.height_;
@@ -47,14 +47,10 @@ void Card::Initialize()
 	clickGesture_->signal_pressed().connect(
 		sigc::mem_fun(*this, &Card::OnClicked));
 	add_controller(clickGesture_);
-	UpdateImg();
-}
-
-
-void Card::UpdateImg()
-{
 	img_.Set(faceUpAnim_);
 }
+
+
 
 void Card::OnClicked(int n_press, double x, double y)
 {
