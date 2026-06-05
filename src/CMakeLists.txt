@@ -29,8 +29,7 @@ set(demo_SCHOOLBOOK_SRCS
 SOURCE_GROUP(schoolbook FILES ${demo_SCHOOLBOOK_SRCS})
 
 set(demo_IMG_SRCS
-	img/settings.h img/demo.h img/cardtable.h img/cardset.h img/card.h img/cardcollection.h
-	img/cardcollection.cpp img/card.cpp img/cardset.cpp img/cardtable.cpp img/demo.cpp
+	img/settings.h img/demo.h img/cardtable.h img/cardset.h img/card.h img/card.cpp img/cardset.cpp img/cardtable.cpp img/demo.cpp
 )
 SOURCE_GROUP(img FILES ${demo_IMG_SRCS})
 

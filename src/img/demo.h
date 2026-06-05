@@ -5,7 +5,6 @@
 
 #include "cardset.h"
 #include "cardtable.h"
-#include "cardcollection.h"
 #include "../generatorhandle.h"
 #include "../demo.h"
 
@@ -33,7 +32,7 @@ protected:
 
 private:
 	void SetCurrentCard(Card *card);
-	CardCollection cardCollection_;
+	std::vector<CardSet*> cardCollection_;
 
 	CardSet demoCards_;
 	const CardSet* currentSet_;

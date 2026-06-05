@@ -7,7 +7,13 @@
 #include "settings.h"
 
 CardSet::CardSet()
-{
+{	
+}
+
+
+CardSet::CardSet(std::string file, const latero::Tactograph *dev, uint scale)
+{	
+	Load(file, dev, scale);
 }
 
 CardSet::~CardSet()
@@ -35,8 +41,6 @@ bool CardSet::Load(std::string file, const latero::Tactograph *dev, uint scale)
 			if (pNode)
 			{
 				const xmlpp::Element* nodeElement = dynamic_cast<const xmlpp::Element*>(pNode);
-				if (nodeElement)
-					name_ = nodeElement->get_attribute("name")->get_value();
 
 				xmlpp::Node::const_NodeList list = pNode->get_children();
 				for(xmlpp::Node::const_NodeList::iterator iter = list.begin(); iter != list.end(); ++iter)
@@ -46,34 +50,9 @@ bool CardSet::Load(std::string file, const latero::Tactograph *dev, uint scale)
 					{
 						const xmlpp::Element* nodeElement = dynamic_cast<const xmlpp::Element*>(n);
 						assert(nodeElement);
-					
-						//printf("Creating generator...\n"); fflush(stdout);
-						std::string file = nodeElement->get_attribute("file")->get_value();
-						//std::cout << "loading card: " << file << "\n";
 
-						//std::cout << "creating generator\n";
-						latero::graphics::GeneratorPtr gen = latero::graphics::Generator::Create(path + file, dev);
-						managedGenerators_.push_back(gen);
-						//printf("...done\n"); fflush(stdout);
-
-						//std::cout << "creating card\n";
-						Card *c = new Card(
-							gen,
-							DefaultCardWidth,
-							DefaultCardWidth * dev->GetSurfaceHeight() / dev->GetSurfaceWidth(), 
-							scale);
-
-						// TODO this is a hack
-						if (size() < 12)
-						{
-							push_back(c);
-						}
-						else
-						{
-							// TODO: don't create the card and generator!
-							std::cout << "Skipping card from set " << name_ << "(" << file << "):\n" << path + file << "\n";	
-							delete c;
-						}
+						std::string genfile = nodeElement->get_attribute("file")->get_value();
+						LoadGenerator(path + genfile, dev, scale);
 					}
 				}
 			}
@@ -87,6 +66,17 @@ bool CardSet::Load(std::string file, const latero::Tactograph *dev, uint scale)
 
 	printf("\n\ndone in %f seconds\n\n", (boost::posix_time::microsec_clock::universal_time() - t0).total_milliseconds() / 1000.0);
 
+	return true;
+}
+
+bool CardSet::LoadGenerator(std::string file, const latero::Tactograph *dev, uint scale)
+{
+	if (size() < 12)
+	{
+		latero::graphics::GeneratorPtr gen = latero::graphics::Generator::Create(file, dev);
+		Card *c = new Card(gen,DefaultCardWidth, DefaultCardWidth * dev->GetSurfaceHeight() / dev->GetSurfaceWidth(), scale);
+		push_back(c);
+	}
 	return true;
 }
 

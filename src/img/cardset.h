@@ -11,6 +11,7 @@ class CardSet : public std::vector<Card*>
 {
 public:
 	CardSet();
+	CardSet(std::string file, const latero::Tactograph *dev, uint scale);
 	virtual ~CardSet();
 
 	bool Load(std::string file, const latero::Tactograph *dev, uint scale);
@@ -24,11 +25,7 @@ public:
 		}
 	}
 
-	std::string GetName() { return name_; }
-private:
-	std::string name_;
-	std::vector<latero::graphics::GeneratorPtr> managedGenerators_;
-
+	bool LoadGenerator(std::string file, const latero::Tactograph *dev, uint scale);
 };
 
 #endif
