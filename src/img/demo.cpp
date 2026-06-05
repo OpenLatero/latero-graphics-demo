@@ -90,7 +90,7 @@ std::vector<CardPtr> Demo::CreateCardsFromFiles(const std::string &path, const s
 void Demo::OnCardSelected(CardPtr card)
 {
 	gen_->SetGenerator(card->GetGenerator());
-	display_.Set(card->GetLargeFaceUpAnim());
+	display_.Set(card->GetIllustration());
 }
 
 

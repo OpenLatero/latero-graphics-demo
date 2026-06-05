@@ -27,8 +27,7 @@ public:
 
 	sigc::signal<void(CardPtr)> signal_clicked;
 
-	/** This is used to set the content of the large display. */
-	latero::graphics::gtk::Animation GetLargeFaceUpAnim();
+	latero::graphics::gtk::Animation GetIllustration();
 
 protected:
 	Card(latero::graphics::GeneratorPtr gen);
@@ -37,8 +36,8 @@ protected:
 
 	latero::graphics::GeneratorPtr gen_;
 
-	latero::graphics::gtk::Animation largeFaceUpAnim_;
-	latero::graphics::gtk::Animation faceUpAnim_;
+	//latero::graphics::gtk::Animation largeFaceUpAnim_;
+	//latero::graphics::gtk::Animation faceUpAnim_;
 
 	latero::graphics::BaseVirtualSurfaceWidget img_;
 
