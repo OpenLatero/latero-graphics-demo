@@ -19,17 +19,7 @@ Demo::Demo(const latero::Tactograph *dev) :
 { 
 	gen_ = GeneratorHandlePtr(new GeneratorHandle(dev));
 
-	cardSets_.Load(media_dir+"/img/main.col", dev, SCALE_UP_FACTOR);
-
-	for (uint i=0; i<cardSets_.size(); ++i)
-	{
-		std::string name = cardSets_[i]->GetName();
-		auto *button = Gtk::make_managed<Gtk::CheckButton>(name);
-		if (i > 0) button->set_group(*setActions_[0]);
-		setActions_.push_back(button);
-	}
-	if (!setActions_.empty())
-		setActions_[0]->set_active(true);
+	cardCollection_.Load(media_dir+"/img/main.col", dev, SCALE_UP_FACTOR);
 
 	auto box = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL);
 	auto hbox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
@@ -67,19 +57,8 @@ Demo::~Demo()
 
 void Demo::UpdateSet()
 {
-	for (uint i=0; i<setActions_.size(); ++i)
-	{
-		if (setActions_[i]->get_active())
-		{
-			currentSetIdx_ = i;
-			std::stringstream id;
-			id << "Set" << i;
-			// OLD: CardSet *set = cardSets_.GetSet(setActions_[i]->property_label().get_value());
-			// NEW: Use get_label() method instead
-			CardSet *set = cardSets_.GetSet(setActions_[i]->get_label());
-			LoadSet(*set);
-		}
-	}
+	CardSet *set = cardCollection_[currentSetIdx_];
+	LoadSet(*set);
 	OnDemoClick(demoTable_.GetFirstCard());
 }
 
@@ -150,15 +129,13 @@ void Demo::OnPrevSet()
 {
 	currentSetIdx_--;
 	if (currentSetIdx_<0)
-		currentSetIdx_ = (currentSetIdx_+1)%setActions_.size();
-	setActions_[currentSetIdx_]->set_active();
+		currentSetIdx_ = (currentSetIdx_+1)%cardCollection_.size();
 	UpdateSet();
 }
 
 void Demo::OnNextSet()
 {
-	currentSetIdx_ = (currentSetIdx_+1)%setActions_.size();
-	setActions_[currentSetIdx_]->set_active();
+	currentSetIdx_ = (currentSetIdx_+1)%cardCollection_.size();
 	UpdateSet();
 }
 

@@ -24,8 +24,6 @@ public:
 		}
 	}
 
-	void Shuffle();
-
 	std::string GetName() { return name_; }
 private:
 	std::string name_;

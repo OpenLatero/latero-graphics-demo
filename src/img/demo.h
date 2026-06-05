@@ -33,7 +33,7 @@ protected:
 
 private:
 	void SetCurrentCard(Card *card);
-	CardCollection cardSets_;
+	CardCollection cardCollection_;
 
 	CardSet demoCards_;
 	const CardSet* currentSet_;
@@ -44,8 +44,6 @@ private:
 	CardTable demoTable_;
 	Card* curCard_; // currently activated card	
 	GeneratorHandlePtr gen_;
-
-	std::vector<Gtk::CheckButton*> setActions_;
 
 	int currentSetIdx_;
 };

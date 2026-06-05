@@ -90,10 +90,4 @@ bool CardSet::Load(std::string file, const latero::Tactograph *dev, uint scale)
 	return true;
 }
 
-void CardSet::Shuffle()
-{
-	std::mt19937 rng(std::random_device{}());
-	std::shuffle(begin(), end(), rng);
-}
-
 #endif

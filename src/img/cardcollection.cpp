@@ -31,8 +31,6 @@ bool CardCollection::Load(std::string file, const latero::Tactograph *dev, uint 
 			if (pNode)
 			{
 				const xmlpp::Element* nodeElement = dynamic_cast<const xmlpp::Element*>(pNode);
-				if (nodeElement)
-					name_ = nodeElement->get_attribute("name")->get_value();
 
 				xmlpp::Node::const_NodeList list = pNode->get_children();
 				for(xmlpp::Node::const_NodeList::iterator iter = list.begin(); iter != list.end(); ++iter)
