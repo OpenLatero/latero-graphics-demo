@@ -17,12 +17,11 @@ public:
 	virtual latero::graphics::GeneratorPtr Gen();
 
 protected:
-	void OnPrevSet();
-	void OnNextSet();
+	void OnPrevPage();
+	void OnNextPage();
+	void UpdatePage();
 
-	void UpdateSet();
-	void ClearSet();
-	void LoadSet(const CardSet &set);
+	void LoadSet(std::vector<CardPtr> set);
 
 	void OnDemoClick(CardPtr card);
 	bool OnIdle();
@@ -31,7 +30,7 @@ protected:
 
 private:
 	void LoadCards(const latero::Tactograph *dev);
-	void UpdateCardGrid(std::vector<CardPtr> cards);
+	void UpdateGrid(std::vector<CardPtr> cards);
 
 	void SetCurrentCard(CardPtr card);
 	std::vector<CardSet*> cardCollection_;
@@ -39,13 +38,12 @@ private:
 	// large visualization of the current card, at the top of the window
 	latero::graphics::BaseVirtualSurfaceWidget zoomImg_;
 
-	//CardTable demoTable_;
 	CardPtr curCard_; // currently activated card	
 	GeneratorHandlePtr gen_;
 
-	int currentSetIdx_;
+	int page_;
 
-	Gtk::Grid cardGrid_;
+	Gtk::Grid grid_;
 };
 
 } // namespace

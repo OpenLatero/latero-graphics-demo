@@ -11,18 +11,17 @@
 namespace ImgDemo {
 
 Demo::Demo(const latero::Tactograph *dev) :
-	//currentSet_(NULL),
 	zoomImg_(dev),
 	curCard_(NULL),
-	currentSetIdx_(0)
+	page_(0)
 { 
 	gen_ = GeneratorHandlePtr(new GeneratorHandle(dev));
 
 	LoadCards(dev);
 
-	cardGrid_.set_margin(10);
-	cardGrid_.set_row_spacing(10);
-	cardGrid_.set_column_spacing(10);
+	grid_.set_margin(10);
+	grid_.set_row_spacing(10);
+	grid_.set_column_spacing(10);
 
 	auto box = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL);
 	auto hbox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL);
@@ -30,19 +29,19 @@ Demo::Demo(const latero::Tactograph *dev) :
 	auto nextButton = Gtk::make_managed<Gtk::Button>(">");
 
 	zoomImg_.set_vexpand(true);
-	cardGrid_.set_hexpand(true);
+	grid_.set_hexpand(true);
 
 	set_child(*box);
 	box->append(zoomImg_);
 	box->append(*hbox);
 		hbox->append(*prevButton);
-		hbox->append(cardGrid_);
+		hbox->append(grid_);
 		hbox->append(*nextButton);
 
-	prevButton->signal_clicked().connect(sigc::mem_fun(*this, &Demo::OnPrevSet));
-	nextButton->signal_clicked().connect(sigc::mem_fun(*this, &Demo::OnNextSet));
+	prevButton->signal_clicked().connect(sigc::mem_fun(*this, &Demo::OnPrevPage));
+	nextButton->signal_clicked().connect(sigc::mem_fun(*this, &Demo::OnNextPage));
 
-	UpdateSet();
+	UpdatePage();
 
 	 Glib::signal_timeout().connect(
 		sigc::mem_fun(*this, &Demo::OnIdle),
@@ -58,7 +57,7 @@ Demo::~Demo()
         delete card;
 	cardCollection_.clear();
 
-	ClearSet();
+	//ClearSet();
 }
 
 void Demo::LoadCards(const latero::Tactograph *dev)
@@ -96,30 +95,12 @@ void Demo::LoadCards(const latero::Tactograph *dev)
 	cardCollection_.push_back(cardSet2);
 }
 
-
-void Demo::UpdateSet()
+void Demo::LoadSet(std::vector<CardPtr> set)
 {
-	CardSet *set = cardCollection_[currentSetIdx_];
-	LoadSet(*set);
-	OnDemoClick((*set)[0]);
-}
-
-
-void Demo::ClearSet()
-{
-	zoomImg_.Clear(0xffffffff);
-	SetCurrentCard(NULL);
-}
-
-
-void Demo::LoadSet(const CardSet &set)
-{
-	ClearSet();
-
 	for (uint i=0; i<set.size(); ++i)
  		set[i]->signal_clicked.connect(sigc::mem_fun(*this, &Demo::OnDemoClick));
 
-	UpdateCardGrid(set);
+	UpdateGrid(set);
 }
 
 void Demo::UpdateZoom(CardPtr card)
@@ -156,19 +137,25 @@ bool Demo::OnIdle()
 
 
 
-void Demo::OnPrevSet()
+void Demo::OnPrevPage()
 {
-	currentSetIdx_--;
-	if (currentSetIdx_<0)
-		currentSetIdx_ = (currentSetIdx_+1)%cardCollection_.size();
-	UpdateSet();
+	page_ = (page_ - 1 + cardCollection_.size()) % cardCollection_.size();
+	UpdatePage();
 }
 
-void Demo::OnNextSet()
+void Demo::OnNextPage	()
 {
-	currentSetIdx_ = (currentSetIdx_+1)%cardCollection_.size();
-	UpdateSet();
+	page_ = (page_+1)%cardCollection_.size();
+	UpdatePage();
 }
+
+void Demo::UpdatePage()
+{
+	CardSet *set = cardCollection_[page_];
+	LoadSet(*set);
+	OnDemoClick((*set)[0]);
+}
+
 
 void Demo::SetCurrentCard(CardPtr card)
 {
@@ -179,10 +166,10 @@ void Demo::SetCurrentCard(CardPtr card)
 		gen_->SetGenerator(latero::graphics::GeneratorPtr());
 }
 
-void Demo::UpdateCardGrid(std::vector<CardPtr> cards)
+void Demo::UpdateGrid(std::vector<CardPtr> cards)
 {
-	for (auto* child : cardGrid_.get_children())
-    	cardGrid_.remove(*child);
+	for (auto* child : grid_.get_children())
+    	grid_.remove(*child);
 
 	for (uint x=0; x<NbCardsX; ++x)
 	{
@@ -191,7 +178,7 @@ void Demo::UpdateCardGrid(std::vector<CardPtr> cards)
 			auto card = cards[y*NbCardsX+x];
 			card->set_vexpand(true);
 			card->set_hexpand(true);	
-			cardGrid_.attach(*card, x, y, 1, 1);
+			grid_.attach(*card, x, y, 1, 1);
 		}
 	}	
 }
