@@ -16,6 +16,7 @@ public:
 	void RemoveCards();
 	void GetLocation(Card* card, int &x, int &y);
 	Card* GetCard(uint x, uint y);
+	Card* GetFirstCard() { return cards_.empty() ? nullptr : cards_[0]; }
 
 protected:
 	

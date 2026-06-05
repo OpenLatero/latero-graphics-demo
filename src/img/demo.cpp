@@ -15,7 +15,6 @@ Demo::Demo(const latero::Tactograph *dev) :
 	zoomImg_(dev),
 	demoTable_(NbCardsX,NbCardsY),
 	curCard_(NULL),
-	keyLocation_(0,0),
 	currentSetIdx_(0)
 { 
 	gen_ = GeneratorHandlePtr(new GeneratorHandle(dev));
@@ -58,11 +57,6 @@ Demo::Demo(const latero::Tactograph *dev) :
 		Glib::PRIORITY_DEFAULT_IDLE); 
 
 	zoomImg_.ShowCursor();
-
-	auto keyController = Gtk::EventControllerKey::create();
-	keyController->signal_key_pressed().connect(
-		sigc::mem_fun(*this, &Demo::OnKeyPress), false);
-	add_controller(keyController);
 }
 
 Demo::~Demo()
@@ -86,18 +80,9 @@ void Demo::UpdateSet()
 			LoadSet(*set);
 		}
 	}
-	keyLocation_.x =  keyLocation_.y = 0;
-	OnDemoClick(GetCard(keyLocation_.x, keyLocation_.y));
+	OnDemoClick(demoTable_.GetFirstCard());
 }
 
-void Demo::UpdateMode()
-{
-}
-
-void Demo::OnSetChanged()
-{
-	UpdateSet();
-}
 
 void Demo::ClearSet()
 {
@@ -137,7 +122,6 @@ void Demo::OnDemoClick(Card* card)
 {
 	SetCurrentCard(card);
 	UpdateZoom(card);
-	demoTable_.GetLocation(card, keyLocation_.x, keyLocation_.y);
 }
 
 
@@ -160,48 +144,7 @@ bool Demo::OnIdle()
 	return false;
 }
 
-bool Demo::OnKeyPress(guint keyval, guint keycode, Gdk::ModifierType state)
-{
-	const auto key = keyval;
 
-	// select
-	if ((key == GDK_KEY_KP_5) || (key == GDK_KEY_space))
-		OnDemoClick(GetCard(keyLocation_.x, keyLocation_.y));
-
-	// move up
-	if ((key == GDK_KEY_KP_7) || (key == GDK_KEY_KP_8) || (key == GDK_KEY_KP_9) || (key == GDK_KEY_Up))
-		keyLocation_.y--;
-
-	if ((key == GDK_KEY_KP_1) || (key == GDK_KEY_KP_2) || (key == GDK_KEY_KP_3) || (key == GDK_KEY_Down))
-		keyLocation_.y++;
-	
-	if ((key == GDK_KEY_KP_7) || (key == GDK_KEY_KP_4) || (key == GDK_KEY_KP_1) || (key == GDK_KEY_Left))
-		keyLocation_.x--;
-
-	if ((key == GDK_KEY_KP_9) || (key == GDK_KEY_KP_6) || (key == GDK_KEY_KP_3) || (key == GDK_KEY_Right))
-		keyLocation_.x++;
-
-	if (keyLocation_.x > 5)
-	{
-		keyLocation_.x = 0;
-		currentSetIdx_ = (currentSetIdx_+1)%setActions_.size();
-		setActions_[currentSetIdx_]->set_active();
-		OnDemoClick(GetCard(keyLocation_.x, keyLocation_.y));
-	}
-	else if (keyLocation_.x < 0)
-	{
-		currentSetIdx_--;
-		if (currentSetIdx_<0) currentSetIdx_  = (int)setActions_.size()-1;
-		setActions_[currentSetIdx_]->set_active();
-		keyLocation_.x = 5;
-		OnDemoClick(GetCard(keyLocation_.x, keyLocation_.y));
-	}
-
-	keyLocation_.y = keyLocation_.y%2;
-	if (keyLocation_.y<0) keyLocation_.y = 1;
-
-	return true;
-}
 
 void Demo::OnPrevSet()
 {
@@ -217,13 +160,6 @@ void Demo::OnNextSet()
 	currentSetIdx_ = (currentSetIdx_+1)%setActions_.size();
 	setActions_[currentSetIdx_]->set_active();
 	UpdateSet();
-}
-
-Card *Demo::GetCard(int x, int y)
-{
-	assert((x>=0)&&(x<6));
-	assert((y>=0)&&(y<2));
-	return demoTable_.GetCard(x,y);
 }
 
 void Demo::SetCurrentCard(Card *card)

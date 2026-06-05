@@ -27,17 +27,13 @@ protected:
 	void LoadSet(const CardSet &set);
 
 	void OnDemoClick(Card* card);
-	void OnSetChanged();
 	bool OnIdle();
-	bool OnKeyPress(guint keyval, guint keycode, Gdk::ModifierType state);
 	void UpdateZoom(Card* card);
 
 
 private:
 	void SetCurrentCard(Card *card);
-	Card *GetCard(int x, int y);
 	CardCollection cardSets_;
-	void UpdateMode();
 
 	CardSet demoCards_;
 	const CardSet* currentSet_;
@@ -51,7 +47,6 @@ private:
 
 	std::vector<Gtk::CheckButton*> setActions_;
 
-	latero::graphics::INTPoint keyLocation_;
 	int currentSetIdx_;
 };
 
