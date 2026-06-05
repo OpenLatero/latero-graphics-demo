@@ -12,17 +12,6 @@ class CardSet : public std::vector<CardPtr>
 public:
 	CardSet();
 	virtual ~CardSet();
-
-	inline void DeleteCards()
-	{
-		while (size())
-		{
-			//delete back();
-			pop_back();
-		}
-	}
-
-	bool LoadGenerator(std::string file, const latero::Tactograph *dev, uint scale);
 };
 
 #endif

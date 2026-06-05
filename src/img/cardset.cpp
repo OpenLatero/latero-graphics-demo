@@ -14,20 +14,5 @@ CardSet::CardSet()
 
 CardSet::~CardSet()
 {
-	DeleteCards();
 }
-
-
-
-bool CardSet::LoadGenerator(std::string file, const latero::Tactograph *dev, uint scale)
-{
-	if (size() < 12)
-	{
-		latero::graphics::GeneratorPtr gen = latero::graphics::Generator::Create(file, dev);
-		auto c = Card::Create(gen,DefaultCardWidth, DefaultCardWidth * dev->GetSurfaceHeight() / dev->GetSurfaceWidth(), scale);
-		push_back(c);
-	}
-	return true;
-}
-
 #endif

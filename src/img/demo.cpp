@@ -71,7 +71,13 @@ void Demo::LoadCards(const latero::Tactograph *dev)
 		"umbrella.gen", "car.gen", "house.gen", "phone.gen", "necklace.gen", "leaf.gen", 
 		"cloud.gen", "cup.gen", "sun.gen", "balloons.gen", "hand.gen", "fork.gen" };
 	for (const auto& file : files1)
-		cardSet1->LoadGenerator(path1 + file, dev, SCALE_UP_FACTOR);
+	{
+		if (cardSet1->size() < 12)
+		{
+			latero::graphics::GeneratorPtr gen = latero::graphics::Generator::Create(path1 + file, dev);
+			cardSet1->push_back(Card::Create(gen,DefaultCardWidth, DefaultCardWidth * dev->GetSurfaceHeight() / dev->GetSurfaceWidth(), SCALE_UP_FACTOR));
+		}
+	}
 	cardCollection_.push_back(cardSet1);
 
 	auto cardSet2 = new CardSet();
@@ -80,7 +86,13 @@ void Demo::LoadCards(const latero::Tactograph *dev)
 		"leaf.gen", "car.gen", "crown.gen", "umbrella.gen", "sun.gen", "cup.gen", 
 		"boat.gen", "candle.gen", "shirt.gen", "flashlight.gen", "necklace.gen", "insect.gen" };
 	for (const auto& file : files2)
-		cardSet2->LoadGenerator(path2 + file, dev, SCALE_UP_FACTOR);
+	{
+		if (cardSet2->size() < 12)
+		{
+			latero::graphics::GeneratorPtr gen = latero::graphics::Generator::Create(path2 + file, dev);
+			cardSet2->push_back(Card::Create(gen,DefaultCardWidth, DefaultCardWidth * dev->GetSurfaceHeight() / dev->GetSurfaceWidth(), SCALE_UP_FACTOR));
+		}
+	}
 	cardCollection_.push_back(cardSet2);
 }
 
@@ -97,7 +109,6 @@ void Demo::ClearSet()
 {
 	demoTable_.RemoveCards();
 	zoomImg_.Clear(0xffffffff);
-	demoCards_.DeleteCards();
 	currentSet_ = NULL;
 	SetCurrentCard(NULL);
 }
@@ -110,15 +121,11 @@ void Demo::LoadSet(const CardSet &set)
 	ClearSet();
 
 	currentSet_ = &set;
+
 	for (uint i=0; i<set.size(); ++i)
-		demoCards_.push_back(set[i]);
+ 		set[i]->signal_clicked.connect(sigc::mem_fun(*this, &Demo::OnDemoClick));
 
-	for (uint i=0; i<demoCards_.size(); ++i)
-	{
- 		demoCards_[i]->signal_clicked.connect(sigc::mem_fun(*this, &Demo::OnDemoClick));
-	}
-
-	demoTable_.SetCards(demoCards_);
+	demoTable_.SetCards(*currentSet_);
 }
 
 void Demo::UpdateZoom(CardPtr card)

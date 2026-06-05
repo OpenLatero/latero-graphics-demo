@@ -11,7 +11,7 @@ class CardTable : public Gtk::Box
 public:
 	CardTable(uint sx, uint sy);
 	~CardTable();
-	void SetCards(std::vector<CardPtr> &cards);
+	void SetCards(std::vector<CardPtr> cards);
 	void SetCard(uint x, uint y, CardPtr card);
 	void RemoveCards();
 	void GetLocation(CardPtr card, int &x, int &y);

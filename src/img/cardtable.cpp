@@ -16,7 +16,7 @@ CardTable::~CardTable()
 {
 }
 
-void CardTable::SetCards(std::vector<CardPtr> &cards)
+void CardTable::SetCards(std::vector<CardPtr> cards)
 {
 	RemoveCards();
     cards_ = cards;
