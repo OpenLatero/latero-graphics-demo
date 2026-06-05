@@ -14,10 +14,10 @@ typedef boost::shared_ptr<Card> CardPtr;
 class Card : public Gtk::Box, public boost::enable_shared_from_this<Card>
 {
 public:
+
 	static CardPtr Create(latero::graphics::GeneratorPtr gen, uint width, uint height, uint scale) {
 		return CardPtr(new Card(gen, width, height, scale));
 	}
-
 
 	~Card();
 
