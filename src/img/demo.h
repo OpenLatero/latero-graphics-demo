@@ -4,7 +4,6 @@
 #ifndef DISABLE_GRAPHICS_DEMO
 
 #include "cardset.h"
-#include "cardtable.h"
 #include "../generatorhandle.h"
 #include "../demo.h"
 
@@ -32,6 +31,7 @@ protected:
 
 private:
 	void LoadCards(const latero::Tactograph *dev);
+	void UpdateCardGrid(std::vector<CardPtr> cards);
 
 	void SetCurrentCard(CardPtr card);
 	std::vector<CardSet*> cardCollection_;
@@ -39,11 +39,13 @@ private:
 	// large visualization of the current card, at the top of the window
 	latero::graphics::BaseVirtualSurfaceWidget zoomImg_;
 
-	CardTable demoTable_;
+	//CardTable demoTable_;
 	CardPtr curCard_; // currently activated card	
 	GeneratorHandlePtr gen_;
 
 	int currentSetIdx_;
+
+	Gtk::Grid cardGrid_;
 };
 
 } // namespace
