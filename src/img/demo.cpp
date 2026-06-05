@@ -78,25 +78,19 @@ std::vector<CardPtr> Demo::CreateCardsFromFiles(const std::string &path, const s
 	for (const auto& file : files)
 	{
 		latero::graphics::GeneratorPtr gen = latero::graphics::Generator::Create(path+file, dev);
-		cards.push_back(Card::Create(gen));
+		auto card = Card::Create(gen);
+		card->signal_clicked.connect(sigc::mem_fun(*this, &Demo::OnCardSelected));
+		cards.push_back(card);
 	}
 	return cards;
 }
 
-void Demo::LoadPage(std::vector<CardPtr> set)
-{
-	for (uint i=0; i<set.size(); ++i)
- 		set[i]->signal_clicked.connect(sigc::mem_fun(*this, &Demo::OnCardSelected));
-
-	UpdateGrid(set);
-}
 
 
 void Demo::OnCardSelected(CardPtr card)
 {
 	gen_->SetGenerator(card->GetGenerator());
-	latero::graphics::gtk::Animation  anim = card->GetLargeFaceUpAnim();
-	display_.Set(anim);
+	display_.Set(card->GetLargeFaceUpAnim());
 }
 
 
@@ -104,9 +98,9 @@ bool Demo::OnIdle()
 {
 	if (gen_)
 	{
-		latero::BiasedImg frame = gen_->GetLatestFrame();
-		latero::graphics::Point center = gen_->GetDisplayCenter();
-		double angle = gen_->GetDisplayOrientation();
+		auto frame = gen_->GetLatestFrame();
+		auto center = gen_->GetDisplayCenter();
+		auto angle = gen_->GetDisplayOrientation();
 		display_.SetDisplayState(center, angle, frame);
 	}
 
@@ -127,7 +121,7 @@ void Demo::OnPrevPage()
 	UpdatePage();
 }
 
-void Demo::OnNextPage	()
+void Demo::OnNextPage()
 {
 	page_ = (page_+1)%cardPages_.size();
 	UpdatePage();
@@ -136,7 +130,7 @@ void Demo::OnNextPage	()
 void Demo::UpdatePage()
 {
 	auto set = cardPages_[page_];
-	LoadPage(set);
+	UpdateGrid(set);
 	OnCardSelected(set[0]);
 }
 

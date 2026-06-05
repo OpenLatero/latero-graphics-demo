@@ -24,7 +24,7 @@ protected:
 	void UpdatePage();
 
 	void LoadCards(const latero::Tactograph *dev);
-	void LoadPage(std::vector<CardPtr> set);
+
 
 	std::vector<CardPtr> CreateCardsFromFiles(const std::string &path, const std::vector<std::string> &files, const latero::Tactograph *dev);
 
