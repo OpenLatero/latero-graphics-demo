@@ -32,7 +32,6 @@ void CardTable::SetCard(uint x, uint y, Card* card)
 	card->set_vexpand(true);
 	card->set_hexpand(true);	
     cards_[y*sx_+x] = card;
-	card->UpdateImg();
 }
 
 void CardTable::RemoveCards()

@@ -48,6 +48,7 @@ void Card::Initialize()
 	clickGesture_->signal_pressed().connect(
 		sigc::mem_fun(*this, &Card::OnClicked));
 	add_controller(clickGesture_);
+	UpdateImg();
 }
 
 Card Card::operator= (const Card& p)
@@ -73,8 +74,6 @@ void Card::OnClicked(int n_press, double x, double y)
 	guint button = clickGesture_->get_current_button();
 	if (button == 1)
 		signal_clicked1(this);
-	else if (button == 3)
-		signal_clicked3(this);
 }
 
 latero::graphics::gtk::Animation Card::GetLargeFaceUpAnim()

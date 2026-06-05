@@ -22,15 +22,13 @@ public:
 	}
 
 	sigc::signal<void(Card*)> signal_clicked1;
-	sigc::signal<void(Card*)> signal_clicked3;
 
 	/** This is used to set the content of the large display. */
 	latero::graphics::gtk::Animation GetLargeFaceUpAnim();
 
-	void UpdateImg();
-
 protected:
 	void Initialize();
+	void UpdateImg();	
 
 	void OnClicked(int n_press, double x, double y);
 	Glib::RefPtr<Gtk::GestureClick> clickGesture_;

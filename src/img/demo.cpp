@@ -128,7 +128,6 @@ void Demo::LoadSet(const CardSet &set)
 	for (uint i=0; i<demoCards_.size(); ++i)
 	{
  		demoCards_[i]->signal_clicked1.connect(sigc::mem_fun(*this, &Demo::OnDemoClick));
-		demoCards_[i]->signal_clicked3.connect(sigc::mem_fun(*this, &Demo::OnRightClick));
 	}
 
 	demoTable_.SetCards(demoCards_);
