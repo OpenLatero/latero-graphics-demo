@@ -36,9 +36,6 @@ protected:
 
 	latero::graphics::GeneratorPtr gen_;
 
-	//latero::graphics::gtk::Animation largeFaceUpAnim_;
-	//latero::graphics::gtk::Animation faceUpAnim_;
-
 	latero::graphics::BaseVirtualSurfaceWidget img_;
 
 };
