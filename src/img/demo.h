@@ -30,17 +30,16 @@ protected:
 
 
 	void OnCardSelected(CardPtr card);
-	bool OnIdle();
 
 
 	void UpdateGrid(std::vector<CardPtr> cards);
 
 	std::vector< std::vector<CardPtr> > cardPages_;
 
-	// large visualization of the current card, at the top of the window
-	latero::graphics::BaseVirtualSurfaceWidget display_;
-
 	GeneratorHandlePtr gen_;
+	latero::graphics::VirtualSurfaceWidget display_;
+
+
 
 	int page_;
 

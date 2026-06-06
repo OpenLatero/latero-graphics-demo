@@ -14,7 +14,7 @@
 namespace ImgDemo {
 
 Demo::Demo(const latero::Tactograph *dev) :
-	display_(dev),
+	display_(dev, gen_, true),
 	page_(0)
 { 
 	gen_ = GeneratorHandlePtr(new GeneratorHandle(dev));
@@ -44,11 +44,6 @@ Demo::Demo(const latero::Tactograph *dev) :
 	nextButton->signal_clicked().connect(sigc::mem_fun(*this, &Demo::OnNextPage));
 
 	UpdatePage();
-
-	 Glib::signal_timeout().connect(
-		sigc::mem_fun(*this, &Demo::OnIdle),
-		REFRESH_INTERVAL_MS,
-		Glib::PRIORITY_DEFAULT_IDLE); 
 
 	display_.ShowCursor();
 }
@@ -90,29 +85,8 @@ std::vector<CardPtr> Demo::CreateCardsFromFiles(const std::string &path, const s
 void Demo::OnCardSelected(CardPtr card)
 {
 	gen_->SetGenerator(card->GetGenerator());
-	display_.Set(card->GetIllustration());
+	display_.SetGenerator(gen_);
 }
-
-
-bool Demo::OnIdle()
-{
-	if (gen_)
-	{
-		auto frame = gen_->GetLatestFrame();
-		auto center = gen_->GetDisplayCenter();
-		auto angle = gen_->GetDisplayOrientation();
-		display_.SetDisplayState(center, angle, frame);
-	}
-
-
-	 Glib::signal_timeout().connect(
-		sigc::mem_fun(*this, &Demo::OnIdle),	
-		REFRESH_INTERVAL_MS,
-		Glib::PRIORITY_DEFAULT_IDLE); 
-
-	return false;
-}
-
 
 
 void Demo::OnPrevPage()

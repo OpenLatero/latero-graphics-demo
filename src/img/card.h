@@ -27,9 +27,10 @@ public:
 
 	sigc::signal<void(CardPtr)> signal_clicked;
 
-	latero::graphics::gtk::Animation GetIllustration();
+
 
 protected:
+	latero::graphics::gtk::Animation GetIllustration();
 	Card(latero::graphics::GeneratorPtr gen);
 
 	Glib::RefPtr<Gtk::GestureClick> clickGesture_;
