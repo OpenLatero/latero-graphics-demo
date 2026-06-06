@@ -29,14 +29,13 @@ public:
 
 
 protected:
-	latero::graphics::gtk::Animation GetIllustration();
 	Card(latero::graphics::GeneratorPtr gen);
 
 	Glib::RefPtr<Gtk::GestureClick> clickGesture_;
 
 	latero::graphics::GeneratorPtr gen_;
 
-	latero::graphics::BaseVirtualSurfaceWidget img_;
+	latero::graphics::VirtualSurfaceWidget img_;
 
 };
 

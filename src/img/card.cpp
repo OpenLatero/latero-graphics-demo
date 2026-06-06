@@ -6,7 +6,7 @@
 
 Card::Card(latero::graphics::GeneratorPtr gen) :
 	gen_(gen),
-	img_(gen->Dev())
+	img_(gen->Dev(), gen_, true)
 {  
 	assert(gen);
 	append(img_);
@@ -15,17 +15,11 @@ Card::Card(latero::graphics::GeneratorPtr gen) :
 	clickGesture_->signal_pressed().connect(
 		[this](int, double, double) { signal_clicked(); });
 	add_controller(clickGesture_);
-	img_.Set(GetIllustration());
-
 }
 
 Card::~Card()
 {
 }
 
-latero::graphics::gtk::Animation Card::GetIllustration()
-{
-	return gen_->GetIllustration(1000,boost::posix_time::seconds(0));
-}
 
 #endif
