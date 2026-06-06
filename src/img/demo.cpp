@@ -74,16 +74,19 @@ std::vector<CardPtr> Demo::CreateCardsFromFiles(const std::string &path, const s
 	{
 		latero::graphics::GeneratorPtr gen = latero::graphics::Generator::Create(path+file, dev);
 		auto card = Card::Create(gen);
-		card->signal_clicked.connect(sigc::mem_fun(*this, &Demo::OnCardSelected));
 		cards.push_back(card);
 	}
 	return cards;
 }
 
-
-
-void Demo::OnCardSelected(CardPtr card)
+CardPtr Demo::GetCard(uint x, uint y)
 {
+	return cardPages_[page_][y * NbCardsX + x];
+}
+
+void Demo::OnCardSelected(uint x, uint y)
+{
+	auto card = GetCard(x, y);
 	gen_->SetGenerator(card->GetGenerator());
 	display_.SetGenerator(gen_);
 }
@@ -105,7 +108,7 @@ void Demo::UpdatePage()
 {
 	auto set = cardPages_[page_];
 	UpdateGrid(set);
-	OnCardSelected(set[0]);
+	OnCardSelected(0, 0);
 }
 
 
@@ -113,7 +116,11 @@ void Demo::UpdatePage()
 void Demo::UpdateGrid(std::vector<CardPtr> cards)
 {
 	for (auto* child : grid_.get_children())
-    	grid_.remove(*child);
+	{
+		if (auto* card = dynamic_cast<Card*>(child))
+			card->signal_clicked.clear();
+		grid_.remove(*child);
+	}
 
 	for (uint x=0; x<NbCardsX; ++x)
 	{
@@ -123,6 +130,7 @@ void Demo::UpdateGrid(std::vector<CardPtr> cards)
 			card->set_vexpand(true);
 			card->set_hexpand(true);	
 			grid_.attach(*card, x, y, 1, 1);
+			card->signal_clicked.connect([this, x, y]() { OnCardSelected(x, y); });
 		}
 	}	
 }

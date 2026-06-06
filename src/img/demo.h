@@ -28,8 +28,8 @@ protected:
 
 	std::vector<CardPtr> CreateCardsFromFiles(const std::string &path, const std::vector<std::string> &files, const latero::Tactograph *dev);
 
-
-	void OnCardSelected(CardPtr card);
+	CardPtr GetCard(uint x, uint y);
+	void OnCardSelected(uint x, uint y);
 
 
 	void UpdateGrid(std::vector<CardPtr> cards);

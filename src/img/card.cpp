@@ -13,7 +13,7 @@ Card::Card(latero::graphics::GeneratorPtr gen) :
 	clickGesture_ = Gtk::GestureClick::create();
 	clickGesture_->set_button(1);
 	clickGesture_->signal_pressed().connect(
-		[this](int, double, double) { signal_clicked(shared_from_this()); });
+		[this](int, double, double) { signal_clicked(); });
 	add_controller(clickGesture_);
 	img_.Set(GetIllustration());
 

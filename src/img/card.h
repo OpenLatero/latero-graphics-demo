@@ -3,7 +3,6 @@
 #include "../config.h"
 #ifndef DISABLE_GRAPHICS_DEMO
 
-#include <boost/enable_shared_from_this.hpp>
 #include "gtkmm.h"
 #include <laterographics/virtualsurfacewidget.h>
 #include <laterographics/generator.h>
@@ -11,7 +10,7 @@
 class Card;
 typedef boost::shared_ptr<Card> CardPtr;
 
-class Card : public Gtk::Box, public boost::enable_shared_from_this<Card>
+class Card : public Gtk::Box
 {
 public:
 
@@ -25,7 +24,7 @@ public:
 		return gen_;
 	}
 
-	sigc::signal<void(CardPtr)> signal_clicked;
+	sigc::signal<void()> signal_clicked;
 
 
 
