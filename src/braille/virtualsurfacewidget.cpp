@@ -25,20 +25,20 @@ void VirtualSurfaceArea::OnDraw(const Cairo::RefPtr<Cairo::Context>& cr, int wid
 		return;
 	}
 
-	if (GetWidth() == 0 || GetHeight() == 0)
+	if (width == 0 || height == 0)
 		return;
 
 	Glib::RefPtr<Gdk::Pixbuf> buf = bg_;
 	if (buf)
 	{
-		buf = buf->scale_simple(GetWidth(),GetHeight(),Gdk::InterpType::NEAREST);
+		buf = buf->scale_simple(width,height,Gdk::InterpType::NEAREST);
         Gdk::Cairo::set_source_pixbuf(cr, buf, 0, 0);
         cr->paint();
 	}
 
 	// draw cursor
-	double dpmm_x = GetWidth() / dev_->GetSurfaceWidth();
-	double dpmm_y = GetHeight() / dev_->GetHeight();
+	double dpmm_x = width / dev_->GetSurfaceWidth();
+	double dpmm_y = height / dev_->GetHeight();
 	cr->scale(dpmm_x, dpmm_y); // scale to mm
 	cr->translate(pos_, dev_->GetHeight()/2);	// shift origin to center of TD
 
@@ -54,7 +54,7 @@ void VirtualSurfaceArea::OnDraw(const Cairo::RefPtr<Cairo::Context>& cr, int wid
 			latero::graphics::Point p = dev_->GetActuatorOffset(i,j);
 			float x = p.x + motionRange*(0.5-tdState_.Get(i,j));
 			cr->move_to(x, p.y - 0.5*hPiezo);
-	        	cr->line_to(x, p.y + 0.5*hPiezo);
+	        cr->line_to(x, p.y + 0.5*hPiezo);
 			cr->stroke();
 		}
 	}
@@ -83,6 +83,27 @@ void VirtualSurfaceArea::SetBackground(Glib::RefPtr<Gdk::Pixbuf> bg)
 	Invalidate();
 }
 
+VirtualSurfaceWidget::VirtualSurfaceWidget(BrailleGenPtr peer) :
+ 	Gtk::AspectFrame(0.5, 0.5, peer->Dev()->GetSurfaceWidth()/peer->Dev()->GetHeight(), false),
+	surface_(peer->Dev()),
+	peer_(peer)
+{
+	set_child(surface_);
+
+	Glib::signal_timeout().connect(
+		sigc::mem_fun(*this, &VirtualSurfaceWidget::RefreshCursor),
+		(uint)33, // ms
+		Glib::PRIORITY_DEFAULT_IDLE);
+
+	Glib::signal_timeout().connect(
+		sigc::mem_fun(*this, &VirtualSurfaceWidget::OnCheckPeer),
+		(uint)333, // ms
+		Glib::PRIORITY_DEFAULT_IDLE);
+
+	surface_.signal_resize().connect(
+		[this](int, int) { RefreshBackground(); });
+}
+
 
 bool VirtualSurfaceWidget::RefreshCursor()
 {
@@ -105,10 +126,10 @@ bool VirtualSurfaceWidget::OnCheckPeer()
 
 void VirtualSurfaceWidget::RefreshBackground()
 {
-	if (surface_.GetWidth() == 0 || surface_.GetHeight() == 0)
+	if (surface_.get_width() == 0 || surface_.get_height() == 0)
 		return;
 	bgUpdateTime_ = boost::posix_time::microsec_clock::universal_time();
-	latero::graphics::gtk::Animation anim = peer_->GetIllustration(surface_.GetWidth(),surface_.GetHeight());
+	latero::graphics::gtk::Animation anim = peer_->GetIllustration(surface_.get_width(),surface_.get_height());
 	surface_.SetBackground(anim);
 }
 

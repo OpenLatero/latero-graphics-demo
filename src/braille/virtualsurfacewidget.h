@@ -20,8 +20,8 @@ public:
 
 	void SetDisplayState(double pos, const latero::BiasedImg &frame);
 
-	inline uint GetWidth() { return get_width(); };
-	inline uint GetHeight() { return get_height(); };
+	//inline uint GetWidth() { return get_width(); };
+	//inline uint GetHeight() { return get_height(); };
 
 protected:
 	void Invalidate();
@@ -39,32 +39,10 @@ protected:
  * This widget represents the virtual surface explored by a tactile display. It is implement as an AspectFrame enclosing a 
  * DrawingArea so that the aspect ratio can be maintained.
  */
-class VirtualSurfaceWidget : public Gtk::Box
+class VirtualSurfaceWidget : public Gtk::AspectFrame
 {
 public:
-	VirtualSurfaceWidget(BrailleGenPtr peer) :
-		Gtk::Box(Gtk::Orientation::VERTICAL),
- 		frame_(0.5, 0.5, peer->Dev()->GetSurfaceWidth()/peer->Dev()->GetHeight(), false),
-		surface_(peer->Dev()),
-		peer_(peer)
-	{
-		append(frame_);
-		frame_.set_child(surface_);
-
-		Glib::signal_timeout().connect(
-			sigc::mem_fun(*this, &VirtualSurfaceWidget::RefreshCursor),
-			(uint)33, // ms
-			Glib::PRIORITY_DEFAULT_IDLE);
-
-		Glib::signal_timeout().connect(
-			sigc::mem_fun(*this, &VirtualSurfaceWidget::OnCheckPeer),
-			(uint)333, // ms
-			Glib::PRIORITY_DEFAULT_IDLE);
-
-		surface_.signal_resize().connect(
-			[this](int, int) { RefreshBackground(); });
-	}
-
+	VirtualSurfaceWidget(BrailleGenPtr peer);
 	virtual ~VirtualSurfaceWidget() {}
 	
 protected:
@@ -72,7 +50,6 @@ protected:
 	bool OnCheckPeer();
 	void RefreshBackground();
 
-	Gtk::AspectFrame frame_;
 	VirtualSurfaceArea surface_;
 	BrailleGenPtr peer_;
 	boost::posix_time::ptime bgUpdateTime_;
