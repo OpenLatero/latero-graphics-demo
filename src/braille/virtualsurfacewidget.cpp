@@ -3,62 +3,6 @@
 
 #include "virtualsurfacewidget.h"
 
-#define UPDATE_RATE_MS 300
-
-void VirtualSurfaceWidget::OnDraw(const Cairo::RefPtr<Cairo::Context>& cr, int width, int height)
-{
-	if (!bg_)
-	{
-		cr->set_source_rgb(1.0, 1.0, 1.0);
-		cr->paint();
-		return;
-	}
-
-	if (width == 0 || height == 0)
-		return;
-
-	Glib::RefPtr<Gdk::Pixbuf> buf = bg_;
-	if (buf)
-	{
-		buf = buf->scale_simple(width,height,Gdk::InterpType::NEAREST);
-        Gdk::Cairo::set_source_pixbuf(cr, buf, 0, 0);
-        cr->paint();
-	}
-
-	// draw cursor
-	double dpmm_x = width / dev_->GetSurfaceWidth();
-	double dpmm_y = height / dev_->GetHeight();
-	cr->scale(dpmm_x, dpmm_y); // scale to mm
-	cr->translate(pos_, dev_->GetHeight()/2);	// shift origin to center of TD
-
-	float motionRange = 0.6 * dev_->GetPitchX();
-	int hPiezo = dev_->GetContactorSizeY();
-
-	cr->set_line_width(0.5);
-	cr->set_source_rgb(1.0, 0.0, 0.0);
-	for (uint j=0; j< dev_->GetFrameSizeY(); ++j)
-	{
-		for (uint i=0; i< dev_->GetFrameSizeX(); ++i)
-		{
-			latero::graphics::Point p = dev_->GetActuatorOffset(i,j);
-			float x = p.x + motionRange*(0.5-tdState_.Get(i,j));
-			cr->move_to(x, p.y - 0.5*hPiezo);
-	        cr->line_to(x, p.y + 0.5*hPiezo);
-			cr->stroke();
-		}
-	}
-}
-
-
-
-
-
-void VirtualSurfaceWidget::SetBackground(Glib::RefPtr<Gdk::Pixbuf> bg)
-{
-	bg_ = bg;
-	drawingArea_.queue_draw();
-}
-
 VirtualSurfaceWidget::VirtualSurfaceWidget(BrailleGenPtr peer) :
  	Gtk::AspectFrame(0.5, 0.5, peer->Dev()->GetSurfaceWidth()/peer->Dev()->GetHeight(), false),
 	dev_(peer->Dev()),
@@ -82,6 +26,56 @@ VirtualSurfaceWidget::VirtualSurfaceWidget(BrailleGenPtr peer) :
 	drawingArea_.signal_resize().connect(
 		[this](int, int) { RefreshBackground(); });
 }
+
+void VirtualSurfaceWidget::OnDraw(const Cairo::RefPtr<Cairo::Context>& cr, int width, int height)
+{
+	if (!bg_)
+	{
+		cr->set_source_rgb(1.0, 1.0, 1.0);
+		cr->paint();
+		return;
+	}
+
+	if (width == 0 || height == 0)
+		return;
+
+	Glib::RefPtr<Gdk::Pixbuf> buf = bg_;
+	if (buf)
+	{
+		buf = buf->scale_simple(width,height,Gdk::InterpType::NEAREST);
+        Gdk::Cairo::set_source_pixbuf(cr, buf, 0, 0);
+        cr->paint();
+	}
+
+	// draw cursor
+	cr->scale(width / dev_->GetSurfaceWidth(), height / dev_->GetHeight()); // scale to mm
+	cr->translate(pos_, dev_->GetHeight()/2);	// shift origin to center of TD
+
+	float motionRange = 0.6 * dev_->GetPitchX();
+	int hPiezo = dev_->GetContactorSizeY();
+
+	cr->set_line_width(0.5);
+	cr->set_source_rgb(1.0, 0.0, 0.0);
+	for (uint j=0; j< dev_->GetFrameSizeY(); ++j)
+	{
+		for (uint i=0; i< dev_->GetFrameSizeX(); ++i)
+		{
+			latero::graphics::Point p = dev_->GetActuatorOffset(i,j);
+			float x = p.x + motionRange*(0.5-tdState_.Get(i,j));
+			cr->move_to(x, p.y - 0.5*hPiezo);
+	        cr->line_to(x, p.y + 0.5*hPiezo);
+			cr->stroke();
+		}
+	}
+}
+
+void VirtualSurfaceWidget::SetBackground(Glib::RefPtr<Gdk::Pixbuf> bg)
+{
+	bg_ = bg;
+	drawingArea_.queue_draw();
+}
+
+
 
 
 bool VirtualSurfaceWidget::RefreshCursor()
