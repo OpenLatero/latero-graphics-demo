@@ -3,7 +3,7 @@
 #include "../config.h"
 #ifndef DISABLE_VECTOR_DEMO
 
-#include <laterographics/virtualsurfacewidget.h>
+#include <laterographics/tactographview.h>
 #include <laterographics/graphics/canvas.h>
 #include <laterographics/graphics/canvaswidget.h>
 #include "../demo.h"
@@ -21,7 +21,7 @@ protected:
 	bool RefreshCursor();
 	void OnChange();
 
-	latero::graphics::VirtualSurfaceWidget preview_;
+	latero::graphics::TactographView preview_;
 	latero::graphics::CanvasPtr peer_;
 	latero::graphics::CanvasWidget *vectorWidget_;
 };

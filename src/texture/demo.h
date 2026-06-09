@@ -4,7 +4,7 @@
 #ifndef DISABLE_TEXTURE_DEMO
 
 #include "../demo.h"
-#include <laterographics/virtualsurfacewidget.h>
+#include <laterographics/tactographview.h>
 #include <laterographics/graphics/image.h>
 #include <laterographics/graphics/canvas.h>
 
@@ -22,7 +22,7 @@ protected:
 	bool RefreshCursor();
 	void OnChange();
 
-	latero::graphics::VirtualSurfaceWidget preview_;
+	latero::graphics::TactographView preview_;
 	latero::graphics::CanvasPtr gen_;
 	latero::graphics::ImagePtr peer_;
 	Gtk::Widget *waveWidget_;

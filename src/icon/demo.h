@@ -4,7 +4,7 @@
 #ifndef DISABLE_ICON_DEMO
 
 #include "../demo.h"
-#include <laterographics/virtualsurfacewidget.h>
+#include <laterographics/tactographview.h>
 #include "generator.h"
 #include "toolbar.h"
 
@@ -19,7 +19,7 @@ public:
 protected:
 
 	GeneratorPtr peer_;
-	latero::graphics::VirtualSurfaceWidget preview_;
+	latero::graphics::TactographView preview_;
 	Toolbar genToolbar_;
 
 	Gtk::Box mainBox_;

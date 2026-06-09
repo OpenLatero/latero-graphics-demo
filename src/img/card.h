@@ -4,7 +4,7 @@
 #ifndef DISABLE_GRAPHICS_DEMO
 
 #include "gtkmm.h"
-#include <laterographics/virtualsurfacewidget.h>
+#include <laterographics/tactographview.h>
 #include <laterographics/generator.h>
 
 class Card;
@@ -35,7 +35,7 @@ protected:
 
 	latero::graphics::GeneratorPtr gen_;
 
-	latero::graphics::VirtualSurfaceWidget img_;
+	latero::graphics::TactographView img_;
 
 };
 

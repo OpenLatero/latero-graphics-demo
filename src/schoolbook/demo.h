@@ -5,7 +5,7 @@
 #ifndef DISABLE_SCHOOLBOOK_DEMO
 
 #include "../demo.h"
-#include <laterographics/virtualsurfacewidget.h>
+#include <laterographics/tactographview.h>
 #include "../generatorhandle.h"
 
 #define NB_BUTTONS 4
@@ -26,7 +26,7 @@ private:
 	void Select(int i);
 	void CreateGenerators();
 
-	latero::graphics::VirtualSurfaceWidget preview_;
+	latero::graphics::TactographView preview_;
 	Gtk::CheckButton selButton_[NB_BUTTONS];
 
 	int sel_;

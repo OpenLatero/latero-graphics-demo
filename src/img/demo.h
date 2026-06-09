@@ -37,7 +37,7 @@ protected:
 	std::vector< std::vector<CardPtr> > cardPages_;
 
 	GeneratorHandlePtr gen_;
-	latero::graphics::VirtualSurfaceWidget display_;
+	latero::graphics::TactographView display_;
 
 
 
