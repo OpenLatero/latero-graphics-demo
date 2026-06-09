@@ -22,7 +22,7 @@ Demo::Demo(const latero::Tactograph *dev) :
 {
 	peer_ = GeneratorHandlePtr(new GeneratorHandle(dev));
 	preview_.SetGenerator(peer_);
-	preview_.RefreshBackground();
+	//preview_.RefreshBackground();
 
 
 	CreateGenerators();
