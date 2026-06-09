@@ -2,21 +2,10 @@
 #ifndef DISABLE_BRAILLE_DEMO
 
 #include "virtualsurfacewidget.h"
-#include <laterographics/gtk/pixbufops.h>
-#include <gtkmm.h>
-#include <math.h>
 
 #define UPDATE_RATE_MS 300
 
-VirtualSurfaceArea::VirtualSurfaceArea(const latero::Tactograph *dev) :
-	dev_(dev),
-	tdState_(dev->GetFrameSizeX(), dev->GetFrameSizeY())
-{
-    set_draw_func(sigc::mem_fun(*this, &VirtualSurfaceArea::OnDraw));
-}
-
-
-void VirtualSurfaceArea::OnDraw(const Cairo::RefPtr<Cairo::Context>& cr, int width, int height)
+void VirtualSurfaceWidget::OnDraw(const Cairo::RefPtr<Cairo::Context>& cr, int width, int height)
 {
 	if (!bg_)
 	{
@@ -62,33 +51,23 @@ void VirtualSurfaceArea::OnDraw(const Cairo::RefPtr<Cairo::Context>& cr, int wid
 
 
 
-void VirtualSurfaceArea::SetDisplayState(double pos, const latero::BiasedImg &f)
-{
-	assert(f.Size() ==  tdState_.Size());
-	pos_ = pos;
-	tdState_ = f;
-	Invalidate();
-}
 
 
-void VirtualSurfaceArea::Invalidate()
-{
-    queue_draw();
-}
-
-
-void VirtualSurfaceArea::SetBackground(Glib::RefPtr<Gdk::Pixbuf> bg)
+void VirtualSurfaceWidget::SetBackground(Glib::RefPtr<Gdk::Pixbuf> bg)
 {
 	bg_ = bg;
-	Invalidate();
+	drawingArea_.queue_draw();
 }
 
 VirtualSurfaceWidget::VirtualSurfaceWidget(BrailleGenPtr peer) :
  	Gtk::AspectFrame(0.5, 0.5, peer->Dev()->GetSurfaceWidth()/peer->Dev()->GetHeight(), false),
-	surface_(peer->Dev()),
+	dev_(peer->Dev()),
+	tdState_(peer->Dev()->GetFrameSizeX(), peer->Dev()->GetFrameSizeY()),
 	peer_(peer)
 {
-	set_child(surface_);
+    drawingArea_.set_draw_func(sigc::mem_fun(*this, &VirtualSurfaceWidget::OnDraw));
+
+	set_child(drawingArea_);
 
 	Glib::signal_timeout().connect(
 		sigc::mem_fun(*this, &VirtualSurfaceWidget::RefreshCursor),
@@ -100,7 +79,7 @@ VirtualSurfaceWidget::VirtualSurfaceWidget(BrailleGenPtr peer) :
 		(uint)333, // ms
 		Glib::PRIORITY_DEFAULT_IDLE);
 
-	surface_.signal_resize().connect(
+	drawingArea_.signal_resize().connect(
 		[this](int, int) { RefreshBackground(); });
 }
 
@@ -108,7 +87,9 @@ VirtualSurfaceWidget::VirtualSurfaceWidget(BrailleGenPtr peer) :
 bool VirtualSurfaceWidget::RefreshCursor()
 {
 	latero::BiasedImg frame = peer_->GetLatestFrame();
-	surface_.SetDisplayState(peer_->GetLastPos(), frame);
+	pos_ = peer_->GetLastPos();
+	tdState_ = frame;
+	drawingArea_.queue_draw();
 	return true;
 }
 
@@ -126,11 +107,11 @@ bool VirtualSurfaceWidget::OnCheckPeer()
 
 void VirtualSurfaceWidget::RefreshBackground()
 {
-	if (surface_.get_width() == 0 || surface_.get_height() == 0)
+	if (drawingArea_.get_width() == 0 || drawingArea_.get_height() == 0)
 		return;
 	bgUpdateTime_ = boost::posix_time::microsec_clock::universal_time();
-	latero::graphics::gtk::Animation anim = peer_->GetIllustration(surface_.get_width(),surface_.get_height());
-	surface_.SetBackground(anim);
+	latero::graphics::gtk::Animation anim = peer_->GetIllustration(drawingArea_.get_width(),drawingArea_.get_height());
+	SetBackground(anim);
 }
 
 
