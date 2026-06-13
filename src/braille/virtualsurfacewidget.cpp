@@ -1,6 +1,6 @@
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
-
+#include <laterographics/tactiledisplayview.h>
 #include "virtualsurfacewidget.h"
 
 VirtualSurfaceWidget::VirtualSurfaceWidget(BrailleGenPtr peer) :
@@ -51,22 +51,9 @@ void VirtualSurfaceWidget::OnDraw(const Cairo::RefPtr<Cairo::Context>& cr, int w
 	cr->scale(width / dev_->GetSurfaceWidth(), height / dev_->GetHeight()); // scale to mm
 	cr->translate(pos_, dev_->GetHeight()/2);	// shift origin to center of TD
 
-	float motionRange = 0.6 * dev_->GetPitchX();
-	int hPiezo = dev_->GetContactorSizeY();
-
-	cr->set_line_width(0.5);
-	cr->set_source_rgb(1.0, 0.0, 0.0);
-	for (uint j=0; j< dev_->GetFrameSizeY(); ++j)
-	{
-		for (uint i=0; i< dev_->GetFrameSizeX(); ++i)
-		{
-			latero::graphics::Point p = dev_->GetActuatorOffset(i,j);
-			float x = p.x + motionRange*(0.5-tdState_.Get(i,j));
-			cr->move_to(x, p.y - 0.5*hPiezo);
-	        cr->line_to(x, p.y + 0.5*hPiezo);
-			cr->stroke();
-		}
-	}
+	auto pattern = latero::graphics::TactileDisplayView::GetTactileDisplayDrawing(cr, dev_, tdState_, false);
+	cr->set_source(pattern);
+	cr->paint();
 }
 
 void VirtualSurfaceWidget::SetBackground(Glib::RefPtr<Gdk::Pixbuf> bg)
