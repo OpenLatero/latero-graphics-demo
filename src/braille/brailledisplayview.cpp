@@ -1,25 +1,26 @@
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
 #include <laterographics/tactiledisplayview.h>
-#include "virtualsurfacewidget.h"
+#include "brailledisplayview.h"
 
-VirtualSurfaceWidget::VirtualSurfaceWidget(BrailleGenPtr peer) :
+BrailleDisplayView::BrailleDisplayView(BrailleGenPtr peer) :
  	Gtk::AspectFrame(0.5, 0.5, peer->Dev()->GetSurfaceWidth()/peer->Dev()->GetHeight(), false),
 	dev_(peer->Dev()),
 	tdState_(peer->Dev()->GetFrameSizeX(), peer->Dev()->GetFrameSizeY()),
-	peer_(peer)
+	peer_(peer),
+	tdPainter_(dev_)
 {
-    drawingArea_.set_draw_func(sigc::mem_fun(*this, &VirtualSurfaceWidget::OnDraw));
+    drawingArea_.set_draw_func(sigc::mem_fun(*this, &BrailleDisplayView::OnDraw));
 
 	set_child(drawingArea_);
 
 	Glib::signal_timeout().connect(
-		sigc::mem_fun(*this, &VirtualSurfaceWidget::RefreshCursor),
+		sigc::mem_fun(*this, &BrailleDisplayView::RefreshCursor),
 		(uint)33, // ms
 		Glib::PRIORITY_DEFAULT_IDLE);
 
 	Glib::signal_timeout().connect(
-		sigc::mem_fun(*this, &VirtualSurfaceWidget::OnCheckPeer),
+		sigc::mem_fun(*this, &BrailleDisplayView::OnCheckPeer),
 		(uint)333, // ms
 		Glib::PRIORITY_DEFAULT_IDLE);
 
@@ -27,7 +28,7 @@ VirtualSurfaceWidget::VirtualSurfaceWidget(BrailleGenPtr peer) :
 		[this](int, int) { RefreshBackground(); });
 }
 
-void VirtualSurfaceWidget::OnDraw(const Cairo::RefPtr<Cairo::Context>& cr, int width, int height)
+void BrailleDisplayView::OnDraw(const Cairo::RefPtr<Cairo::Context>& cr, int width, int height)
 {
 	if (!bg_)
 	{
@@ -51,12 +52,10 @@ void VirtualSurfaceWidget::OnDraw(const Cairo::RefPtr<Cairo::Context>& cr, int w
 	cr->scale(width / dev_->GetSurfaceWidth(), height / dev_->GetHeight()); // scale to mm
 	cr->translate(pos_, dev_->GetHeight()/2);	// shift origin to center of TD
 
-	auto pattern = latero::graphics::TactileDisplayView::GetTactileDisplayDrawing(cr, dev_, tdState_, false);
-	cr->set_source(pattern);
-	cr->paint();
+	tdPainter_.Paint(cr, tdState_, false);
 }
 
-void VirtualSurfaceWidget::SetBackground(Glib::RefPtr<Gdk::Pixbuf> bg)
+void BrailleDisplayView::SetBackground(Glib::RefPtr<Gdk::Pixbuf> bg)
 {
 	bg_ = bg;
 	drawingArea_.queue_draw();
@@ -65,7 +64,7 @@ void VirtualSurfaceWidget::SetBackground(Glib::RefPtr<Gdk::Pixbuf> bg)
 
 
 
-bool VirtualSurfaceWidget::RefreshCursor()
+bool BrailleDisplayView::RefreshCursor()
 {
 	latero::BiasedImg frame = peer_->GetLatestFrame();
 	pos_ = peer_->GetLastPos();
@@ -75,7 +74,7 @@ bool VirtualSurfaceWidget::RefreshCursor()
 }
 
 
-bool VirtualSurfaceWidget::OnCheckPeer()
+bool BrailleDisplayView::OnCheckPeer()
 {
 	if (peer_)
 	{
@@ -86,7 +85,7 @@ bool VirtualSurfaceWidget::OnCheckPeer()
 	return true;
 }
 
-void VirtualSurfaceWidget::RefreshBackground()
+void BrailleDisplayView::RefreshBackground()
 {
 	if (drawingArea_.get_width() == 0 || drawingArea_.get_height() == 0)
 		return;

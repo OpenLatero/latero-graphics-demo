@@ -7,7 +7,7 @@
 #include <gtkmm.h>
 #include "dot.h"
 #include <laterographics/gtk/numwidget.h>
-#include "virtualsurfacewidget.h"
+#include "brailledisplayview.h"
 #include "positiongraph.h"
 
 
@@ -223,7 +223,7 @@ Gtk::Widget *BrailleGenWidget::CreateVizWidget()
 	box->set_halign(Gtk::Align::FILL);
 	box->set_valign(Gtk::Align::FILL);
 
-	VirtualSurfaceWidget *surf = Gtk::make_managed<VirtualSurfaceWidget>(peer_);
+	BrailleDisplayView *surf = Gtk::make_managed<BrailleDisplayView>(peer_);
 	surf->set_size_request(1000,1.2*1000*peer_->Dev()->GetHeight()/peer_->Dev()->GetSurfaceWidth());
 	surf->set_margin_top(10);
 

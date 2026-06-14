@@ -5,12 +5,13 @@
 
 #include <gtkmm.h>
 #include "braillegen.h"
+#include <laterographics/tactiledisplaypainter.h>
 
-class VirtualSurfaceWidget : public Gtk::AspectFrame
+class BrailleDisplayView : public Gtk::AspectFrame
 {
 public:
-	VirtualSurfaceWidget(BrailleGenPtr peer);
-	virtual ~VirtualSurfaceWidget() {}
+	BrailleDisplayView(BrailleGenPtr peer);
+	virtual ~BrailleDisplayView() {}
 		
 	void SetBackground(Glib::RefPtr<Gdk::Pixbuf> buf);
 
@@ -28,6 +29,7 @@ protected:
 	double pos_;
 	latero::BiasedImg tdState_;
 	Gtk::DrawingArea drawingArea_;
+	latero::graphics::TactileDisplayPainter tdPainter_;
 };
 
 #endif
