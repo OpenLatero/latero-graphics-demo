@@ -10,6 +10,7 @@ BrailleDisplayView::BrailleDisplayView(BrailleGenPtr peer) :
 	peer_(peer),
 	tdPainter_(dev_)
 {
+	tdPainter_.EnableOutline(false);
     drawingArea_.set_draw_func(sigc::mem_fun(*this, &BrailleDisplayView::OnDraw));
 
 	set_child(drawingArea_);
@@ -52,7 +53,7 @@ void BrailleDisplayView::OnDraw(const Cairo::RefPtr<Cairo::Context>& cr, int wid
 	cr->scale(width / dev_->GetSurfaceWidth(), height / dev_->GetHeight()); // scale to mm
 	cr->translate(pos_, dev_->GetHeight()/2);	// shift origin to center of TD
 
-	tdPainter_.Paint(cr, tdState_, false);
+	tdPainter_.Paint(cr, tdState_);
 }
 
 void BrailleDisplayView::SetBackground(Glib::RefPtr<Gdk::Pixbuf> bg)
