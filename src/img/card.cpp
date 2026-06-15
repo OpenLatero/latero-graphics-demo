@@ -8,6 +8,7 @@ Card::Card(latero::graphics::GeneratorPtr gen) :
 	gen_(gen),
 	img_(gen->Dev(), gen_, true)
 {  
+	img_.ShowCursor(false);
 	assert(gen);
 	append(img_);
 	clickGesture_ = Gtk::GestureClick::create();
