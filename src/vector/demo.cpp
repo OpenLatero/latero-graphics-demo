@@ -18,8 +18,8 @@ Demo::Demo(const latero::Tactograph *dev) :
 	double w = dev->GetSurfaceWidth();
 	double h = dev->GetSurfaceHeight();
 	peer_->GetGroup()->InsertPattern(Circle::Create(dev, dev->GetSurfaceSize()/2.0, 50));
-	peer_->GetGroup()->InsertPattern(Line::Create(dev, latero::graphics::Point(0.25*w,0.5*h), latero::graphics::Point(0.75*w,0.5*h)));
-	//peer_->InsertObject(Line::Create(dev, latero::graphics::Point(50,60), latero::graphics::Point(175,60)));
+	peer_->GetGroup()->InsertPattern(Line::Create(dev, latero::Point(0.25*w,0.5*h), latero::Point(0.75*w,0.5*h)));
+	//peer_->InsertObject(Line::Create(dev, latero::Point(50,60), latero::Point(175,60)));
 
 	/*
 	PolygonPtr poly = Polygon::Create(dev);

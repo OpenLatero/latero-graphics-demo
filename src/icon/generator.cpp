@@ -91,7 +91,7 @@ void Generator::UpdateGen()
 	}
 	else
 	{
-		std::vector<latero::graphics::Point> points = GetPolygon(shape_, GetSize_());
+		std::vector<latero::Point> points = GetPolygon(shape_, GetSize_());
 		for (unsigned int i=0; i<points.size(); ++i) 
             points[i] += Dev()->GetSurfaceSize()/2;
 		PolygonPtr p = Polygon::Create(Dev());
@@ -153,55 +153,55 @@ double Generator::GetStrokeWidth()
     else return 2; // default
 }
 
-std::vector<latero::graphics::Point> Generator::GetPolygon(int shape, double size)
+std::vector<latero::Point> Generator::GetPolygon(int shape, double size)
 {
-	std::vector<latero::graphics::Point> rv;
+	std::vector<latero::Point> rv;
 	if (shape == Generator::SHAPE_SQUARE)
 	{
-		rv.push_back(latero::graphics::Point(-size/2, -size/2));
-		rv.push_back(latero::graphics::Point(size/2, -size/2));
-		rv.push_back(latero::graphics::Point(size/2, size/2));
-		rv.push_back(latero::graphics::Point(-size/2, size/2));
+		rv.push_back(latero::Point(-size/2, -size/2));
+		rv.push_back(latero::Point(size/2, -size/2));
+		rv.push_back(latero::Point(size/2, size/2));
+		rv.push_back(latero::Point(-size/2, size/2));
 	}
 	else if (shape == Generator::SHAPE_TRIANGLE)
 	{
 		float d = size/2;
-		rv.push_back(latero::graphics::Point(-d, -d));
-		rv.push_back(latero::graphics::Point(d, -d));
-		rv.push_back(latero::graphics::Point(0, d));
+		rv.push_back(latero::Point(-d, -d));
+		rv.push_back(latero::Point(d, -d));
+		rv.push_back(latero::Point(0, d));
 	}
 	else if  (shape == Generator::SHAPE_RATRIANG)
 	{
 		float d = size/2;
-		rv.push_back(latero::graphics::Point(-d, -d));
-		rv.push_back(latero::graphics::Point(d, d));
-		rv.push_back(latero::graphics::Point(-d, d));
+		rv.push_back(latero::Point(-d, -d));
+		rv.push_back(latero::Point(d, d));
+		rv.push_back(latero::Point(-d, d));
 	}
 	else if  (shape == Generator::SHAPE_DIAMOND)
 	{
 		float d = size/2;
-		rv.push_back(latero::graphics::Point(0, -d));
-		rv.push_back(latero::graphics::Point(d, 0));
-		rv.push_back(latero::graphics::Point(0, d));
-		rv.push_back(latero::graphics::Point(-d, 0));
+		rv.push_back(latero::Point(0, -d));
+		rv.push_back(latero::Point(d, 0));
+		rv.push_back(latero::Point(0, d));
+		rv.push_back(latero::Point(-d, 0));
 	}
 	else if  (shape == Generator::SHAPE_PLUS)
 	{
 		double a = size/6;
 		double b = size/2;
 
-		rv.push_back(latero::graphics::Point(-b, -a));
-		rv.push_back(latero::graphics::Point(-a, -a));
-		rv.push_back(latero::graphics::Point(-a, -b));
-		rv.push_back(latero::graphics::Point(a, -b));
-		rv.push_back(latero::graphics::Point(a, -a));
-		rv.push_back(latero::graphics::Point(b, -a));
-		rv.push_back(latero::graphics::Point(b, a));
-		rv.push_back(latero::graphics::Point(a, a));
-		rv.push_back(latero::graphics::Point(a, b));
-		rv.push_back(latero::graphics::Point(-a, b));
-		rv.push_back(latero::graphics::Point(-a, a));
-		rv.push_back(latero::graphics::Point(-b, a));
+		rv.push_back(latero::Point(-b, -a));
+		rv.push_back(latero::Point(-a, -a));
+		rv.push_back(latero::Point(-a, -b));
+		rv.push_back(latero::Point(a, -b));
+		rv.push_back(latero::Point(a, -a));
+		rv.push_back(latero::Point(b, -a));
+		rv.push_back(latero::Point(b, a));
+		rv.push_back(latero::Point(a, a));
+		rv.push_back(latero::Point(a, b));
+		rv.push_back(latero::Point(-a, b));
+		rv.push_back(latero::Point(-a, a));
+		rv.push_back(latero::Point(-b, a));
 	}
 
 	return rv;

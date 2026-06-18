@@ -45,7 +45,7 @@ public:
 
 protected:
 
-	std::vector<latero::graphics::Point> GetPolygon(int shape, double size);
+	std::vector<latero::Point> GetPolygon(int shape, double size);
 	double GetSize_();
 	double GetStrokeWidth();
 
