@@ -1,9 +1,10 @@
 #pragma once
 
 #include <laterographics/generator.h>
+#include <memory>
 
 class GeneratorHandle;
-typedef boost::shared_ptr<GeneratorHandle> GeneratorHandlePtr;
+typedef std::shared_ptr<GeneratorHandle> GeneratorHandlePtr;
 
 class GeneratorHandle : public latero::graphics::Generator
 {

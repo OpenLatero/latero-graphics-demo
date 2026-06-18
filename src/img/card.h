@@ -6,9 +6,10 @@
 #include "gtkmm.h"
 #include <laterographics/tactographview.h>
 #include <laterographics/generator.h>
+#include <memory>
 
 class Card;
-typedef boost::shared_ptr<Card> CardPtr;
+typedef std::shared_ptr<Card> CardPtr;
 
 class Card : public Gtk::Box
 {

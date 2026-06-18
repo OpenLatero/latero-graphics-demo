@@ -572,7 +572,7 @@ latero::graphics::gtk::Animation BrailleGen::GetIllustration(uint w, uint h) con
 
 Gtk::Widget *BrailleGen::CreateWidget(latero::graphics::GeneratorPtr ptr)
 {
-	BrailleGenPtr gen = boost::dynamic_pointer_cast<BrailleGen>(ptr);
+	BrailleGenPtr gen = std::dynamic_pointer_cast<BrailleGen>(ptr);
 	if (!gen) return Generator::CreateWidget(ptr); // default
 	return Gtk::make_managed<BrailleGenWidget>(gen);
 }
