@@ -4,7 +4,7 @@
 #ifndef DISABLE_ICON_DEMO
 
 #include "generator.h"
-#include <laterographics/graphics/texture/texturefwd.h>
+#include <laterographics/graphics/texture/texture.h>
 #include <gtkmm.h>
 
 namespace IconDemo {

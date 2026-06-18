@@ -3,11 +3,11 @@
 #include "../config.h"
 #ifndef DISABLE_ICON_DEMO
 
-#include <laterographics/graphics/texture/texturefwd.h>
+#include <laterographics/graphics/texture/texture.h>
 #include "../generatorhandle.h"
 #include <laterographics/graphics/canvas.h>
-#include <laterographics/graphics/closedpatternfwd.h>
-#include <laterographics/graphics/strokefwd.h>
+#include <laterographics/graphics/closedpattern.h>
+#include <laterographics/graphics/stroke.h>
 
 namespace IconDemo {
 

@@ -41,7 +41,7 @@ SOURCE_GROUP(icon FILES ${demo_ICON_SRCS})
 set(demo_BRAILLE_SRCS
 	braille/braillecell.cpp braille/braillegen.cpp braille/braillegenwidget.h braille/braillestringwidget.h
 	braille/dotgraph.cpp braille/dotwidget.h braille/modulatorwidget.h braille/brailledisplayview.h
-	braille/braillecell.h braille/braillegenfwd.h braille/braillestring.cpp braille/demo.cpp
+	braille/braillecell.h braille/braillestring.cpp braille/demo.cpp
 	braille/dotgraph.h braille/modulator.cpp braille/positiongraph.cpp
 	braille/braillecellwidget.cpp braille/braillegen.h braille/braillestring.h
 	braille/demo.h braille/dot.h braille/modulator.h braille/positiongraph.h

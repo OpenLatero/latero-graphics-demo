@@ -3,8 +3,9 @@
 #include "../config.h"
 #ifndef DISABLE_BRAILLE_DEMO
 
-#include "braillegenfwd.h"
+#include <memory>
 #include <laterographics/generator.h>
+
 #include "braillecell.h"
 #include "dot.h"
 #include "modulator.h"
@@ -20,6 +21,8 @@ typedef enum {
 } braille_mode_t;
 
 #define BRAILLE_MODE_SIZE (BRAILLE_MODE_DOUBLE_ROW_SHEAR+1)
+
+typedef std::shared_ptr<class BrailleGen> BrailleGenPtr;
 
 class BrailleGen : public latero::graphics::Generator
 {
