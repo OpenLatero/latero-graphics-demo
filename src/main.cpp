@@ -33,9 +33,9 @@ int main(int argc, char *argv[])
 	if (vm.count("help")) { std::cout << desc << "\n"; return 1; }
 	float UpdateRateHz = DefaultUpdateRateHz; // default
 	if (vm.count("haptic-rate")) UpdateRateHz = vm["haptic-rate"].as<int>();
-	std::string filename;
+	std::filesystem::path filename;
 	if (vm.count("input-file"))
-		filename = vm["input-file"].as< std::vector<std::string> >().at(0); // ignore multiples for now
+		filename = vm["input-file"].as< std::vector<std::string> >().at(0);
 	bool disableAudio = false;
 	if (vm.count("disable-audio")) disableAudio = true;
 

@@ -72,7 +72,7 @@ std::vector<CardPtr> Demo::CreateCardsFromFiles(const std::filesystem::path &pat
 	std::vector<CardPtr> cards;
 	for (const auto& file : files)
 	{
-		latero::graphics::GeneratorPtr gen = latero::graphics::Generator::Create((path / file).string(), dev);
+		latero::graphics::GeneratorPtr gen = latero::graphics::Generator::Create(path / file, dev);
 		auto card = Card::Create(gen);
 		cards.push_back(card);
 	}
