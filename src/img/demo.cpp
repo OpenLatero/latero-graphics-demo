@@ -59,20 +59,20 @@ void Demo::LoadCards(const latero::Tactograph *dev)
 	files = { "umbrella.gen", "car.gen", "house.gen", "phone.gen", "necklace.gen", "leaf.gen", 
 		      "cloud.gen", "cup.gen", "sun.gen", "balloons.gen", "hand.gen", "fork.gen" };
 	assert(files.size() == 12);
-	cardPages_.push_back(CreateCardsFromFiles(media_dir+"/img/vib-objects/", files, dev));
+	cardPages_.push_back(CreateCardsFromFiles(media_dir / "img/vib-objects", files, dev));
 
-	files = { "leaf.gen", "car.gen", "crown.gen", "umbrella.gen", "sun.gen", "cup.gen", 
+	files = { "leaf.gen", "car.gen", "crown.gen", "umbrella.gen", "sun.gen", "cup.gen",
 		      "boat.gen", "candle.gen", "shirt.gen", "flashlight.gen", "necklace.gen", "insect.gen" };
 	assert(files.size() == 12);
-	cardPages_.push_back(CreateCardsFromFiles(media_dir+"/img/combo-objects/", files, dev));
+	cardPages_.push_back(CreateCardsFromFiles(media_dir / "img/combo-objects", files, dev));
 }
 
-std::vector<CardPtr> Demo::CreateCardsFromFiles(const std::string &path, const std::vector<std::string> &files, const latero::Tactograph *dev)
+std::vector<CardPtr> Demo::CreateCardsFromFiles(const std::filesystem::path &path, const std::vector<std::string> &files, const latero::Tactograph *dev)
 {
 	std::vector<CardPtr> cards;
 	for (const auto& file : files)
 	{
-		latero::graphics::GeneratorPtr gen = latero::graphics::Generator::Create(path+file, dev);
+		latero::graphics::GeneratorPtr gen = latero::graphics::Generator::Create((path / file).string(), dev);
 		auto card = Card::Create(gen);
 		cards.push_back(card);
 	}

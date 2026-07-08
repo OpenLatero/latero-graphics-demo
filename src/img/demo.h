@@ -26,7 +26,7 @@ protected:
 	void LoadCards(const latero::Tactograph *dev);
 
 
-	std::vector<CardPtr> CreateCardsFromFiles(const std::string &path, const std::vector<std::string> &files, const latero::Tactograph *dev);
+	std::vector<CardPtr> CreateCardsFromFiles(const std::filesystem::path &path, const std::vector<std::string> &files, const latero::Tactograph *dev);
 
 	CardPtr GetCard(uint x, uint y);
 	void OnCardSelected(uint x, uint y);

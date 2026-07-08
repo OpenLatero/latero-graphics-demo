@@ -10,33 +10,33 @@
 
 namespace IconDemo {
 
-const std::string img_path = media_dir + "/icon/img/";
+const std::filesystem::path img_path = media_dir / "icon/img";
 
-const std::string shape_img_path 	= img_path+"shape/";
-const std::string shape_img_circle 	= shape_img_path+"Circle.svg";
-const std::string shape_img_square 	= shape_img_path+"Square.svg";
-const std::string shape_img_triangle 	= shape_img_path+"Triangle.svg";
-const std::string shape_img_ratriang 	= shape_img_path+"Ratriang.svg";
-const std::string shape_img_plus 	= shape_img_path+"Plus.svg";
-const std::string shape_img_diamond 	= shape_img_path+"Diamond.svg";
+const std::filesystem::path shape_img_path	= img_path / "shape";
+const std::filesystem::path shape_img_circle	= shape_img_path / "Circle.svg";
+const std::filesystem::path shape_img_square	= shape_img_path / "Square.svg";
+const std::filesystem::path shape_img_triangle	= shape_img_path / "Triangle.svg";
+const std::filesystem::path shape_img_ratriang	= shape_img_path / "Ratriang.svg";
+const std::filesystem::path shape_img_plus	= shape_img_path / "Plus.svg";
+const std::filesystem::path shape_img_diamond	= shape_img_path / "Diamond.svg";
 
-const std::string size_img_path 	= img_path+"size/";
-const std::string size_img_s 		= size_img_path+"small.png";
-const std::string size_img_m 		= size_img_path+"medium.png";
-const std::string size_img_l 		= size_img_path+"large.png";
+const std::filesystem::path size_img_path	= img_path / "size";
+const std::filesystem::path size_img_s		= size_img_path / "small.png";
+const std::filesystem::path size_img_m		= size_img_path / "medium.png";
+const std::filesystem::path size_img_l		= size_img_path / "large.png";
 
-const std::string contour_img_path 	= img_path+"contour/";
-const std::string contour_img_vib 	= contour_img_path+"line-vib.png";
-const std::string contour_img_none	= contour_img_path+"line-none.png";
-const std::string contour_img_dot 	= contour_img_path+"line-dots.png";
-const std::string contour_img_stroke 	= contour_img_path+"line-stroke.png";
+const std::filesystem::path contour_img_path	= img_path / "contour";
+const std::filesystem::path contour_img_vib	= contour_img_path / "line-vib.png";
+const std::filesystem::path contour_img_none	= contour_img_path / "line-none.png";
+const std::filesystem::path contour_img_dot	= contour_img_path / "line-dots.png";
+const std::filesystem::path contour_img_stroke	= contour_img_path / "line-stroke.png";
 
-const std::string thickness_img_path 	= img_path+"thickness/";
-const std::string thickness_img_s 	= thickness_img_path+"small.png";
-const std::string thickness_img_m 	= thickness_img_path+"medium.png";
-const std::string thickness_img_l 	= thickness_img_path+"large.png";
+const std::filesystem::path thickness_img_path	= img_path / "thickness";
+const std::filesystem::path thickness_img_s	= thickness_img_path / "small.png";
+const std::filesystem::path thickness_img_m	= thickness_img_path / "medium.png";
+const std::filesystem::path thickness_img_l	= thickness_img_path / "large.png";
 
-const std::string advanced_img	 	= img_path+"advanced.svg";
+const std::filesystem::path advanced_img	= img_path / "advanced.svg";
 
 
 class AdvancedButton : public Gtk::Button

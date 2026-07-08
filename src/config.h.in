@@ -1,7 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include <string>
+#include <filesystem>
 
 //#define DISABLE_SCHOOLBOOK_DEMO
 //#define DISABLE_GRAPHICS_DEMO
@@ -21,6 +21,6 @@
 //#endif
 
 // location of images files and other resources
-const std::string media_dir = "@CMAKE_SOURCE_DIR@/media";
+const std::filesystem::path media_dir = "@CMAKE_SOURCE_DIR@/media";
 
 #endif

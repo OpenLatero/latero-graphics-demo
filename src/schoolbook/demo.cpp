@@ -10,10 +10,10 @@ namespace SchoolbookDemo {
 #define SEL_BAR		2
 #define SEL_MAP		3
 
-const std::string GEN_OEIL = media_dir+"/schoolbook/oeil3/oeil3.gen";
-const std::string GEN_CATH = media_dir+"/schoolbook/A1B1_Cathedrale_Gothique.gen";
-const std::string GEN_BAR = media_dir+"/schoolbook/A2_Population_Attique/A2_Population_Attique.gen";
-const std::string GEN_MAP = media_dir+"/schoolbook/A3A4_Civilisations.gen";
+const std::filesystem::path GEN_OEIL = media_dir / "schoolbook/oeil3/oeil3.gen";
+const std::filesystem::path GEN_CATH = media_dir / "schoolbook/A1B1_Cathedrale_Gothique.gen";
+const std::filesystem::path GEN_BAR = media_dir / "schoolbook/A2_Population_Attique/A2_Population_Attique.gen";
+const std::filesystem::path GEN_MAP = media_dir / "schoolbook/A3A4_Civilisations.gen";
 
 Demo::Demo(const latero::Tactograph *dev) :
 	preview_(dev, latero::graphics::GeneratorPtr(), true),
