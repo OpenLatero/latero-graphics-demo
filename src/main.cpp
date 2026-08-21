@@ -44,8 +44,7 @@ int main(int argc, char *argv[])
 
 	latero::Tactograph dev;
 
-	boost::posix_time::time_duration UpdatePeriod = boost::posix_time::microseconds((long)(1E6/UpdateRateHz));
-	latero::graphics::TactileEngine tEngine(&dev, UpdatePeriod);
+	latero::graphics::TactileEngine tEngine(&dev, UpdateRateHz);
 	latero::graphics::AudioEngine aEngine(&dev, boost::posix_time::milliseconds(30));
 
 	std::cout << "Starting graphical user interface...\n";
