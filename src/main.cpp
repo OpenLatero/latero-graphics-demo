@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 	latero::Tactograph dev;
 
 	latero::graphics::TactileEngine tEngine(&dev, UpdateRateHz);
-	latero::graphics::AudioEngine aEngine(&dev, boost::posix_time::milliseconds(30));
+	latero::graphics::AudioEngine aEngine(&dev);
 
 	std::cout << "Starting graphical user interface...\n";
 	int result = app->make_window_and_run<MainWindow>(argc, argv, &tEngine, &aEngine, disableAudio);
