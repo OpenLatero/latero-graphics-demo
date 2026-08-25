@@ -10,6 +10,14 @@ Program that showcases the Latero device's functionality. See [OpenLatero.org](h
 
 Install the [latero](https://github.com/OpenLatero/latero) and [latero-graphics](https://github.com/OpenLatero/latero-graphics) libraries.
 
+#### Install dependencies
+
+The dependencies can be installed through [MacPorts](https://www.macports.org) with the following command:
+
+```
+sudo port install boost
+```
+
 #### Build and run the app
 
 The app can be compiled with the following commands:
