@@ -21,7 +21,7 @@ protected:
 	std::vector<latero::graphics::gtk::Plot*> plots_;
 	BrailleGenPtr peer_;
 	uint y_;
-	boost::posix_time::ptime lastUpdated_;
+	std::chrono::steady_clock::time_point lastUpdated_;
 };
 
 #endif

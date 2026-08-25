@@ -22,7 +22,7 @@ protected:
 	void OnDraw(const Cairo::RefPtr<Cairo::Context>& cr, int width, int height);
 
 	BrailleGenPtr peer_;
-	boost::posix_time::ptime bgUpdateTime_;
+	std::chrono::steady_clock::time_point bgUpdateTime_;
 
 	Glib::RefPtr<Gdk::Pixbuf> bg_;
 	const latero::Tactograph *dev_;

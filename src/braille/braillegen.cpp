@@ -33,7 +33,7 @@ BrailleGen::BrailleGen(const latero::Tactograph *dev) :
 	invert_(true),
 	str_(NB_BRAILLE_CELLS)
 {
-	prevTime_ = boost::posix_time::seconds(0); // TODO: is this ok?
+	prevTime_ = std::chrono::microseconds(0);
 
 	Dot::SideParams vibParam;
 	vibParam.radius = 1.0;
@@ -59,10 +59,10 @@ void BrailleGen::RenderBraille_(const latero::graphics::State *state, latero::Ra
 	BasicRender_(state, frame);
 
 	// 2. Vibration
-	double t = state->GetTimeElapsed().total_microseconds() % vibPeriod_.total_microseconds();
-	double ratio = t / (double)vibPeriod_.total_microseconds();
+	double t = state->GetTimeElapsed().count() % vibPeriod_.count();
+	double ratio = t / (double)vibPeriod_.count();
 
-	double vibAmp = vibMod_.GetAmp_(state->velMag, (state->GetTimeElapsed() - prevTime_).total_microseconds()*1000); // todo: ok?
+	double vibAmp = vibMod_.GetAmp_(state->velMag, (state->GetTimeElapsed() - prevTime_).count()*1000);
 	prevTime_ = state->GetTimeElapsed();
 	for (uint i=0; i<Dev()->GetFrameSizeX(); ++i)
 	{
@@ -250,13 +250,13 @@ void BrailleGen::SetVibFreq(float hz)
 {
 	LATERO_GRAPHICS_GUARD
 	SetLastModified_();
-	vibPeriod_ = boost::posix_time::microseconds((long)(1E6/hz));
+	vibPeriod_ = std::chrono::microseconds((long)(1E6/hz));
 }
 
 float BrailleGen::GetVibFreq() const
 {
 	LATERO_GRAPHICS_GUARD;
-	return 1E6/vibPeriod_.total_microseconds();
+	return 1E6/vibPeriod_.count();
 }
 
 

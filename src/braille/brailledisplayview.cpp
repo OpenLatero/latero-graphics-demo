@@ -80,7 +80,7 @@ bool BrailleDisplayView::OnCheckPeer()
 	if (peer_)
 	{
 		// if the background has never been updated or peer has been modified since
-		if (bgUpdateTime_.is_not_a_date_time() || (peer_->GetLastModified() > bgUpdateTime_))
+		if (peer_->GetLastModified() > bgUpdateTime_)
 			RefreshBackground();
 	}
 	return true;
@@ -90,7 +90,7 @@ void BrailleDisplayView::RefreshBackground()
 {
 	if (drawingArea_.get_width() == 0 || drawingArea_.get_height() == 0)
 		return;
-	bgUpdateTime_ = boost::posix_time::microsec_clock::universal_time();
+	bgUpdateTime_ = std::chrono::steady_clock::now();
 	latero::graphics::gtk::Animation anim = peer_->GetIllustration(drawingArea_.get_width(),drawingArea_.get_height());
 	SetBackground(anim);
 }

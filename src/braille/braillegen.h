@@ -105,7 +105,7 @@ private:
 	braille_mode_t mode_; // todo: redundant?
 
 	// vibration
-	boost::posix_time::time_duration vibPeriod_;
+	std::chrono::microseconds vibPeriod_;
 
 	float lastPos_;
 
@@ -114,7 +114,7 @@ public: // submodules
 	Dot vibDot_;
 	Modulator vibMod_;
 	BrailleString str_;
-	boost::posix_time::time_duration prevTime_;
+	std::chrono::microseconds prevTime_;
 
 };
 

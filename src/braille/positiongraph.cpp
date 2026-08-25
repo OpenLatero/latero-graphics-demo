@@ -6,7 +6,7 @@
 #define NB_POINTS 1000
 
 PositionGraph::PositionGraph(BrailleGenPtr peer) :
-	peer_(peer), y_(0), lastUpdated_(boost::posix_time::neg_infin)
+	peer_(peer), y_(0)
 {
 	set_row_spacing(5);
 	set_size_request(-1, 100);
@@ -32,7 +32,7 @@ bool PositionGraph::Monitor()
 {
 	if ((lastUpdated_ < peer_->GetLastModified()))
 	{	
-		lastUpdated_ = boost::posix_time::microsec_clock::universal_time();
+		lastUpdated_ = std::chrono::steady_clock::now();
 		y_ = 0;
 		Glib::signal_idle().connect(sigc::mem_fun(*this, &PositionGraph::OnRefreshRow));
 	}

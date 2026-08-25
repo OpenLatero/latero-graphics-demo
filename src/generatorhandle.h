@@ -2,6 +2,7 @@
 
 #include <laterographics/generator.h>
 #include <memory>
+#include <chrono>
 
 class GeneratorHandle;
 typedef std::shared_ptr<GeneratorHandle> GeneratorHandlePtr;
@@ -12,7 +13,7 @@ public:
 	GeneratorHandle(const latero::Tactograph *dev);
 	virtual ~GeneratorHandle();
 	virtual void AppendXML(latero::graphics::XMLOutputNode &root) const {};
-	virtual latero::graphics::gtk::Animation GetIllustration(uint w, boost::posix_time::time_duration t) const;
+	virtual latero::graphics::gtk::Animation GetIllustration(uint w, std::chrono::microseconds t) const;
 	virtual void PlayAudio(latero::graphics::AudioDevicePtr dev);
 	void SetGenerator(latero::graphics::GeneratorPtr gen);
 	latero::graphics::GeneratorPtr GetGenerator();
