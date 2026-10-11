@@ -31,11 +31,9 @@ MainWindow::MainWindow(latero::graphics::TactileEngine *tEngine, latero::graphic
 	maximize();
 
 	set_child(mainbox_);
-	//mainbox_.append(*CreateMenu());
+	CreateMenu();
 	demobox_.set_vexpand(true);
 	mainbox_.append(demobox_);
-
-	signal_realize().connect(sigc::mem_fun(*this, &MainWindow::CreateMenu));
 
 	std::cout << "Starting tactile & audio engines...\n";
 	tEngine_->Start();
@@ -136,8 +134,16 @@ void MainWindow::CreateMenu()
 	add_action("demo-braille", [this]{ ReplaceDemo(&brailleDemo_); });
 #endif
 
-	get_application()->set_menubar(menuModel);
-	set_show_menubar(true);
+#ifdef __APPLE__
+	// macOS uses the global menubar, which requires the window to be attached to the application
+	signal_realize().connect([this, menuModel]{
+		get_application()->set_menubar(menuModel);
+		set_show_menubar(true);
+	});
+#else
+	// elsewhere, embed the menubar in the window
+	mainbox_.append(*Gtk::make_managed<Gtk::PopoverMenuBar>(menuModel));
+#endif
 }
 
 void MainWindow::OnQuit()
