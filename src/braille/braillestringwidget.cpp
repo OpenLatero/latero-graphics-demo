@@ -28,7 +28,7 @@ BrailleStringWidget::BrailleStringWidget(BrailleString *peer):
 	set_child(*box);
 	box->append(cellMode_);
 	box->append(cellBox_);
-	for (uint i=0; i<peer_->GetSize(); ++i)
+	for (unsigned int i=0; i<peer_->GetSize(); ++i)
 	{
 		BrailleCellWidget *cellWidget = Gtk::make_managed<BrailleCellWidget>(peer_->GetCell(i));
 		cell_.push_back(cellWidget);
@@ -49,7 +49,7 @@ BrailleStringWidget::BrailleStringWidget(BrailleString *peer):
 	wordButton_.signal_clicked().connect(
 		sigc::mem_fun(*this, &BrailleStringWidget::OnWordClicked));
 
-	for (uint i=0; i<cell_.size(); ++i)
+	for (unsigned int i=0; i<cell_.size(); ++i)
 		cell_[i]->signal_value_changed.connect(
 			sigc::mem_fun(*this, &BrailleStringWidget::OnCellChange));
 	entry_.signal_insert_text().connect(
@@ -91,7 +91,7 @@ void BrailleStringWidget::OnTextChange()
 			text << " ";
 		peer_->Set(text.str());
 		std::string pattern = peer_->GetPattern();
-		for (uint i=0; (i<pattern.size()) && (i<cell_.size()); ++i)
+		for (unsigned int i=0; (i<pattern.size()) && (i<cell_.size()); ++i)
 			cell_[i]->SetPattern(pattern.at(i));
 	}
 	signal_value_changed();
@@ -120,7 +120,7 @@ void BrailleStringWidget::OnRandomClicked()
 	if (textMode_.get_active())
 	{
 		std::stringstream text;
-		for (uint i=0; i<cell_.size(); ++i)
+		for (unsigned int i=0; i<cell_.size(); ++i)
 			text << (char)(97 + (rand()%26));
 		entry_.set_text(text.str());
 	}
@@ -203,7 +203,7 @@ void BrailleStringWidget::CreateWords()
     words.push_back("vache");
 
 	// limit of 5 letters...
-	for (uint i=0; i<words.size(); i++)
+	for (unsigned int i=0; i<words.size(); i++)
 		if (words[i].length() <= 5)
 			words_.push_back(words[i]);
 

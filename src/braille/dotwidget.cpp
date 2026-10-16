@@ -45,7 +45,7 @@ Dot::SideParams DotSideWidget::Get()
 	auto idx = shapeDropDown_.get_selected();
 	p.shape = (idx != GTK_INVALID_LIST_POSITION) ? std::string(shapeList_->get_string(idx)) : "";
 	p.txAmp = txAmpAdj_->get_value();
-	p.txNbCycles = (uint)txNbCyclesAdj_->get_value();
+	p.txNbCycles = (unsigned int)txNbCyclesAdj_->get_value();
 	return p;
 }
 
@@ -62,7 +62,7 @@ void DotSideWidget::Set(const Dot::SideParams &p)
 
 void DotSideWidget::AddShapes(const std::vector<std::string> &shapes)
 {
-	for (uint i=0; i<shapes.size(); ++i)
+	for (unsigned int i=0; i<shapes.size(); ++i)
 		shapeList_->append(shapes[i]);
 }
 

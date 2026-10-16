@@ -67,9 +67,9 @@ public:
 
 	float FirstContactPos();
 
-	virtual float GetDeflection_(float pos, uint row);
+	virtual float GetDeflection_(float pos, unsigned int row);
 
-	virtual latero::graphics::gtk::Animation GetIllustration(uint w, uint h) const;
+	virtual latero::graphics::gtk::Animation GetIllustration(unsigned int w, unsigned int h) const;
 
 	virtual Gtk::Widget *CreateWidget(latero::graphics::GeneratorPtr ptr);
 

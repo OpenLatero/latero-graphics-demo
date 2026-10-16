@@ -26,7 +26,7 @@ void GeneratorHandle::SetGenerator(latero::graphics::GeneratorPtr gen)
 	if (gen_) AddModifiableChild_(gen_);
 }
 
-latero::graphics::gtk::Animation GeneratorHandle::GetIllustration(uint w, std::chrono::microseconds t) const
+latero::graphics::gtk::Animation GeneratorHandle::GetIllustration(unsigned int w, std::chrono::microseconds t) const
 {
 	LATERO_GRAPHICS_GUARD;
 	if (gen_)

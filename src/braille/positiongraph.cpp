@@ -11,7 +11,7 @@ PositionGraph::PositionGraph(BrailleGenPtr peer) :
 	set_row_spacing(5);
 	set_size_request(-1, 100);
 
-	for (uint i=0; i<peer->Dev()->GetFrameSizeY(); ++i)
+	for (unsigned int i=0; i<peer->Dev()->GetFrameSizeY(); ++i)
 	{
 		latero::graphics::gtk::Plot* plot = Gtk::make_managed<latero::graphics::gtk::Plot>();
 		plots_.push_back(plot);

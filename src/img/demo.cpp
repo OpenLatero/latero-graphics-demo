@@ -79,12 +79,12 @@ std::vector<CardPtr> Demo::CreateCardsFromFiles(const std::filesystem::path &pat
 	return cards;
 }
 
-CardPtr Demo::GetCard(uint x, uint y)
+CardPtr Demo::GetCard(unsigned int x, unsigned int y)
 {
 	return cardPages_[page_][y * NbCardsX + x];
 }
 
-void Demo::OnCardSelected(uint x, uint y)
+void Demo::OnCardSelected(unsigned int x, unsigned int y)
 {
 	auto card = GetCard(x, y);
 	gen_->SetGenerator(card->GetGenerator());
@@ -122,9 +122,9 @@ void Demo::UpdateGrid(std::vector<CardPtr> cards)
 		grid_.remove(*child);
 	}
 
-	for (uint x=0; x<NbCardsX; ++x)
+	for (unsigned int x=0; x<NbCardsX; ++x)
 	{
-		for (uint y=0; y<NbCardsY; ++y)
+		for (unsigned int y=0; y<NbCardsY; ++y)
 		{
 			auto card = cards[y*NbCardsX+x];
 			card->set_vexpand(true);

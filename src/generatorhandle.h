@@ -13,7 +13,7 @@ public:
 	GeneratorHandle(const latero::Tactograph *dev);
 	virtual ~GeneratorHandle();
 	virtual void AppendXML(latero::graphics::XMLOutputNode &root) const {};
-	virtual latero::graphics::gtk::Animation GetIllustration(uint w, std::chrono::microseconds t) const;
+	virtual latero::graphics::gtk::Animation GetIllustration(unsigned int w, std::chrono::microseconds t) const;
 	virtual void PlayAudio(latero::graphics::AudioDevicePtr dev);
 	void SetGenerator(latero::graphics::GeneratorPtr gen);
 	latero::graphics::GeneratorPtr GetGenerator();

@@ -64,9 +64,9 @@ void BrailleGen::RenderBraille_(const latero::graphics::State *state, latero::Ra
 
 	double vibAmp = vibMod_.GetAmp_(state->velMag, (state->GetTimeElapsed() - prevTime_).count()*1000);
 	prevTime_ = state->GetTimeElapsed();
-	for (uint i=0; i<Dev()->GetFrameSizeX(); ++i)
+	for (unsigned int i=0; i<Dev()->GetFrameSizeX(); ++i)
 	{
-		for (uint j=0; j<Dev()->GetFrameSizeY(); ++j)
+		for (unsigned int j=0; j<Dev()->GetFrameSizeY(); ++j)
 		{
 			double x = Dev()->GetActuatorPositions(state->pos, 0).Get(i,j).x; // TODO: expensive!
 			float vib = vibAmp * GetVibration_(ratio, x, j);
@@ -414,7 +414,7 @@ void BrailleGen::SetMode(braille_mode_t mode)
 #define GRAY1 0.5
 #define GRAY2 0.75
 
-latero::graphics::gtk::Animation BrailleGen::GetIllustration(uint w, uint h) const
+latero::graphics::gtk::Animation BrailleGen::GetIllustration(unsigned int w, unsigned int h) const
 {
 	Glib::RefPtr<Gdk::Pixbuf> rv = Gdk::Pixbuf::create(Gdk::Colorspace::RGB, true, 8, w, h);
 
@@ -580,9 +580,9 @@ Gtk::Widget *BrailleGen::CreateWidget(latero::graphics::GeneratorPtr ptr)
 void BrailleGen::BasicRender_(const latero::graphics::State *state, latero::RangeImg &frame)
 {
 	lastPos_ = state->pos.x;
-	for (uint i=0; i<Dev()->GetFrameSizeX(); ++i)
+	for (unsigned int i=0; i<Dev()->GetFrameSizeX(); ++i)
 	{
-		for (uint j=0; j<Dev()->GetFrameSizeY(); ++j)
+		for (unsigned int j=0; j<Dev()->GetFrameSizeY(); ++j)
 		{
 			double x = Dev()->GetActuatorPositions(state->pos, 0).Get(i,j).x; // TODO: expensive!
 			frame.Set(i,j,GetDeflection_(x, j));

@@ -17,12 +17,12 @@ BrailleDisplayView::BrailleDisplayView(BrailleGenPtr peer) :
 
 	Glib::signal_timeout().connect(
 		sigc::mem_fun(*this, &BrailleDisplayView::RefreshCursor),
-		(uint)33, // ms
+		(unsigned int)33, // ms
 		Glib::PRIORITY_DEFAULT_IDLE);
 
 	Glib::signal_timeout().connect(
 		sigc::mem_fun(*this, &BrailleDisplayView::OnCheckPeer),
-		(uint)333, // ms
+		(unsigned int)333, // ms
 		Glib::PRIORITY_DEFAULT_IDLE);
 
 	drawingArea_.signal_resize().connect(

@@ -13,9 +13,9 @@ BrailleCellWidget::BrailleCellWidget(BrailleCell *peer):
 	Gtk::Grid *grid = new Gtk::Grid();
 	set_child(*manage(grid));
 
-	for (uint x=0; x<2; ++x)
+	for (unsigned int x=0; x<2; ++x)
 	{
-		for (uint y=0; y<3; ++y)
+		for (unsigned int y=0; y<3; ++y)
 		{
 			grid->attach(dots_[x][y], x, y, 1,1);
 			dots_[x][y].signal_toggled().connect(
@@ -29,8 +29,8 @@ void BrailleCellWidget::OnChange()
 {
 	if (!disableSignals_)
 	{
-		for (uint x=0; x<2; ++x)
-			for (uint y=0; y<3; ++y)
+		for (unsigned int x=0; x<2; ++x)
+			for (unsigned int y=0; y<3; ++y)
 				peer_->Set(x,y,dots_[x][y].get_active());
 
 		signal_value_changed();
@@ -39,8 +39,8 @@ void BrailleCellWidget::OnChange()
 
 void BrailleCellWidget::Refresh()
 {
-	for (uint x=0; x<2; ++x)
-		for (uint y=0; y<3; ++y)
+	for (unsigned int x=0; x<2; ++x)
+		for (unsigned int y=0; y<3; ++y)
 			dots_[x][y].set_active(peer_->Get(x,y));
 }
 
