@@ -44,7 +44,12 @@ class AdvancedButton : public Gtk::Button
 public:
 	AdvancedButton()
 	{
+#ifdef _WIN32
+		// paths don't convert to std::string implicitly on Windows; GTK expects UTF-8 filenames
+		auto *img = Gtk::make_managed<Gtk::Image>(advanced_img.u8string());
+#else
 		auto *img = Gtk::make_managed<Gtk::Image>(advanced_img);
+#endif
 		img->set_pixel_size(48);
 		set_child(*img);
 	}
