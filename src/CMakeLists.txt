@@ -1,4 +1,4 @@
-find_package(laterographics 0.1 REQUIRED)
+find_package(laterographics 0.2 REQUIRED)
 find_package(Boost REQUIRED COMPONENTS program_options)
 
 set (CMAKE_CXX_STANDARD 17)
